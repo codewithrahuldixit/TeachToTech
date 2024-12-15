@@ -7,7 +7,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+
 @Entity
+
 @Data
 public class Category {
     @Id
@@ -16,4 +18,5 @@ public class Category {
 
     @Column(nullable = false, unique = true)
     private String name;
+
 }

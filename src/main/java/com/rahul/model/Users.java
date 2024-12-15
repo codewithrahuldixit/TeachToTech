@@ -58,7 +58,7 @@ public class Users {
     @NotEmpty(message = "Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters long")
     private String password;
-   
+
     
     @Column(nullable = false)
     private String role = "USER";
