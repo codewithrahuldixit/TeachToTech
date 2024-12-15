@@ -10,7 +10,7 @@ import com.rahul.model.Course;
 import com.rahul.repository.CourseRepository;
 
 @Service
-public class CourseService {
+public class CourseService { 
 
     @Autowired
     private CourseRepository courseRepository;
