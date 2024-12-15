@@ -17,7 +17,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "trainer")
+
+@Entity
+
 @Getter
 @Setter
 @AllArgsConstructor

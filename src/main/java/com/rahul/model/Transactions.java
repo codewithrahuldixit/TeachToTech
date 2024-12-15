@@ -6,7 +6,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
-@Entity(name = "transactions")
+
+@Entity
+
 @Data
 public class Transactions {
     
