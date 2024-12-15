@@ -59,10 +59,7 @@ public class Users {
     @Size(min = 6, message = "Password must be at least 6 characters long")
     private String password;
 
-    @Transient // Prevents storing in the database
-    @NotEmpty(message = "Confirm Password is required")
-    private String confirmPassword;
-    
+  
     
     @Column(nullable = false)
     private String role = "USER";
