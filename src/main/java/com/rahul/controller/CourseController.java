@@ -44,7 +44,7 @@ public class CourseController {
 	public String addNewCourse(Model mav) {
 		Course course = new Course();
 		mav.addAttribute("course",course);
-		return "index";
+		return "AddNewCourse";
 	}
     @PostMapping("/save")
 	public String createStudent(@ModelAttribute("student") Course course) {

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Form</title>
+  <style>
+    
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f4f4f4;
+    }
+
+    /* Content container for the card */
+    .content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    .card {
+      border: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 30px;
+      background-color: white;
+      width: 100%;
+      max-width: 1200px;
+      box-sizing: border-box; 
+    }
+
+    .card-title {
+      font-size: 25px;
+      color: #5fcf80;
+      font-weight: bold;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      font-size: 14px;
+      color: #333;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px; 
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box; 
+    }
+
+    .form-control:focus {
+      border-color: #5fcf80;
+      outline: none;
+    }
+
+    .read-more {
+      background-color: #5fcf80;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    .read-more:hover {
+      background-color: #4caf6a;
+    }
+  </style>
+
+</head>
+<body>
+  <div class="content">
+    <div class="card">
+      <h3 class="card-title">Registration Form</h3>
+      <form id="registrationForm" th:action="@{/api/users/register}" th:object="${user}" method="POST" onsubmit="return validatePasswords()">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" name="firstName" class="form-control" th:field="*{firstName}" required>
+          <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></span>
+        </div>
+        
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" name="lastName" class="form-control" th:field="*{lastName}" required>
+          <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></span>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" class="form-control" th:field="*{email}" required>
+          <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
+        </div>
+      
+        <div class="form-group">
+          <label for="contact">Contact Number</label>
+          <input type="text" id="contact" name="contact" class="form-control" th:field="*{contact}" required>
+          <span th:if="${#fields.hasErrors('contact')}" th:errors="*{contact}" class="text-danger"></span>
+        </div>
+      
+        <div class="form-group">
+          <label for="qualification">Qualification</label>
+          <input type="text" id="qualification" name="qualification" class="form-control" th:field="*{qualification}" required>
+          <span th:if="${#fields.hasErrors('qualification')}" th:errors="*{qualification}" class="text-danger"></span>
+        </div>
+      
+        <div class="form-group">
+          <label for="age">Age</label>
+          <input type="number" id="age" name="age" class="form-control" th:field="*{age}" required>
+          <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}" class="text-danger"></span>
+        </div>
+      
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" class="form-control" th:field="*{password}" required>
+          <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></span>
+        </div>
+      
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" th:field="*{confirmPassword}" required>
+          </div>
+          
+        
+        <button type="submit" class="read-more">Register</button>
+      </form>
+      
+    </div>
+  </div>
+
+  <script>
+    function validatePasswords() {
+      var password = document.getElementById('password').value;
+      var confirmPassword = document.getElementById('confirmPassword').value;
+      
+      // Check if passwords match
+      if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return false;  // Prevent form submission
+      }
+      return true;  // Allow form submission
+    }
+  </script>
+</body>
+</html>
