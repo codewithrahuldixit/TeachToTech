@@ -10,13 +10,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Controller;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
 
 import com.rahul.dto.LoginDto;
 import com.rahul.model.Users;
@@ -26,7 +30,7 @@ import com.rahul.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RestController
+@Controller
 @RequestMapping("/api/users")
 public class UserController {
 
@@ -38,24 +42,34 @@ public class UserController {
     @Autowired
     private JwtUtil jwtUtil;
 
-
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody Users user) {
-        if (userService.findByEmail(user.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().body("Username is already taken");
-        }
-        userService.registerUser(user);
-        return ResponseEntity.ok("User registered successfully");
+public String registerUser(@ModelAttribute Users user, @RequestParam String confirmPassword, Model model) {
+    // Compare the passwords
+    if (!user.getPassword().equals(confirmPassword)) {
+        model.addAttribute("error", "Passwords do not match");
+        return "RegistrationForm"; // Return to the registration page with the error
     }
+    
+    if (userService.findByEmail(user.getEmail()).isPresent()) {
+        model.addAttribute("error", "Username is already taken");
+        return "RegistrationForm";
+    }
+    
+    userService.registerUser(user);
+    return "redirect:/index"; // Redirect to a success page after registration
+}
+
+
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDto) {
-       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(),loginDto.getPassword()));
-      if (authentication.isAuthenticated()) {
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
+        if (authentication.isAuthenticated()) {
             Map<String, String> authResponse = new HashMap<>();
             User user = (User) authentication.getPrincipal();
-          String jwtToken = this.jwtUtil.generateToken(user);
+            String jwtToken = this.jwtUtil.generateToken(user);
             authResponse.put("token", jwtToken);
-                    
+
             return new ResponseEntity<>(authResponse, HttpStatus.OK);
         }
         throw new UsernameNotFoundException("Invalid credentials");
@@ -67,5 +81,11 @@ public class UserController {
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
-    
+
+    @GetMapping("/register")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("user", new Users()); // Create an empty Users object for binding in the form
+        return "RegistrationForm"; // The name of the Thymeleaf template (registration.html)
+    }
+
 }

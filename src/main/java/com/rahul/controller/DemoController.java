@@ -36,4 +36,6 @@ public class DemoController {
 	public String contact() {
 		return "contact";		
 	}
+
+	
 }

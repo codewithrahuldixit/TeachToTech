@@ -31,8 +31,8 @@ import lombok.Setter;
 public class Users {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+   // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private UUID id = UUID.randomUUID();
 
     @NotEmpty(message = "First Name is required")
     private String firstName;
@@ -58,6 +58,9 @@ public class Users {
     @NotEmpty(message = "Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters long")
     private String password;
+
+    @Transient
+    private String confirmPassword;
 
     
     @Column(nullable = false)

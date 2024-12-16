@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Trainer</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start; /* Align items to the top of the page */
+      background-color: #f4f4f4;
+      font-family: Arial, sans-serif;
+    }
+
+    .content {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      width: 100%;
+      height: 100%;
+      padding-top: 30px; /* Adds top padding to prevent form from sticking to the top */
+      box-sizing: border-box;
+    }
+
+    .card {
+      border: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 30px;
+      background-color: white;
+      width: 80%; /* Set to 80% of the screen width */
+      max-width: 1200px; /* Restrict max width to prevent excessive stretch */
+      box-sizing: border-box;
+      margin-top: 50px; /* Adds margin to space from the top */
+      min-width: 600px; /* Minimum width to prevent shrinking too much */
+    }
+
+    .card-title {
+      font-size: 25px;
+      color: #5fcf80;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      font-size: 14px;
+      color: #333;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .form-control:focus {
+      border-color: #5fcf80;
+      outline: none;
+    }
+
+    .read-more {
+      background-color: #5fcf80;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 12px 20px;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    .read-more:hover {
+      background-color: #4caf6a;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <div class="card">
+      <h3 class="card-title">Add New Trainer</h3>
+      <form id="addTrainerForm" th:action="@{/api/trainers/save}" th:object="${trainer}" method="POST">
+        <!-- Trainer Name Field -->
+        <div class="form-group">
+          <label for="trainerName">Trainer Name</label>
+          <input type="text" id="trainerName" name="trainerName" class="form-control" th:field="*{trainerName}" required>
+          <span th:if="${#fields.hasErrors('trainerName')}" th:errors="*{trainerName}" class="text-danger"></span>
+        </div>
+
+        <!-- Trainer Description Field -->
+        <div class="form-group">
+          <label for="trainerDescription">Trainer Description</label>
+          <textarea id="trainerDescription" name="trainerDescription" class="form-control" th:field="*{trainerDescription}" rows="4" required></textarea>
+          <span th:if="${#fields.hasErrors('trainerDescription')}" th:errors="*{trainerDescription}" class="text-danger"></span>
+        </div>
+
+        <!-- Trainer Qualification Field -->
+        <div class="form-group">
+          <label for="trainerQualification">Trainer Qualification</label>
+          <input type="text" id="trainerQualification" name="trainerQualification" class="form-control" th:field="*{trainerQualification}" required>
+          <span th:if="${#fields.hasErrors('trainerQualification')}" th:errors="*{trainerQualification}" class="text-danger"></span>
+        </div>
+
+        <!-- LinkedIn URL Field -->
+        <div class="form-group">
+          <label for="linkedin">LinkedIn Profile URL</label>
+          <input type="url" id="linkedin" name="linkedin" class="form-control" th:field="*{linkedin}" required>
+        </div>
+
+        <!-- Category Field -->
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" name="category" class="form-control" th:field="*{category}" required>
+            <option value="" disabled selected>Select Category</option>
+            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+          </select>
+          <span th:if="${#fields.hasErrors('category')}" th:errors="*{category}" class="text-danger"></span>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="read-more">Add Trainer</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
