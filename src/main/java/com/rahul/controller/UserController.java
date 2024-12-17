@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -44,10 +45,10 @@ public class UserController {
 
     @PostMapping("/register")
 public String registerUser(@ModelAttribute Users user, @RequestParam String confirmPassword, Model model) {
-    // Compare the passwords
+  
     if (!user.getPassword().equals(confirmPassword)) {
         model.addAttribute("error", "Passwords do not match");
-        return "RegistrationForm"; // Return to the registration page with the error
+        return "RegistrationForm";
     }
     
     if (userService.findByEmail(user.getEmail()).isPresent()) {
@@ -56,23 +57,35 @@ public String registerUser(@ModelAttribute Users user, @RequestParam String conf
     }
     
     userService.registerUser(user);
-    return "redirect:/index"; // Redirect to a success page after registration
+    return "redirect:/index"; 
 }
-
+    @GetMapping("/login")
+    public String showLoginForm(Model model){
+        model.addAttribute("LoginDto", new LoginDto());
+        return "LoginPage";
+    }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDto) {
+    public String loginUser(@ModelAttribute LoginDto loginDto, Model model) {
+       try{
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
         if (authentication.isAuthenticated()) {
-            Map<String, String> authResponse = new HashMap<>();
+           
             User user = (User) authentication.getPrincipal();
             String jwtToken = this.jwtUtil.generateToken(user);
-            authResponse.put("token", jwtToken);
-
-            return new ResponseEntity<>(authResponse, HttpStatus.OK);
+            model.addAttribute("token", jwtToken);
+            model.addAttribute("success", "You are logged in successfully!");
+            return "redirect:/index";
         }
-        throw new UsernameNotFoundException("Invalid credentials");
+    
+        }
+        catch(BadCredentialsException e){
+            model.addAttribute("error", "Invalid credentials. Please try again.");
+        }
+        model.addAttribute("LoginDto", loginDto);
+        return "LoginPage";
+        
     }
 
     @GetMapping("profile/{email}")
@@ -84,8 +97,10 @@ public String registerUser(@ModelAttribute Users user, @RequestParam String conf
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new Users()); // Create an empty Users object for binding in the form
-        return "RegistrationForm"; // The name of the Thymeleaf template (registration.html)
+        model.addAttribute("user", new Users()); 
+        return "RegistrationForm"; 
     }
+
+
 
 }
