@@ -45,10 +45,10 @@ public class UserController {
 
     @PostMapping("/register")
 public String registerUser(@ModelAttribute Users user, @RequestParam String confirmPassword, Model model) {
-    // Compare the passwords
+  
     if (!user.getPassword().equals(confirmPassword)) {
         model.addAttribute("error", "Passwords do not match");
-        return "RegistrationForm"; // Return to the registration page with the error
+        return "RegistrationForm";
     }
     
     if (userService.findByEmail(user.getEmail()).isPresent()) {
@@ -57,7 +57,7 @@ public String registerUser(@ModelAttribute Users user, @RequestParam String conf
     }
     
     userService.registerUser(user);
-    return "redirect:/index"; // Redirect to a success page after registration
+    return "redirect:/index"; 
 }
     @GetMapping("/login")
     public String showLoginForm(Model model){
@@ -75,7 +75,6 @@ public String registerUser(@ModelAttribute Users user, @RequestParam String conf
             User user = (User) authentication.getPrincipal();
             String jwtToken = this.jwtUtil.generateToken(user);
             model.addAttribute("token", jwtToken);
-            
             model.addAttribute("success", "You are logged in successfully!");
             return "redirect:/index";
         }
@@ -98,8 +97,8 @@ public String registerUser(@ModelAttribute Users user, @RequestParam String conf
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new Users()); // Create an empty Users object for binding in the form
-        return "RegistrationForm"; // The name of the Thymeleaf template (registration.html)
+        model.addAttribute("user", new Users()); 
+        return "RegistrationForm"; 
     }
 
 
