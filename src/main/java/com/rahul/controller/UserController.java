@@ -75,6 +75,7 @@ public String registerUser(@ModelAttribute Users user, @RequestParam String conf
             User user = (User) authentication.getPrincipal();
             String jwtToken = this.jwtUtil.generateToken(user);
             model.addAttribute("token", jwtToken);
+            
             model.addAttribute("success", "You are logged in successfully!");
             return "redirect:/index";
         }
