@@ -134,3 +134,14 @@
   window.addEventListener("load", initSwiper);
 
 })();
+
+document.addEventListener("DOMContentLoaded", () => {
+  const descriptionElement = document.getElementById("course-description");
+  const text = descriptionElement.textContent.trim();
+  
+  // Split the text into words and limit to 50
+  const words = text.split(" ");
+  if (words.length > 50) {
+    descriptionElement.textContent = words.slice(0, 35).join(" ") + ".";
+  }
+});
