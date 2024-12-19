@@ -87,6 +87,38 @@
     .read-more:hover {
       background-color: #4caf6a;
     }
+    .back-arrow {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 20px; /* Space between the back arrow and the form */
+}
+
+.arrow {
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 15px solid #4CAF50; /* Arrow pointing left */
+  margin-right: 10px; /* Space between the arrow and the text */
+}
+
+.arrow:hover {
+  border-right-color: #45a049; /* Change color on hover */
+}
+
+.back-text {
+  font-size: 14px;
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.back-text:hover {
+  color: #45a049; /* Change text color on hover */
+}
+
+
+
   </style>
   
   
@@ -97,9 +129,18 @@
 </head>
 <body>
   <div class="content">
+    <div class="back-arrow" onclick="history.back()">
+  <div class="arrow"></div>
+  <p class="back-text">Go back</p>
+</div>
+
+
     <div class="card">
       <h3 class="card-title">Add New Course</h3>
+
       <form id="addCourseForm" th:action="@{/api/courses/save}" th:object="${course}" method="POST">
+
+      
         <!-- Title Field -->
         <div class="form-group">
           <label for="title">Course Title</label>
