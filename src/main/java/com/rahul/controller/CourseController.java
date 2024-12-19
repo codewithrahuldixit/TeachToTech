@@ -2,15 +2,13 @@ package com.rahul.controller;
 
 
 import java.util.List;
-import java.util.Optional;
+ 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,45 +17,50 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.rahul.model.Course;
 import com.rahul.service.CourseService;
 
-import lombok.AllArgsConstructor;
 
 @Controller
 @RequestMapping("/api/courses")
-@AllArgsConstructor
 public class CourseController {
 	
+    @Autowired
 	private CourseService service;
 
     @Autowired
     private CourseService courseService;
 
-    @PostMapping
-    public ResponseEntity<Course> createCourse(@RequestBody Course course) {
-        return ResponseEntity.ok(courseService.createCourse(course));
+    @PostMapping("/add/pending")
+    public ResponseEntity<?> createdCourse(@RequestBody Course course) {
+        this.courseService.saveCourse(course);
+        return ResponseEntity.ok("Course added and pending approval");
     }
 
-    @GetMapping
-    public ResponseEntity<List<Course>> getAllCourses() {
-        return ResponseEntity.ok(courseService.getAllCourses());
+    @PostMapping("/add/approved")
+    public ResponseEntity<?> approvedCourse(@RequestBody Course course) {
+        this.courseService.approveCourse(course.getId());
+        return ResponseEntity.ok("Course approved");
     }
-    @GetMapping("/addNew")
-	public String addNewCourse(Model mav) {
-		Course course = new Course();
-		mav.addAttribute("course",course);
-		return "index";
-	}
-    @PostMapping("/save")
-	public String createStudent(@ModelAttribute("student") Course course) {
-		service.createCourse(course);
-		return "redirect:/";
-	}
-    @GetMapping("/{id}")
-    public ResponseEntity<Course> getCourseById(@PathVariable Long id) {
-        Optional<Course> course = courseService.getCourseById(id);
-        return course.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    @PostMapping("/add/rejected")
+    public ResponseEntity<?> rejectedCourse(@RequestBody Course course) {
+        this.courseService.rejectCourse(course.getId(),course.getRejectionComment());
+        return ResponseEntity.ok("Course rejected");
     }
 
+    @GetMapping("get/pending")
+    public ResponseEntity<List<Course>> getPendingCourses() {
+       List<Course> course= this.courseService.getPendingCourse();
+        return ResponseEntity.ok(course);
+    }
+    @GetMapping("get/approved")
+    public ResponseEntity<List<Course>> getApprovedCourses() {
+       List<Course> course= this.courseService.getApprovedCourses();
+        return ResponseEntity.ok(course);
+    }
+    @GetMapping("get/rejected")
+    public ResponseEntity<List<Course>> getRejectedCourses() {
+       List<Course> course= this.courseService.getRejectedCourses();
+        return ResponseEntity.ok(course);
+    }
+ 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
         courseService.deleteCourse(id);
