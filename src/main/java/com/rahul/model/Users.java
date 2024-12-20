@@ -3,8 +3,6 @@ package com.rahul.model;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import com.rahul.enum_.Role;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

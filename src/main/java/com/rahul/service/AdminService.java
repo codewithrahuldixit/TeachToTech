@@ -2,8 +2,6 @@ package com.rahul.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.rahul.enum_.Role;
 import com.rahul.model.Users;
 import com.rahul.repository.UserRepository;
 import com.rahul.util.JwtUtil;
@@ -24,7 +22,7 @@ public class AdminService {
         Users promoter = this.userRepository.findByEmail(email)
             .orElseThrow(() -> new RuntimeException("Promoter not found"));
     
-        if (!promoter.getRole().equals(Role.SUPER_ADMIN)) {
+        if (!promoter.getRole().equals("SUPER_ADMIN")) {
             throw new Exception("Only Super Admins can promote users to Admin.");
         }
     
@@ -44,7 +42,7 @@ public class AdminService {
             .orElseThrow(() -> new RuntimeException("Authenticated user not found"));
 
         // Ensure only SUPER_ADMIN can perform this action
-        if (!authenticatedUser.getRole().equals(Role.SUPER_ADMIN)) {
+        if (!authenticatedUser.getRole().equals("SUPER_ADMIN")) {
             throw new Exception("Only Super Admins can promote users to Super Admin.");
         }
 
