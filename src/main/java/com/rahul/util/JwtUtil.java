@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +26,11 @@ public class JwtUtil {
     @Value("${jwt.secret.key}")
     private String secretKey;
     
+    @Value("${jwt.expTime}")
+    private Long expTime;
+
+    
+    
     public String generateToken(User user) {
 
         Map<String, Object> claims = new HashMap<>();
@@ -40,7 +44,7 @@ public class JwtUtil {
                 .subject(user.getUsername())
                 .issuer("DCB")
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 360000)) // Expiration time in milliseconds
+                .expiration(new Date(System.currentTimeMillis() + expTime)) // Expiration time in milliseconds
                 .signWith(generateKey())
                 .compact();
     }
@@ -93,4 +97,5 @@ public class JwtUtil {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
+   
 }
