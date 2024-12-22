@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.rahul.dto.LoginDto;
 import com.rahul.model.Users;
 import com.rahul.service.UserService;
@@ -77,10 +76,11 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
  
-    @GetMapping("/current-username")
+    @GetMapping("/name")
     public String getCurrentUsername(@RequestHeader("Authorization") String authorizationHeader) {
         // Remove "Bearer " prefix from the token
         String token = authorizationHeader.substring(7);
-        return this.jwtUtil.extractUserName(token);
+        String firstName=this.userService.getUsersDetails(token);
+        return firstName;
     }
 }

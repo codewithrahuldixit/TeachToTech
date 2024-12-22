@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
  
 import com.rahul.model.Users;
 import com.rahul.repository.UserRepository;
+import com.rahul.util.JwtUtil;
 
 @Service
 public class UserService {
@@ -18,6 +19,9 @@ public class UserService {
     
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
    
 
     public Users registerUser(Users user) {
@@ -39,6 +43,12 @@ public class UserService {
         return userRepository.save(user);
     }
     
+    public String getUsersDetails(String token){
+       String username=this.jwtUtil.extractUserName(token);
+       Optional<Users> user=this.userRepository.findByEmail(username);
+
+       return user.get().getFirstName();
+    }
 
 
     public Optional<Users> findByEmail(String email) {

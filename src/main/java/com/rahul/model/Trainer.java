@@ -36,6 +36,9 @@ public class Trainer {
     private String trainerDescription;
 
     @Column
+    private String trainerImage; 
+
+    @Column
     private String trainerQualification;
 
     @Column
