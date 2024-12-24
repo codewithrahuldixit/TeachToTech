@@ -121,10 +121,11 @@
         </div>
       
         <div class="form-group">
-          <label for="age">Age</label>
-          <input type="number" id="age" name="age" class="form-control" th:field="*{age}" required>
-          <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}" class="text-danger"></span>
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob" name="dob" class="form-control" th:field="*{dob}" required>
+          <span th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}" class="text-danger"></span>
         </div>
+        
       
         <div class="form-group">
           <label for="password">Password</label>
@@ -132,11 +133,11 @@
           <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></span>
         </div>
       
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label for="confirmPassword">Confirm Password</label>
             <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" th:field="*{confirmPassword}" required>
           </div>
-          
+           -->
         
         <button type="submit" class="read-more">Register</button>
       </form>
