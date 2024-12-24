@@ -1,13 +1,13 @@
 package com.rahul.model;
 
-
-
-
 import java.util.Set;
+
+import com.rahul.enum_.CourseStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,7 +36,7 @@ public class Course {
     @Column(nullable = false)
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "category_id", nullable = false) // Foreign key
     private Category category;
 
@@ -59,5 +59,9 @@ public class Course {
         inverseJoinColumns = @JoinColumn(name = "trainer_id") // Foreign key to the Trainer table
     )
     private Set<Trainer> trainers;
+    
+    @Enumerated(EnumType.STRING)
+    private CourseStatus status = CourseStatus.PENDING;
 
+    private String rejectionComment="";
 }

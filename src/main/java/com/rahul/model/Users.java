@@ -1,5 +1,6 @@
 package com.rahul.model;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -8,12 +9,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,8 +30,8 @@ import lombok.Setter;
 public class Users {
 
     @Id
-   // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id = UUID.randomUUID();
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
     @NotEmpty(message = "First Name is required")
     private String firstName;
@@ -45,24 +44,21 @@ public class Users {
     private String email;
 
     @NotNull(message = "Contact number is required")
-    @Digits(integer = 10, fraction = 0, message = "Contact number must be 10 digits")
-    private Long contact;
+    @Pattern(regexp = "\\d{10}", message = "Contact number must be exactly 10 digits")
+    private String contact;
 
     @NotEmpty(message = "Qualification is required")
     private String qualification;
 
-    @NotNull(message = "Age is required")
-    @Min(value = 18, message = "Age must be at least 18")
-    private Integer age;
+    @Column(nullable = false)
+    private LocalDate dob;
 
     @NotEmpty(message = "Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters long")
     private String password;
+   
+    private boolean isFirstSuperAdmin = false;
 
-    @Transient
-    private String confirmPassword;
-
-    
     @Column(nullable = false)
     private String role = "USER";
 
