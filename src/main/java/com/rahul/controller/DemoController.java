@@ -33,15 +33,18 @@ public class DemoController {
 	}
 	@GetMapping("/courses")
 	public String showCourses(Model model) {
+		
 		List<Course> pendingCourses = courseService.getPendingCourse();
 	    model.addAttribute("pendingCourses", pendingCourses);
+
+		List<Course> approvedCourse = courseService.getApprovedCourses();
+		//System.out.println(approvedCourses);
+	    model.addAttribute("approvedCourse", approvedCourse);
+	    
 	     return "courses"; // Name of the Thymeleaf template
 	}
  
-	@GetMapping({ "/", "/index" })
-	public String Home() {
-		return "index";
-	}
+	
 
 	@GetMapping("/pricing")
 	public String pricing() {
