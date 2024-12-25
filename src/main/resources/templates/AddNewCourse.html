@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Course</title>
+  <title>Add Trainer</title>
   <style>
     html, body {
       height: 100%;
       margin: 0;
       display: flex;
       justify-content: center;
-      align-items: flex-start; /* Align items to the top of the page */
+      align-items: flex-start;
       background-color: #f4f4f4;
       font-family: Arial, sans-serif;
     }
-  
+
     .content {
       display: flex;
       justify-content: center;
@@ -22,39 +22,38 @@
       width: 100%;
       height: 100%;
       padding-top: 30px;
-      padding-bottom: 30px; /* Adds top padding to prevent form from sticking to the top */
       box-sizing: border-box;
     }
-  
+
     .card {
       border: none;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       border-radius: 8px;
       padding: 30px;
       background-color: white;
-      width: 90%; /* Set to 80% of the screen width */
-      max-width: 2000px; /* Restrict max width to prevent excessive stretch */
+      width: 80%;
+      max-width: 1200px;
       box-sizing: border-box;
-      margin-top: 50px; /* Adds margin to space from the top */
-      min-width: 800px; /* Minimum width to prevent shrinking too much */
+      margin-top: 50px;
+      min-width: 600px;
     }
-  
+
     .card-title {
       font-size: 25px;
       color: #5fcf80;
       font-weight: bold;
       margin-bottom: 20px;
     }
-  
+
     .form-group {
       margin-bottom: 20px;
     }
-  
+
     .form-group label {
       font-size: 14px;
       color: #333;
     }
-  
+
     .form-control {
       width: 100%;
       padding: 12px;
@@ -64,12 +63,12 @@
       font-size: 14px;
       box-sizing: border-box;
     }
-  
+
     .form-control:focus {
       border-color: #5fcf80;
       outline: none;
     }
-  
+
     .read-more {
       background-color: #5fcf80;
       color: white;
@@ -83,7 +82,7 @@
       margin-top: 20px;
       width: 100%;
     }
-  
+
     .read-more:hover {
       background-color: #4caf6a;
     }
@@ -125,122 +124,101 @@
       <div class="arrow"></div>
       <p class="back-text">Go back</p>
     </div>
-
     <div class="card">
-      <h3 class="card-title">Add New Course</h3>
+      <h3 class="card-title">Add New Trainer</h3>
+      <form id="addTrainerForm">
+        <!-- Trainer Name Field -->
+        <div class="form-group">
+          <label for="trainerName">Trainer Name</label>
+          <input type="text" id="trainerName" name="trainerName" class="form-control" required>
+        </div>
 
-      <form id="addCourseForm">
+        <!-- Trainer Description Field -->
+        <div class="form-group">
+          <label for="trainerDescription">Trainer Description</label>
+          <textarea id="trainerDescription" name="trainerDescription" class="form-control" rows="4" required></textarea>
+        </div>
+
+        <!-- Trainer Qualification Field -->
+        <div class="form-group">
+          <label for="trainerQualification">Trainer Qualification</label>
+          <input type="text" id="trainerQualification" name="trainerQualification" class="form-control" required>
+        </div>
+
+        <!-- LinkedIn URL Field -->
+        <div class="form-group">
+          <label for="linkedin">LinkedIn Profile URL</label>
+          <input type="url" id="linkedin" name="linkedin" class="form-control" required>
+        </div>
+
+        <!-- Profile Image Field -->
+        <div class="form-group">
+          <label for="trainerImage">Profile Image URL</label>
+          <input type="url" id="trainerImage" name="trainerImage" class="form-control" required>
+        </div>
+
         <!-- Category Field -->
         <div class="form-group">
           <label for="category">Category</label>
-          <select id="category" name="category" class="form-control" onchange="toggleNewCategoryInput()" required>
+          <select id="category" name="category" class="form-control" required>
             <option value="" disabled selected>Select Category</option>
-            <option value="new">Create New Category</option>
-          </select>
-        </div>
-
-        <!-- Input Field for New Category -->
-        <div class="form-group" id="newCategoryField" style="display: none;">
-          <label for="newCategory">New Category Name</label>
-          <input type="text" id="newCategory" name="newCategory" class="form-control">
-        </div>
-
-        <!-- Title Field -->
-        <div class="form-group">
-          <label for="title">Course Title</label>
-          <input type="text" id="title" name="title" class="form-control" required>
-        </div>
-
-        <!-- Course Name Field -->
-        <div class="form-group">
-          <label for="courseName">Course Name</label>
-          <input type="text" id="courseName" name="courseName" class="form-control" required>
-        </div>
-
-        <!-- Description Field -->
-        <div class="form-group">
-          <label for="description">Course Description</label>
-          <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
-        </div>
-
-        <!-- Image Field -->
-        <div class="form-group">
-          <label for="image">Course Image URL</label>
-          <input type="text" id="image" name="image" class="form-control">
-        </div>
-
-        <!-- Duration Field -->
-        <div class="form-group">
-          <label for="duration">Course Duration (hours)</label>
-          <input type="number" id="duration" name="duration" class="form-control" required>
-        </div>
-
-        <!-- Price Field -->
-        <div class="form-group">
-          <label for="price">Price</label>
-          <input type="number" id="price" name="price" class="form-control" required>
-        </div>
-
-        <!-- Modules Field -->
-        <div class="form-group">
-          <label for="modules">Modules</label>
-          <input type="text" id="modules" name="modules" class="form-control">
-        </div>
-
-        <!-- Trainers Field (Multiple Trainers) -->
-        <div class="form-group">
-          <label for="trainers">Select Trainers</label>
-          <select id="trainers" name="trainers" class="form-control" multiple required>
-            <!-- Trainer options will be dynamically added via JavaScript -->
           </select>
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" class="read-more">Add Course</button>
+        <button type="submit" class="read-more">Add Trainer</button>
       </form>
     </div>
   </div>
 
   <script>
-    function toggleNewCategoryInput() {
-      const categoryDropdown = document.getElementById("category");
-      const newCategoryField = document.getElementById("newCategoryField");
-  
-      if (categoryDropdown.value === "new") {
-        newCategoryField.style.display = "block";
-        document.getElementById("newCategory").required = true;
-      } else {
-        newCategoryField.style.display = "none";
-        document.getElementById("newCategory").required = false;
-      }
-    }
+    document.addEventListener("DOMContentLoaded", () => {
+      const categorySelect = document.getElementById("category");
 
-    // Submit form data as JSON
-    document.getElementById("addCourseForm").addEventListener("submit", function(event) {
-      event.preventDefault(); // Prevent default form submission
+      // Fetch categories and populate the dropdown
+      fetch("/api/categories")
+        .then(response => response.json())
+        .then(data => {
+          data.forEach(category => {
+            const option = document.createElement("option");
+            option.value = category.id;
+            option.textContent = category.name;
+            categorySelect.appendChild(option);
+          });
+        })
+        .catch(error => console.error("Error fetching categories:", error));
 
-      const formData = new FormData(this);
-      const formObject = {};
-      formData.forEach((value, key) => {
-        formObject[key] = value;
-      });
+      // Handle form submission
+      const form = document.getElementById("addTrainerForm");
+      form.addEventListener("submit", event => {
+        event.preventDefault(); // Prevent default form submission
 
-      // Send data via Fetch API
-      fetch("/api/courses/add/pending", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formObject)
-      })
-      .then(response => response.json())
-      .then(data => {
-        alert("Course added successfully!");
-        // You can redirect or reset the form here if needed
-      })
-      .catch(error => {
-        console.error("Error adding course:", error);
-        alert("Failed to add course.");
+        const formData = {
+          trainerName: document.getElementById("trainerName").value,
+          trainerDescription: document.getElementById("trainerDescription").value,
+          trainerQualification: document.getElementById("trainerQualification").value,
+          linkedin: document.getElementById("linkedin").value,
+          trainerImage: document.getElementById("trainerImage").value,
+          category: document.getElementById("category").value
+        };
+
+        // Send form data as JSON to the server
+        fetch("/api/trainers/add", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(formData)
+        })
+          .then(response => {
+            if (response.ok) {
+              alert("Trainer added successfully!");
+              form.reset(); // Reset the form
+            } else {
+              alert("Failed to add trainer. Please try again.");
+            }
+          })
+          .catch(error => console.error("Error submitting form:", error));
       });
     });
   </script>

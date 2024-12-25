@@ -1,16 +1,26 @@
 package com.rahul.controller;
 
 
+import java.util.List;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import org.springframework.ui.Model;
 import com.rahul.model.Course;
+import com.rahul.model.Trainer;
 import com.rahul.service.CourseService;
+
+import com.rahul.service.TrainerService;
+
 import java.util.List;
 import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -19,8 +29,13 @@ public class DemoController {
 
 	@Autowired
     private CourseService service;
-    @Autowired
+    
+	@Autowired
     private CourseService courseService;
+
+
+	@Autowired
+    private TrainerService trainerService;
 
 	@GetMapping({ "/", "/index" })
 	public String Home() {
@@ -29,6 +44,7 @@ public class DemoController {
 	@GetMapping("/courses")
 	public String showCourses(Model model) {
 		List<Course> pendingCourses = courseService.getPendingCourse();
+
 		List<Course> approvedCourses = courseService.getApprovedCourses();
 		List<Course> rejectedCourses = courseService.getRejectedCourses();
 	
@@ -37,6 +53,12 @@ public class DemoController {
 		model.addAttribute("rejectedCourses", rejectedCourses);
 	
 		return "courses"; // Name of the Thymeleaf template
+
+	}
+ 
+	@GetMapping({ "/", "/index" })
+	public String Home() {
+		return "index";
 
 	}
 	
@@ -56,15 +78,18 @@ public class DemoController {
 		return "events";
 	}
 
-	@GetMapping("/trainers")
-	public String trainers() {
-		return "trainers";
-	}
+	// @GetMapping("/trainers")
+	// public String trainers() {
+	// 	return "trainers";
+	// }
 
 	@GetMapping("/contact")
 	public String contact() {
 		return "contact";
 	}
+
+	
+	
 
 	@GetMapping("/course-details")
     public String coursedetails() {
@@ -73,6 +98,7 @@ public class DemoController {
 	@GetMapping("/api/users/register")
 	public String register(){
 		return "RegistrationForm";
+
 	}
 	@GetMapping("/trainer-forms")
 	public String trainerget(){
@@ -81,6 +107,7 @@ public class DemoController {
 	@GetMapping("/api/users/login")
 	public String getlogin() {
 		return "LoginPage";
+
 	}
 	
 	@GetMapping("/api/trainer/addtrainer")
@@ -90,4 +117,18 @@ public class DemoController {
 	
 	
 
+	@GetMapping("/trainers")
+    public String getAllTrainers(Model model) {
+        List<Trainer> trainers = trainerService.getallTrainer();  // Fetch data from the service
+        model.addAttribute("trainers", trainers);  // Add trainer data to the model
+        return "trainers";  // Return the Thymeleaf template name
+    }
+
+	// @GetMapping("/trainer-forms")
+	// public String trainerget(){
+	// 	return "";
+	// }
+
+
+	
 }

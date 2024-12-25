@@ -29,14 +29,16 @@ public class CourseController {
     private CourseService courseService;
 
     @GetMapping("/addNew")
-    public String getAdcourse(){
+
+    public String getAdcourse(Model model){
+        model.addAttribute("course", new Course());
         return "AddNewCourse"; 
     }
 
     @PostMapping("/add/pending")
     public ResponseEntity<?> createdCourse(@RequestBody Course course) {
         this.courseService.saveCourse(course);
-        return ResponseEntity.ok("Course added and pending approval");
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/add/approved")
