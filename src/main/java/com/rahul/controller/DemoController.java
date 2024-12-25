@@ -56,11 +56,6 @@ public class DemoController {
 
 	}
  
-	@GetMapping({ "/", "/index" })
-	public String Home() {
-		return "index";
-
-	}
 	
 
 	@GetMapping("/pricing")

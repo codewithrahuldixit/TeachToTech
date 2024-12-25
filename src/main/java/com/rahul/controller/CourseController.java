@@ -29,7 +29,6 @@ public class CourseController {
     private CourseService courseService;
 
     @GetMapping("/addNew")
-
     public String getAdcourse(Model model){
         model.addAttribute("course", new Course());
         return "AddNewCourse"; 
