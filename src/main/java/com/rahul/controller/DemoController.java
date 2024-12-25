@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 import com.rahul.model.Course;
+import com.rahul.model.Trainer;
 import com.rahul.service.CourseService;
+import com.rahul.service.TrainerService;
+
 import java.util.List;
 
 @Controller
@@ -15,6 +18,8 @@ public class DemoController {
     private CourseService service;
     @Autowired
     private CourseService courseService;
+	@Autowired
+    private TrainerService trainerService;
 	@GetMapping({ "/", "/index" })
 	public String Home() {
 		return "index";
@@ -47,10 +52,10 @@ public class DemoController {
 		return "events";
 	}
 
-	@GetMapping("/trainers")
-	public String trainers() {
-		return "trainers";
-	}
+	// @GetMapping("/trainers")
+	// public String trainers() {
+	// 	return "trainers";
+	// }
 
 	@GetMapping("/contact")
 	public String contact() {
@@ -61,5 +66,11 @@ public class DemoController {
 	public String coursedetails() {
 		return "course-details"; // This should resolve to course-details.html in templates
 	}
+	@GetMapping("/trainers")
+    public String getAllTrainers(Model model) {
+        List<Trainer> trainers = trainerService.getallTrainer();  // Fetch data from the service
+        model.addAttribute("trainers", trainers);  // Add trainer data to the model
+        return "trainers";  // Return the Thymeleaf template name
+    }
 
 }
