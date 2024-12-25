@@ -2,11 +2,11 @@ package com.rahul.controller;
 
 
 import java.util.List;
- 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,10 +28,16 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
+    @GetMapping("/addNew")
+    public String getAdcourse(Model model){
+        model.addAttribute("course", new Course());
+        return "AddNewCourse"; 
+    }
+
     @PostMapping("/add/pending")
     public ResponseEntity<?> createdCourse(@RequestBody Course course) {
         this.courseService.saveCourse(course);
-        return ResponseEntity.ok("Course added and pending approval");
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/add/approved")

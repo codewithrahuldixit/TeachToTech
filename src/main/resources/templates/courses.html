@@ -109,16 +109,16 @@
 
         <div class="row">
 
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100" th:each="course : ${approvedCourses}">
             <div class="course-item">
               <img src="assets/img/course-1.jpg" class="img-fluid" alt="...">
               <div class="course-content">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <p class="category">Web Development</p>
-                  <p class="price">$169</p>
+                  <p class="category" th:text="${course.category.name}">Web Development</p>
+                  <p class="price" th:text="${course.price}">$169</p>
                 </div>
                 <div class="heading-course">
-                  <h3><a href="/course-details">Website Design</a></h3>
+                  <h3><a href="/course-details" th:text="${course.courseName}">Website Design</a></h3>
                   <div class="stars">
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
@@ -127,7 +127,7 @@
                     <i class="far fa-star"></i>
                   </div>
                 </div>
-                <p class="description text-around" id ="course-description">The Web Design Course at TeachToTech equips you with the skills to design and develop responsive, dynamic websites. Starting with the basics of HTML, CSS, and JavaScript, you’ll learn to create visually appealing and interactive web pages.
+                <p class="description text-around" id ="course-description" th:text="${course.description}">The Web Design Course at TeachToTech equips you with the skills to design and develop responsive, dynamic websites. Starting with the basics of HTML, CSS, and JavaScript, you’ll learn to create visually appealing and interactive web pages.
 
 Advance your knowledge with front-end frameworks like React and back-end tools like Node.js and PHP, along with database management using MySQL and MongoDB.
 
