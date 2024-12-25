@@ -2,7 +2,6 @@ package com.rahul.controller;
 
 
 import java.util.List;
- 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.rahul.model.Course;
-import com.rahul.model.Users;
 import com.rahul.service.CourseService;
 
 
@@ -31,8 +29,7 @@ public class CourseController {
     private CourseService courseService;
 
     @GetMapping("/addNew")
-    public String getAdcourse(Model model){
-        model.addAttribute("course", new Course()); 
+    public String getAdcourse(){
         return "AddNewCourse"; 
     }
 

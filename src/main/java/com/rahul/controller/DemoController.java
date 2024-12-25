@@ -1,20 +1,27 @@
 package com.rahul.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.ui.Model;
 import com.rahul.model.Course;
 import com.rahul.service.CourseService;
 import java.util.List;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
 
 @Controller
 public class DemoController {
+
 	@Autowired
     private CourseService service;
     @Autowired
     private CourseService courseService;
+
 	@GetMapping({ "/", "/index" })
 	public String Home() {
 		return "index";
@@ -30,7 +37,9 @@ public class DemoController {
 		model.addAttribute("rejectedCourses", rejectedCourses);
 	
 		return "courses"; // Name of the Thymeleaf template
+
 	}
+	
 
 	@GetMapping("/pricing")
 	public String pricing() {
@@ -58,8 +67,27 @@ public class DemoController {
 	}
 
 	@GetMapping("/course-details")
-	public String coursedetails() {
-		return "course-details"; // This should resolve to course-details.html in templates
+    public String coursedetails() {
+        return "course-details"; // This should resolve to course-details.html in templates
+    }
+	@GetMapping("/api/users/register")
+	public String register(){
+		return "RegistrationForm";
 	}
+	@GetMapping("/trainer-forms")
+	public String trainerget(){
+		return "";
+	}
+	@GetMapping("/api/users/login")
+	public String getlogin() {
+		return "LoginPage";
+	}
+	
+	@GetMapping("/api/trainer/addtrainer")
+	public String getMethodName() {
+		return "AddTrainer";
+	}
+	
+	
 
 }

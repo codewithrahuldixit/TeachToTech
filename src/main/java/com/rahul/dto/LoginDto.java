@@ -19,6 +19,6 @@ public class LoginDto {
     @Email
     private String email;
 
-    private String password;
+    private String contact;
     
 }
