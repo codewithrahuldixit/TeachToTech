@@ -176,19 +176,19 @@
 
   <script>
     async function submitForm(event) {
-      event.preventDefault(); // Prevent the default form submission
+      event.preventDefault(); 
   
-      // Collect form data
+
       const password = document.getElementById('password').value;
       const confirmPassword = document.getElementById('confirmPassword').value;
   
-      // Check if the passwords match
+    
       if (password !== confirmPassword) {
         alert('Passwords do not match. Please try again.');
-        return; // Prevent form submission
+        return; 
       }
   
-      // Collect other form data
+      
       const user = {
         firstName: document.getElementById('firstName').value,
         lastName: document.getElementById('lastName').value,
@@ -196,11 +196,11 @@
         contact: document.getElementById('contact').value,
         qualification: document.getElementById('qualification').value,
         dob: document.getElementById('dob').value,
-        password: password, // Use the password value here
+        password: password, 
       };
   
       try {
-        // Send the data to the backend
+     
         const response = await fetch('/api/users/register', {
           method: 'POST',
           headers: {
