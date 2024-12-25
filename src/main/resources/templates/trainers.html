@@ -74,9 +74,26 @@
 
 			<div class="container">
 
-				<div class="row gy-5">
+				<div class="row gy-5" th:each="trainer : ${trainers}">
+					<div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="200">
+						<div class="member-img">
+							<img src="assets/img/team/team-2.jpg" class="img-fluid" alt="">
+							<div class="social">
+								<a href="#"><i class="bi bi-twitter-x"></i></a>
+								<a href="#"><i class="bi bi-facebook"></i></a>
+								<a href="#"><i class="bi bi-instagram"></i></a>
+								<a href="#"><i class="bi bi-linkedin"></i></a>
+							</div>
+						</div>
+						<div class="member-info text-center">
+							<h4 th:text="${trainer.trainerName}">Sarah Jhonson</h4>
+							<span th:text="${trainer.trainerQualification}">Marketing</span>
+            <p th:text="${trainer.trainerDescription}">Labore ipsam sit consequatur exercitationem rerum laboriosam laudantium aut quod dolores
+								exercitationem ut</p>
+						</div>
+					</div><!-- End Team Member -->
 
-					<div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="100">
+					<div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="100" >
 						<div class="member-img">
 							<img src="assets/img/team/Rahul.jpg" class="img-fluid" alt="">
 							<div class="social">
@@ -93,23 +110,7 @@
 						</div>
 					</div><!-- End Team Member -->
 
-					<div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="200">
-						<div class="member-img">
-							<img src="assets/img/team/team-2.jpg" class="img-fluid" alt="">
-							<div class="social">
-								<a href="#"><i class="bi bi-twitter-x"></i></a>
-								<a href="#"><i class="bi bi-facebook"></i></a>
-								<a href="#"><i class="bi bi-instagram"></i></a>
-								<a href="#"><i class="bi bi-linkedin"></i></a>
-							</div>
-						</div>
-						<div class="member-info text-center">
-							<h4>Sarah Jhonson</h4>
-							<span>Marketing</span>
-							<p>Labore ipsam sit consequatur exercitationem rerum laboriosam laudantium aut quod dolores
-								exercitationem ut</p>
-						</div>
-					</div><!-- End Team Member -->
+					
 
 					<div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="300">
 						<div class="member-img">
