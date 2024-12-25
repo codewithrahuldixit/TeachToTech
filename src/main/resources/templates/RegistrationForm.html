@@ -174,43 +174,53 @@
     </div>
   </div>
 
-<script>
-  async function submitForm(event) {
-    event.preventDefault(); // Prevent the default form submission
-
-    // Collect form data
-    const user = {
-      firstName: document.getElementById('firstName').value,
-      lastName: document.getElementById('lastName').value,
-      email: document.getElementById('email').value,
-      contact: document.getElementById('contact').value,
-      qualification: document.getElementById('qualification').value,
-      dob: document.getElementById('dob').value,
-      password: document.getElementById('password').value,
-    };
-
-    try {
-      // Send the data to the backend
-      const response = await fetch('/api/users/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(user),
-      });
-
-      if (response.ok) {
-        alert('User registered successfully');
-      } else {
-        const errorMessage = await response.text();
-        alert(`Error: ${errorMessage}`);
+  <script>
+    async function submitForm(event) {
+      event.preventDefault(); // Prevent the default form submission
+  
+      // Collect form data
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+  
+      // Check if the passwords match
+      if (password !== confirmPassword) {
+        alert('Passwords do not match. Please try again.');
+        return; // Prevent form submission
       }
-    } catch (error) {
-      console.error('Error occurred:', error);
-      alert('An unexpected error occurred.');
+  
+      // Collect other form data
+      const user = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        email: document.getElementById('email').value,
+        contact: document.getElementById('contact').value,
+        qualification: document.getElementById('qualification').value,
+        dob: document.getElementById('dob').value,
+        password: password, // Use the password value here
+      };
+  
+      try {
+        // Send the data to the backend
+        const response = await fetch('/api/users/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(user),
+        });
+  
+        if (response.ok) {
+          alert('User registered successfully');
+        } else {
+          const errorMessage = await response.text();
+          alert(`Error: ${errorMessage}`);
+        }
+      } catch (error) {
+        console.error('Error occurred:', error);
+        alert('An unexpected error occurred.');
+      }
     }
-  }
-</script>
-
+  </script>
+  
 </body>
 </html>
