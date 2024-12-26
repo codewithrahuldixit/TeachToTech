@@ -3,6 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Favicons -->
+<link href="/assets/img/TT.png" rel="icon">
+<link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
   <title>Registration Form</title>
   <style>
     
@@ -82,12 +86,51 @@
     .read-more:hover {
       background-color: #4caf6a;
     }
+    .back-arrow {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .arrow {
+      width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-right: 15px solid #4CAF50; /* Arrow pointing left */
+      margin-right: 10px; /* Space between the arrow and the text */
+    }
+
+    .arrow:hover {
+      border-right-color: #45a049;
+    }
+
+    .back-text {
+      font-size: 14px;
+      color: #4CAF50;
+      font-weight: bold;
+    }
+
+    .back-text:hover {
+      color: #45a049;
+    }
   </style>
 
 </head>
 <body>
+	
+	    
   <div class="content">
+  
+    
     <div class="card">
+      <div class="back-arrow" onclick="history.back()">
+        <div class="arrow"></div>
+        <p class="back-text">Go back</p>
+      </div>
       <h3 class="card-title">Registration Form</h3>
       <form id="registrationForm" onsubmit="return submitForm(event)">
         <div class="form-group">
@@ -137,43 +180,53 @@
     </div>
   </div>
 
-<script>
-  async function submitForm(event) {
-    event.preventDefault(); // Prevent the default form submission
+  <script>
+    async function submitForm(event) {
+      event.preventDefault(); 
+  
 
-    // Collect form data
-    const user = {
-      firstName: document.getElementById('firstName').value,
-      lastName: document.getElementById('lastName').value,
-      email: document.getElementById('email').value,
-      contact: document.getElementById('contact').value,
-      qualification: document.getElementById('qualification').value,
-      dob: document.getElementById('dob').value,
-      password: document.getElementById('password').value,
-    };
-
-    try {
-      // Send the data to the backend
-      const response = await fetch('/api/users/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(user),
-      });
-
-      if (response.ok) {
-        alert('User registered successfully');
-      } else {
-        const errorMessage = await response.text();
-        alert(`Error: ${errorMessage}`);
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+  
+    
+      if (password !== confirmPassword) {
+        alert('Passwords do not match. Please try again.');
+        return; 
       }
-    } catch (error) {
-      console.error('Error occurred:', error);
-      alert('An unexpected error occurred.');
+  
+      
+      const user = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        email: document.getElementById('email').value,
+        contact: document.getElementById('contact').value,
+        qualification: document.getElementById('qualification').value,
+        dob: document.getElementById('dob').value,
+        password: password, 
+      };
+  
+      try {
+     
+        const response = await fetch('/api/users/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(user),
+        });
+  
+        if (response.ok) {
+          alert('User registered successfully');
+        } else {
+          const errorMessage = await response.text();
+          alert(`Error: ${errorMessage}`);
+        }
+      } catch (error) {
+        console.error('Error occurred:', error);
+        alert('An unexpected error occurred.');
+      }
     }
-  }
-</script>
-
+  </script>
+  
 </body>
 </html>

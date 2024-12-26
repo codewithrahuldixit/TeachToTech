@@ -44,6 +44,18 @@ public class CourseService {
     public List<Course> getRejectedCourses() {
         return this.courseRepository.findByStatus(CourseStatus.REJECTED);
     }
+    //change done by ayushi
+    public List<Course> getCoursesByCategory(String categoryName) {
+        // Assuming the Course entity has a 'category' field that maps to the Category entity
+        return courseRepository.findByCategoryName(categoryName);
+    }
+    public Course getCourseById(Long id) {
+        return courseRepository.findById(id).orElse(null);
+    }
+    public Course findCourseById(Long courseId) {
+        return courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
+    }
+
     
     public void deleteCourse(Long id) {
         courseRepository.deleteById(id);
