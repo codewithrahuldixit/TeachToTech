@@ -37,6 +37,7 @@ public class DemoController {
 		List<Course> approvedCourse = courseService.getApprovedCourses();
 		//System.out.println(approvedCourses);
 	    model.addAttribute("approvedCourse", approvedCourse);
+		approvedCourse.forEach(course -> System.out.println(course.getImage()));
 	    
 	     return "courses"; // Name of the Thymeleaf template
 	}
