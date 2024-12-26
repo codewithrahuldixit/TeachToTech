@@ -13,15 +13,12 @@ import com.rahul.service.CourseService;
 
 import com.rahul.service.TrainerService;
 
-import java.util.List;
 
 
 @Controller
 public class DemoController {
 
-	@Autowired
-    private CourseService service;
-    
+	 
 	@Autowired
     private CourseService courseService;
 
@@ -60,19 +57,12 @@ public class DemoController {
 	public String events() {
 		return "events";
 	}
-
-	// @GetMapping("/trainers")
-	// public String trainers() {
-	// 	return "trainers";
-	// }
+ 
 
 	@GetMapping("/contact")
 	public String contact() {
 		return "contact";
 	}
-
-	
-	
 
 	@GetMapping("/course-details")
     public String coursedetails() {
@@ -89,12 +79,5 @@ public class DemoController {
         model.addAttribute("trainers", trainers);  // Add trainer data to the model
         return "trainers";  // Return the Thymeleaf template name
     }
-
-	// @GetMapping("/trainer-forms")
-	// public String trainerget(){
-	// 	return "";
-	// }
-
-
 	
 }
