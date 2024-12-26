@@ -40,71 +40,80 @@
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
       
-       <div id="auth-buttons" style="display: block;">
-            <a class="btn-getstarted" href="/api/users/login">Login</a>
-            <a class="btn-getstarted" href="/api/users/register">Register</a>
-        </div>
-
-
-        <div id="user-greeting" style="display: none;">
-            <span id="greeting-message">Hello, [username]</span>
-            <a href="/api/users/logout" class="btn-getstarted">Logout</a>
-        </div>
+      <div id="auth-buttons" style="display: block;">
+        <a class="btn-getstarted" href="/api/users/login">Login</a>
+        <a class="btn-getstarted" href="/api/users/register">Register</a>
+       
+      </div>
+      
+      <div id="user-greeting" style="display: none;">
+        <span id="greeting-message">Hello, [username]</span>
+        <a href="/api/users/logout" class="btn-getstarted">Logout</a>
+      </div>
+      
+      
     </div>
 </header>
-
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // Function to decode JWT token (if using JWT)
-      function parseJwt(token) {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-  
-        return JSON.parse(jsonPayload);
+  // Function to fetch the username using the token
+  async function fetchUserName(token) {
+    try {
+      const response = await fetch("/api/users/name", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`, // Send the token in the header
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.text();  // Assuming the backend returns just the username
+        return data;
+      } else {
+        console.error("Failed to fetch username:", await response.text());
+        return null;
       }
-  
-      // Check if user is logged in and update the header
-      function updateHeader() {
-        const token = localStorage.getItem('authToken');
-        const authButtons = document.getElementById('auth-buttons'); // Login/Register buttons
-        const userGreeting = document.getElementById('user-greeting'); // Username greeting
-        const greetingMessage = document.getElementById('greeting-message'); // Greeting message
-  
-        if (token) {
-          console.log("Token found:", token);
-  
-          // Decode the token to get the username (assuming the username is in the token payload)
-          const decodedToken = parseJwt(token);
-          console.log("Decoded Token:", decodedToken);
-  
-          if (decodedToken && decodedToken.username) {
-            const username = decodedToken.username; // Make sure your token has a 'username' field
-  
-            // Hide the login/register buttons
-            authButtons.style.display = 'none';
-  
-            // Show the greeting with username
-            userGreeting.style.display = 'block';
-            greetingMessage.textContent = `Hello, ${username}`;
-          } else {
-            console.log("Username not found in token.");
-            // If there's no username in the token, show login/register buttons
-            authButtons.style.display = 'block';
-            userGreeting.style.display = 'none';
-          }
-        } else {
-          console.log("No token found.");
-          // If no token, ensure login/register buttons are shown
-          authButtons.style.display = 'block';
-          userGreeting.style.display = 'none';
-        }
+    } catch (error) {
+      console.error("Error while fetching username:", error);
+      return null;
+    }
+  }
+
+  // Function to update the header based on token presence
+  async function updateHeader() {
+    const token = localStorage.getItem("authToken");  // Get the token from localStorage
+    const authButtons = document.getElementById("auth-buttons");  // Login/Register buttons
+    const userGreeting = document.getElementById("user-greeting");  // Username greeting
+    const greetingMessage = document.getElementById("greeting-message");  // Greeting message
+
+    // Check if the token exists
+    if (token) {
+      // Fetch the username using the token
+      const username = await fetchUserName(token);
+
+      if (username) {
+        // Hide the login/register buttons
+        authButtons.style.display = "none";
+
+        // Show the greeting with the username
+        userGreeting.style.display = "block";
+        greetingMessage.textContent = `Hello, ${username}`;  // Display the username in the greeting message
+      } else {
+        console.log("Username not found or token invalid.");
+        // If username not found, keep the login/register buttons visible
+        authButtons.style.display = "block";
+        userGreeting.style.display = "none";
       }
-  
-      // Run the function to update the header on page load
-      updateHeader();
-    });
-  </script>
-  
+    } else {
+      console.log("No token found.");
+      // If no token, ensure login/register buttons are visible
+      authButtons.style.display = "block";
+      userGreeting.style.display = "none";
+    }
+  }
+
+  // Run the function to update the header on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    updateHeader();  // Ensure the function is called when the page is fully loaded
+  });
+</script>
+
