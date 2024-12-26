@@ -43,8 +43,8 @@ public class DemoController {
 	}
 	@GetMapping("/courses")
 	public String showCourses(Model model) {
+		
 		List<Course> pendingCourses = courseService.getPendingCourse();
-
 		List<Course> approvedCourses = courseService.getApprovedCourses();
 		List<Course> rejectedCourses = courseService.getRejectedCourses();
 	

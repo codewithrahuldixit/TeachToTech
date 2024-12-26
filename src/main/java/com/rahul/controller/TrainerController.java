@@ -29,6 +29,7 @@ public class TrainerController {
     @GetMapping("/get")
     public ResponseEntity<List<Trainer>> getAllTrainer(){
       List<Trainer> trainer=this.TrainerService.getallTrainer();
+     
      return ResponseEntity.ok(trainer);
     }
     
