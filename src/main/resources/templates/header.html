@@ -1,11 +1,47 @@
 <header id="header" class="header d-flex align-items-center sticky-top">
-  <div class="container-fluid container-xl position-relative d-flex align-items-center">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+        <a href="/index" class="logo d-flex align-items-center me-auto">
+            <img src="assets/img/TT.png" alt="Company Logo">
+            <h1 class="sitename">TeachToTech</h1>
+        </a>
 
-      <a href="/index" class="logo d-flex align-items-center me-auto">
-          <!-- Uncomment the line below if you also wish to use an image logo -->
-          <img src="assets/img/TT.png" alt="Company Logo" >
-          <h1 class="sitename">TeachToTech</h1>
-      </a>
+        <nav id="navmenu" class="navmenu">
+            <ul>
+                <li><a href="/index" class="active">Home<br></a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/courses">Courses</a></li>
+                <li><a href="/trainers">Trainers</a></li>
+                <li><a href="/events">Events</a></li>
+                <li><a href="/pricing">Pricing</a></li>
+                <li class="dropdown">
+                    <a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                        <li><a href="#">Dropdown 1</a></li>
+                        <li class="dropdown">
+                            <a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                            <ul>
+                                <li><a href="#">Deep Dropdown 1</a></li>
+                                <li><a href="#">Deep Dropdown 2</a></li>
+                                <li><a href="#">Deep Dropdown 3</a></li>
+                                <li><a href="#">Deep Dropdown 4</a></li>
+                                <li><a href="#">Deep Dropdown 5</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Dropdown 2</a></li>
+                        <li><a href="#">Dropdown 3</a></li>
+                        <li><a href="#">Dropdown 4</a></li>
+                    </ul>
+                </li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+
+
+        <div id="auth-buttons" style="display: block;">
+            <a class="btn-getstarted" href="/api/users/login">Login</a>
+            <a class="btn-getstarted" href="/api/users/register">Register</a>
+        </div>
 
       <nav id="navmenu" class="navmenu">
           <ul>
@@ -41,7 +77,65 @@
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-    <a class="btn-getstarted" href="/api/users/login">Login</a>
-
-  </div>
+        <div id="user-greeting" style="display: none;">
+            <span id="greeting-message">Hello, [username]</span>
+            <a href="/api/users/logout" class="btn-getstarted">Logout</a>
+        </div>
+    </div>
 </header>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Function to decode JWT token (if using JWT)
+      function parseJwt(token) {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+  
+        return JSON.parse(jsonPayload);
+      }
+  
+      // Check if user is logged in and update the header
+      function updateHeader() {
+        const token = localStorage.getItem('authToken');
+        const authButtons = document.getElementById('auth-buttons'); // Login/Register buttons
+        const userGreeting = document.getElementById('user-greeting'); // Username greeting
+        const greetingMessage = document.getElementById('greeting-message'); // Greeting message
+  
+        if (token) {
+          console.log("Token found:", token);
+  
+          // Decode the token to get the username (assuming the username is in the token payload)
+          const decodedToken = parseJwt(token);
+          console.log("Decoded Token:", decodedToken);
+  
+          if (decodedToken && decodedToken.username) {
+            const username = decodedToken.username; // Make sure your token has a 'username' field
+  
+            // Hide the login/register buttons
+            authButtons.style.display = 'none';
+  
+            // Show the greeting with username
+            userGreeting.style.display = 'block';
+            greetingMessage.textContent = `Hello, ${username}`;
+          } else {
+            console.log("Username not found in token.");
+            // If there's no username in the token, show login/register buttons
+            authButtons.style.display = 'block';
+            userGreeting.style.display = 'none';
+          }
+        } else {
+          console.log("No token found.");
+          // If no token, ensure login/register buttons are shown
+          authButtons.style.display = 'block';
+          userGreeting.style.display = 'none';
+        }
+      }
+  
+      // Run the function to update the header on page load
+      updateHeader();
+    });
+  </script>
+  

@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="assets/img/TT.png" rel="icon">
   <title>Add Trainer</title>
   <style>
     html, body {
@@ -10,7 +11,7 @@
       margin: 0;
       display: flex;
       justify-content: center;
-      align-items: flex-start; /* Align items to the top of the page */
+      align-items: flex-start;
       background-color: #f4f4f4;
       font-family: Arial, sans-serif;
     }
@@ -21,7 +22,7 @@
       align-items: flex-start;
       width: 100%;
       height: 100%;
-      padding-top: 30px; /* Adds top padding to prevent form from sticking to the top */
+      padding-top: 30px;
       box-sizing: border-box;
     }
 
@@ -31,11 +32,11 @@
       border-radius: 8px;
       padding: 30px;
       background-color: white;
-      width: 80%; /* Set to 80% of the screen width */
-      max-width: 1200px; /* Restrict max width to prevent excessive stretch */
+      width: 80%;
+      max-width: 1200px;
       box-sizing: border-box;
-      margin-top: 50px; /* Adds margin to space from the top */
-      min-width: 600px; /* Minimum width to prevent shrinking too much */
+      margin-top: 50px;
+      min-width: 600px;
     }
 
     .card-title {
@@ -86,48 +87,84 @@
     .read-more:hover {
       background-color: #4caf6a;
     }
+
+    .back-arrow {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      margin-bottom: 20px; /* Space between the back arrow and the form */
+    }
+
+    .arrow {
+      width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-right: 15px solid #4CAF50; /* Arrow pointing left */
+      margin-right: 10px; /* Space between the arrow and the text */
+    }
+
+    .arrow:hover {
+      border-right-color: #45a049; /* Change color on hover */
+    }
+
+    .back-text {
+      font-size: 14px;
+      color: #4CAF50;
+      font-weight: bold;
+    }
+
+    .back-text:hover {
+      color: #45a049; /* Change text color on hover */
+    }
   </style>
 </head>
 <body>
   <div class="content">
+    <div class="back-arrow" onclick="history.back()">
+      <div class="arrow"></div>
+      <p class="back-text">Go back</p>
+    </div>
     <div class="card">
       <h3 class="card-title">Add New Trainer</h3>
-      <form id="addTrainerForm" th:action="@{/api/trainers/save}" th:object="${trainer}" method="POST">
+      <form id="addTrainerForm">
         <!-- Trainer Name Field -->
         <div class="form-group">
           <label for="trainerName">Trainer Name</label>
-          <input type="text" id="trainerName" name="trainerName" class="form-control" th:field="*{trainerName}" required>
-          <span th:if="${#fields.hasErrors('trainerName')}" th:errors="*{trainerName}" class="text-danger"></span>
+          <input type="text" id="trainerName" name="trainerName" class="form-control" required>
         </div>
 
         <!-- Trainer Description Field -->
         <div class="form-group">
           <label for="trainerDescription">Trainer Description</label>
-          <textarea id="trainerDescription" name="trainerDescription" class="form-control" th:field="*{trainerDescription}" rows="4" required></textarea>
-          <span th:if="${#fields.hasErrors('trainerDescription')}" th:errors="*{trainerDescription}" class="text-danger"></span>
+          <textarea id="trainerDescription" name="trainerDescription" class="form-control" rows="4" required></textarea>
         </div>
 
         <!-- Trainer Qualification Field -->
         <div class="form-group">
           <label for="trainerQualification">Trainer Qualification</label>
-          <input type="text" id="trainerQualification" name="trainerQualification" class="form-control" th:field="*{trainerQualification}" required>
-          <span th:if="${#fields.hasErrors('trainerQualification')}" th:errors="*{trainerQualification}" class="text-danger"></span>
+          <input type="text" id="trainerQualification" name="trainerQualification" class="form-control" required>
         </div>
 
         <!-- LinkedIn URL Field -->
         <div class="form-group">
           <label for="linkedin">LinkedIn Profile URL</label>
-          <input type="url" id="linkedin" name="linkedin" class="form-control" th:field="*{linkedin}" required>
+          <input type="url" id="linkedin" name="linkedin" class="form-control" required>
+        </div>
+
+        <!-- Profile Image Field -->
+        <div class="form-group">
+          <label for="trainerImage">Profile Image URL</label>
+          <input type="url" id="trainerImage" name="trainerImage" class="form-control" required>
         </div>
 
         <!-- Category Field -->
         <div class="form-group">
           <label for="category">Category</label>
-          <select id="category" name="category" class="form-control" th:field="*{category}" required>
+          <select id="category" name="category" class="form-control" required>
             <option value="" disabled selected>Select Category</option>
-            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
           </select>
-          <span th:if="${#fields.hasErrors('category')}" th:errors="*{category}" class="text-danger"></span>
+          <span id="categoryError" class="text-danger"></span>
         </div>
 
         <!-- Submit Button -->
@@ -135,5 +172,66 @@
       </form>
     </div>
   </div>
+
+  <script>document.addEventListener('DOMContentLoaded', async function () {
+    const categorySelect = document.getElementById('category');
+  
+    // Function to load categories
+    async function loadCategories() {
+      try {
+        const response = await fetch('/category/getallcategory');
+        if (!response.ok) throw new Error('Failed to fetch categories');
+        const data = await response.json();
+        console.log("Categories:", data);
+        data.forEach(category => {
+          const option = document.createElement('option');
+          option.value = category.categoryId;
+          option.textContent = category.name;
+          categorySelect.appendChild(option);
+        });
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        alert('Unable to load categories. Please try again later.');
+      }
+    }
+  
+    // Call the function to load categories
+    await loadCategories();
+  
+    // Handle form submission
+    const form = document.getElementById("addTrainerForm");
+    form.addEventListener("submit", event => {
+      event.preventDefault(); // Prevent default form submission
+  
+      const formData = {
+        trainerName: document.getElementById("trainerName").value,
+        trainerDescription: document.getElementById("trainerDescription").value,
+        trainerQualification: document.getElementById("trainerQualification").value,
+        linkedin: document.getElementById("linkedin").value,
+        trainerImage: document.getElementById("trainerImage").value,
+        category: document.getElementById("category").value
+      };
+  
+      // Send form data as JSON to the server
+      fetch("/api/trainers/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      })
+        .then(response => {
+          if (response.ok) {
+            alert("Trainer added successfully!");
+            form.reset(); // Reset the form
+          } else {
+            alert("Failed to add trainer. Please try again.");
+          }
+        })
+        .catch(error => console.error("Error submitting form:", error));
+    });
+  });
+  
+  </script>
 </body>
 </html>

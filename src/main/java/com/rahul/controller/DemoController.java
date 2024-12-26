@@ -1,9 +1,14 @@
 package com.rahul.controller;
 
+
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +23,9 @@ import com.rahul.service.CourseService;
 import com.rahul.service.TrainerService;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
 
 
 @Controller
@@ -29,11 +37,14 @@ public class DemoController {
 	@Autowired
     private CourseService courseService;
 
+
 	@Autowired
     private TrainerService trainerService;
 
+
 	@Autowired
     private CategoryService categoryService;
+
 
 	@GetMapping({ "/", "/index" })
 	public String Home() {
@@ -41,6 +52,22 @@ public class DemoController {
 	}
 
 	@GetMapping("/courses")
+
+	public String showCourses(Model model) {
+		
+		List<Course> pendingCourses = courseService.getPendingCourse();
+		List<Course> approvedCourses = courseService.getApprovedCourses();
+		List<Course> rejectedCourses = courseService.getRejectedCourses();
+	
+		model.addAttribute("pendingCourses", pendingCourses);
+		model.addAttribute("approvedCourses", approvedCourses);
+		model.addAttribute("rejectedCourses", rejectedCourses);
+	
+		return "courses"; // Name of the Thymeleaf template
+
+	}
+ 
+
     public String showCourses(@RequestParam(value = "category", required = false) String category, Model model) {
         // Fetch categories for the filter
         List<Category> categories = categoryService.getCategory();
@@ -94,7 +121,24 @@ public class DemoController {
 	@GetMapping("/api/users/register")
 	public String register(){
 		return "RegistrationForm";
+
 	}
+	@GetMapping("/trainer-forms")
+	public String trainerget(){
+		return "";
+	}
+	@GetMapping("/api/users/login")
+	public String getlogin() {
+		return "LoginPage";
+
+	}
+	
+	@GetMapping("/api/trainer/addtrainer")
+	public String getMethodName() {
+		return "AddTrainer";
+	}
+	
+	
 
 	@GetMapping("/trainers")
     public String getAllTrainers(Model model) {
