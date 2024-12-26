@@ -109,7 +109,7 @@
 
         <div class="row">
 
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100" th:each="course : ${approvedCourses}">
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100" th:each="course : ${courses}">
             <div class="course-item">
               <img src="assets/img/course-1.jpg" class="img-fluid" alt="...">
               <div class="course-content">
@@ -118,7 +118,7 @@
                   <p class="price" th:text="${course.price}">$169</p>
                 </div>
                 <div class="heading-course">
-                  <h3><a href="/course-details" th:text="${course.courseName}">Website Design</a></h3>
+                  <h3><a th:href="@{/course-details/{id}(id=${course.id})}" th:text="${course.courseName}">Website Design</a></h3>
                   <div class="stars">
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
