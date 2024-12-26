@@ -72,4 +72,15 @@ public class CourseController {
         courseService.deleteCourse(id);
         return ResponseEntity.noContent().build();
     }
+
+    //change done by ayushi 
+    @GetMapping("/details/{id}")
+    public ResponseEntity<Course> getCourseDetails(@PathVariable Long id) {
+        Course course = courseService.getCourseById(id);
+        if (course != null) {
+            return ResponseEntity.ok(course);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
