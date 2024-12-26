@@ -50,7 +50,6 @@ public class Trainer {
         joinColumns = @JoinColumn(name = "trainer_id"),
         inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    @JsonIgnore
     private Set<Category> categories;
  
     @ManyToMany(mappedBy = "trainers")
