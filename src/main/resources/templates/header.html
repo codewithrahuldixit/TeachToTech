@@ -37,10 +37,45 @@
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
 
+
         <div id="auth-buttons" style="display: block;">
             <a class="btn-getstarted" href="/api/users/login">Login</a>
             <a class="btn-getstarted" href="/api/users/register">Register</a>
         </div>
+
+      <nav id="navmenu" class="navmenu">
+          <ul>
+              <li><a href="/index" class="active">Home<br></a></li>
+              <li><a href="/about">About</a></li>
+              <li><a href="/courses">All Courses</a></li>
+              <li><a href="/trainers">Trainers</a></li>
+              <li><a href="/events">Events</a></li>
+              <li><a href="/pricing">Pricing</a></li>
+              <li class="dropdown">
+                  <a href="#"><span>Categories</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                  <ul>
+                    <li><a href="/courses?category=Full Stack Web Development">Full Stack Web Development</a></li>
+                    <li><a href="/courses?category=Data Science">Data Science</a></li>
+                    <li><a href="/courses?category=Data Structures and Algorithms">Data Structures and Algorithms</a></li>
+                    <li><a href="/courses?category=Interview Preparation">Interview Preparation</a></li>
+                    <li class="dropdown">
+                        <a href="#"><span>More Categories</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                            <li><a href="/courses?category=Cloud Computing">Cloud Computing</a></li>
+                            <li><a href="/courses?category=Competitive Programming">Competitive Programming</a></li>
+                            <li><a href="/courses?category=DevOps">DevOps</a></li>
+                            <li><a href="/courses?category=Technology">Technology</a></li>
+                            <li><a href="/courses?category=Web Development">Web Development</a></li>
+                            <li><a href="/courses?category=Digital Marketing">Digital Marketing</a></li>
+                            <li><a href="/courses?category=Internship">Internship</a></li>
+                        </ul>
+                    </li>
+                </ul>
+              </li>
+              <li><a href="/contact">Contact</a></li>
+          </ul>
+          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
 
         <div id="user-greeting" style="display: none;">
             <span id="greeting-message">Hello, [username]</span>
