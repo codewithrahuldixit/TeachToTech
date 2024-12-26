@@ -109,7 +109,7 @@
 
         <div class="row">
 
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100" th:each="course : ${approvedCourses}">
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100" th:each="course : ${approvedCourse}">
             <div class="course-item">
               <img src="assets/img/course-1.jpg" class="img-fluid" alt="...">
               <div class="course-content">
@@ -127,11 +127,7 @@
                     <i class="far fa-star"></i>
                   </div>
                 </div>
-                <p class="description text-around" id ="course-description" th:text="${course.description}">The Web Design Course at TeachToTech equips you with the skills to design and develop responsive, dynamic websites. Starting with the basics of HTML, CSS, and JavaScript, you’ll learn to create visually appealing and interactive web pages.
-
-Advance your knowledge with front-end frameworks like React and back-end tools like Node.js and PHP, along with database management using MySQL and MongoDB.
-
-Through hands-on projects, you’ll gain practical experience and build a portfolio to showcase your skills. Perfect for beginners and professionals, this course prepares you for success in the fast-paced world of web development.</p>
+                <p class="description text-around" id ="course-description" th:text="${course.description}"></p>
                 <div class="trainer d-flex justify-content-between align-items-center">
                   <div class="trainer-profile d-flex align-items-center">
                     <img src="assets/img/trainers/trainer-1-2.jpg" class="img-fluid" alt="">
@@ -144,8 +140,10 @@ Through hands-on projects, you’ll gain practical experience and build a portfo
                   </div>
                 </div>
                 <div class="icons">
-                  <p> <i class="far fa-calendar"></i> 6 months </p>
-                  <p> <i class="fas fa-book"></i> 12 modules </p>
+                  <p><i class="far fa-calendar"></i> 
+                    <span th:text="${course.duration != null ? course.duration : 'Duration not available'}"></span> hours
+                 </p>
+                 <p><i class="fas fa-book"></i> <span th:text="${course.modules}"></span></p>
                   <a href="/course-details"><button class="read-more">Read More</button></a>
                 </div>
               </div>
@@ -187,52 +185,14 @@ Through hands-on projects, you’ll gain practical experience and build a portfo
                 <div class="icons">
                   <p> <i class="far fa-calendar"></i> 6 months </p>
                   <p> <i class="fas fa-book"></i> 12 modules </p>
+          
                   <a href="/course-details"><button class="read-more">Read More</button></a>
                 </div>
               </div>
             </div>
           </div> <!-- End Course Item-->
 
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="zoom-in"
-            data-aos-delay="300">
-            <div class="course-item">
-              <img src="assets/img/course-3.jpg" class="img-fluid" alt="...">
-              <div class="course-content">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <p class="category">Content</p>
-                  <p class="price">$180</p>
-                </div>
-                <div class="heading-course">
-                  <h3><a href="/course-details">Copywriting</a></h3>
-                  <div class="stars">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="far fa-star"></i>
-                  </div>
-                </div>
-                <p class="description">Et architecto provident deleniti facere repellat nobis iste. Id facere quia quae
-                  dolores dolorem tempore.</p>
-                <div class="trainer d-flex justify-content-between align-items-center">
-                  <div class="trainer-profile d-flex align-items-center">
-                    <img src="assets/img/trainers/trainer-3-2.jpg" class="img-fluid" alt="">
-                    <a href="" class="trainer-link">Brandon</a>
-                  </div>
-                  <div class="trainer-rank d-flex align-items-center">
-                    <i class="bi bi-person user-icon"></i>&nbsp;20
-                    &nbsp;&nbsp;
-                    <i class="bi bi-heart heart-icon"></i>&nbsp;85
-                  </div>
-                </div>
-                <div class="icons">
-                  <p> <i class="far fa-calendar"></i> 6 months </p>
-                  <p> <i class="fas fa-book"></i> 12 modules </p>
-                  <a href="/course-details"><button class="read-more">Read More</button></a>
-                </div>
-              </div>
-            </div>
-          </div> <!-- End Course Item-->
+          <!-- End Course Item-->
 
         </div>
 
