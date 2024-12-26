@@ -84,9 +84,11 @@
           <div class="row d-flex justify-content-center text-center">
             <div class="col-lg-8">
               <h1>Courses</h1>
-              <p class="mb-0">Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo odio sint voluptas
-                consequatur ut a odio voluptatem. Sit dolorum debitis veritatis natus dolores. Quasi ratione sint. Sit
-                quaerat ipsum dolorem.</p>
+              <p class="mb-0">At TeachToTech, we bridge the gap between curiosity and expertise in the 
+				  world of Information Technology. Our courses are designed to equip learners with practical, in-demand tech skills—from coding and 
+				  cybersecurity to data analytics and cloud computing. Whether you're a beginner or a 
+				  professional looking to upskill, we provide flexible, hands-on learning guided by 
+				  industry experts.Start your journey with us and take a step toward mastering the future of technology!</p>
             </div>
           </div>
         </div>
@@ -146,7 +148,8 @@
                     <span th:text="${course.duration != null ? course.duration : 'Duration not available'}"></span> hours
                  </p>
                  <p><i class="fas fa-book"></i> <span th:text="${course.modules}"></span></p>
-                  <a href="/course-details"><button class="read-more">Read More</button></a>
+                  <a th:href="@{/course-details/{id}(id=${course.id})}"><button class="read-more">Read More</button></a>
+                  
                 </div>
               </div>
             </div>
