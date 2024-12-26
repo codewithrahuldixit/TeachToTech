@@ -11,8 +11,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,10 +44,15 @@ public class Trainer {
     @Column
     private String linkedin; // LinkedIn profile URL of the trainer
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "category_id", nullable = false) // Foreign key for category
-    private Category category;
-
+    @ManyToMany
+    @JoinTable(
+        name = "trainer_categories",
+        joinColumns = @JoinColumn(name = "trainer_id"),
+        inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    @JsonIgnore
+    private Set<Category> categories;
+ 
     @ManyToMany(mappedBy = "trainers")
     @JsonIgnore
     private Set<Course> courses;
