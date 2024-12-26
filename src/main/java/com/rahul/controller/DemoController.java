@@ -3,12 +3,8 @@ package com.rahul.controller;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Controller;
-
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,11 +15,7 @@ import com.rahul.model.Course;
 import com.rahul.model.Trainer;
 import com.rahul.service.CategoryService;
 import com.rahul.service.CourseService;
-
 import com.rahul.service.TrainerService;
-
-import java.util.List;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -51,8 +43,7 @@ public class DemoController {
 		return "index";
 	}
 
-	@GetMapping("/courses")
-
+	
 	public String showCourses(Model model) {
 		
 		List<Course> pendingCourses = courseService.getPendingCourse();
@@ -62,12 +53,12 @@ public class DemoController {
 		model.addAttribute("pendingCourses", pendingCourses);
 		model.addAttribute("approvedCourses", approvedCourses);
 		model.addAttribute("rejectedCourses", rejectedCourses);
-	
+	//System.out.println(approvedCourses);
 		return "courses"; // Name of the Thymeleaf template
 
 	}
  
-
+	@GetMapping("/courses")
     public String showCourses(@RequestParam(value = "category", required = false) String category, Model model) {
         // Fetch categories for the filter
         List<Category> categories = categoryService.getCategory();
