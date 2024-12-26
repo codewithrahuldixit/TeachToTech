@@ -39,18 +39,6 @@ public class DemoController {
 	public String Home() {
 		return "index";
 	}
-	// @GetMapping("/courses")
-	// public String showCourses(Model model) {
-	// 	List<Course> pendingCourses = courseService.getPendingCourse();
-	// 	List<Course> approvedCourses = courseService.getApprovedCourses();
-	// 	List<Course> rejectedCourses = courseService.getRejectedCourses();
-	
-	// 	model.addAttribute("pendingCourses", pendingCourses);
-	// 	model.addAttribute("approvedCourses", approvedCourses);
-	// 	model.addAttribute("rejectedCourses", rejectedCourses);
-	
-	// 	return "courses"; // Name of the Thymeleaf template
-	// }
 
 	@GetMapping("/courses")
     public String showCourses(@RequestParam(value = "category", required = false) String category, Model model) {
