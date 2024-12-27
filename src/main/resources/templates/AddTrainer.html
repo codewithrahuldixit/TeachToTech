@@ -227,8 +227,8 @@
               alert("Trainer added successfully!");
               form.reset(); // Reset the form
             } else {
-              console.log(response.json());
-              alert("Failed to add trainer. Please try again.");
+              // console.log(response.json());
+              alert("Trainer already selected");
             }
           })
           .catch(error => console.error("Error submitting form:", error));

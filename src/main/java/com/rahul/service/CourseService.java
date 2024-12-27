@@ -1,6 +1,7 @@
 package com.rahul.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,6 @@ public class CourseService {
     }
     //change done by ayushi
     public List<Course> getCoursesByCategory(String categoryName) {
-        // Assuming the Course entity has a 'category' field that maps to the Category entity
         return courseRepository.findByCategoryName(categoryName);
     }
     public Course getCourseById(Long id) {
@@ -60,4 +60,12 @@ public class CourseService {
     public void deleteCourse(Long id) {
         courseRepository.deleteById(id);
     }
+
+    public Optional<Course> findByCourseName(String courseName) {
+        return this.courseRepository.findByCourseName(courseName);
+    }
+    public Optional<Course> findByPrice(Double price) {
+        return this.courseRepository.findByPrice(price);
+    }
+
 }
