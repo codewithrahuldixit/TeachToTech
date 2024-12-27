@@ -115,7 +115,8 @@
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100" th:each="course : ${courses}">
 
             <div class="course-item">
-              <img th:src="${course.image}" class="img-fluid" alt="...">
+			
+              <img th:src="${course.image}" class="img-fluid" alt="Course">
               <div class="course-content">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <p class="category" th:text="${course.category.name}">Web Development</p>
