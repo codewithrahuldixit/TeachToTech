@@ -1,7 +1,6 @@
 package com.rahul.repository;
 
 import java.util.List;
-// import java.util.Optional;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,4 +16,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     //change done by ayushi
     List<Course> findByCategoryName(String name);
     Optional<Course> findById(Long id);
+    Optional<Course> findByCourseName(String courseName);
+    Optional<Course> findByPrice(Double price);
 }

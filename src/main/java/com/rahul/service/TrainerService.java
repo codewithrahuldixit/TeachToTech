@@ -1,6 +1,7 @@
 package com.rahul.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,5 +21,8 @@ public class TrainerService {
     public List<Trainer> getallTrainer(){
       List<Trainer> trainer=this.trainerRepository.findAll();
       return trainer;
+    }
+    public Optional<Trainer> findByLinkedinProfile(String linkedin){
+      return this.trainerRepository.findByLinkedin(linkedin);
     }
 }

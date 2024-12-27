@@ -22,6 +22,9 @@ public class TrainerController {
 
     @PostMapping("/add")
     public ResponseEntity<?> add(@RequestBody Trainer trainer){
+        if (TrainerService.findByLinkedinProfile(trainer.getLinkedin()).isPresent()) {
+            return ResponseEntity.badRequest().body("Trainer is already added");
+        }
         this.TrainerService.addTrainer(trainer);
         return ResponseEntity.ok("Trainer added successfully");
     }

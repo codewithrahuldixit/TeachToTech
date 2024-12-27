@@ -111,7 +111,7 @@
     </div>
     <div class="card">
       <h3 class="card-title">Add New Course</h3>
-      <form id="addCourseForm">
+      <form id="addCourseForm" enctype="multipart/form-data">
 
         <!-- Category Field -->
         <div class="form-group">
@@ -129,11 +129,6 @@
           <input type="text" id="newCategory" name="newCategory" class="form-control">
         </div>
 
-        <!-- Title Field -->
-        <div class="form-group">
-          <label for="title">Course Title</label>
-          <input type="text" id="title" name="title" class="form-control" required>
-        </div>
 
         <!-- Course Name Field -->
         <div class="form-group">
@@ -149,11 +144,16 @@
 
         
 
-        <!-- Image Field -->
-        <div class="form-group">
-          <label for="image">Course Image URL</label>
-          <input type="text" id="image" name="image" class="form-control">
-        </div>
+      <!-- Image Upload Field -->
+<div class="form-group">
+  <label for="image">Course Image</label>
+  <input type="file" id="image" name="image" class="form-control" accept="image/jpeg, image/png" required>
+  <small class="form-text text-muted">Only .jpg and .png images are allowed.</small>
+</div>
+
+<!-- Submit Button -->
+<button type="submit" class="btn btn-primary">Upload</button>
+
 
         <!-- Duration Field -->
         <div class="form-group">
@@ -255,17 +255,21 @@
   
         const formData = new FormData(form);
         const payload = {
-          title: formData.get('title'),
           courseName: formData.get('courseName'),
           description: formData.get('description'),
           category: categorySelect.value === 'newCategory' ? { name: formData.get('newCategory') } : { categoryId: parseInt(formData.get('category'), 10) },
-          image: formData.get('image'),
           duration: parseInt(formData.get('duration'), 10),
           price: parseFloat(formData.get('price')),
           modules: formData.get('modules'),
           trainers: formData.getAll('trainers').map(trainerId => ({ trainerId: parseInt(trainerId, 10) }))
         };
-  
+        const imageFile = formData.get('image');
+        if (imageFile) {
+       formData.append('image', imageFile);
+       }
+      //1
+        formData.append('payload', JSON.stringify(payload));
+         
         // Remove empty fields from payload
         Object.keys(payload).forEach(key => {
           if (payload[key] === null || payload[key] === '') {
@@ -319,16 +323,14 @@
           // Send the course data to the backend
           const response = await fetch('/api/courses/add/pending', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
+            body: formData,
           });
   
           if (response.ok) {
             alert('Course added successfully!');
           } else {
-            const error = await response.text();
-            console.error('Failed response:', error);
-            alert(`Failed to add course: ${error}`);
+            if(response.status==500)
+            alert(`Failed to load resource and course not added`);
           }
         } catch (error) {
           console.error('Error submitting form:', error);
@@ -337,6 +339,6 @@
       });
     });
   </script>
-  
+    
 </body>
 </html>
