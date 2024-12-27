@@ -227,7 +227,7 @@
       async function loadTrainers() {
         try {
           const response = await fetch('/api/trainer/get');
-          if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+          if (!response.ok) throw new Error('HTTP error! Status: ${response.status}');
           const data = await response.json();
           console.log("Trainers:", data);
           data.forEach(trainer => {
@@ -326,7 +326,9 @@
             alert('Course added successfully!');
           } else {
             if(response.status==500)
-            alert(`Failed to load resource and course not added`);
+
+            alert('Failed to load resource and course not added');
+
           }
         } catch (error) {
           console.error('Error submitting form:', error);

@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <!-- Favicons -->
-  <link href="/assets/img/TT.png" rel="icon">
-  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <!-- Favicons -->
+    <link href="/assets/img/TT.png" rel="icon" />
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
     <title>Login</title>
     <style>
       /* style.css */
@@ -130,6 +130,13 @@
       .back-text:hover {
         color: #45a049; /* Change text color on hover */
       }
+      #user-greeting {
+  display: block; /* Ensure it's visible */
+}
+
+#auth-buttons {
+  display: block; /* Ensure login/register buttons are visible when needed */
+}
     </style>
   </head>
 
@@ -165,16 +172,16 @@
     </div>
 
     <script>
-      async function submitLogin(event) {
-        event.preventDefault(); // Prevent the default form submission
+async function submitLogin(event) {
+  event.preventDefault(); // Prevent the default form submission
 
-        // Collect form data
-        const loginData = {
-          email: document.getElementById("email").value,
-          contact: document.getElementById("contact").value,
-        };
+  // Collect form data
+  const loginData = {
+    email: document.getElementById("email").value,
+    contact: document.getElementById("contact").value,
+  };
 
-        try {
+  try {
     // Send the data to the backend
     const response = await fetch("/api/users/login", {
       method: "POST",
@@ -185,15 +192,17 @@
     });
 
     if (response.ok) {
-      const data = await response.json();  // Assuming the backend returns the token in JSON format
+      const data = await response.json(); // Assuming the backend returns the token in JSON format
       const token = data.token; // Access the token from the response data
 
       // Save the token in localStorage
       localStorage.setItem("authToken", token);
+      console.log("Token saved in localStorage:", localStorage.getItem("authToken"));
 
       alert("Login successful!");
-      // Redirect to a protected page or home page after successful login
-      window.location.href = "/"; // Example redirect to dashboard
+      updateHeader();
+      // Redirect to home page
+      window.location.href = "/"; // This will reload the page and trigger the updateHeader function
     } else {
       const errorMessage = await response.text();
       alert(`Error: ${errorMessage}`);
@@ -203,7 +212,7 @@
     alert("An unexpected error occurred.");
   }
 }
-      
+
     </script>
   </body>
 </html>
