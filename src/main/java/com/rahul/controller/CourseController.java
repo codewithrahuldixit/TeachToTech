@@ -79,7 +79,7 @@ private String saveImage(MultipartFile imageFile) {
         return null; // No image provided
     }
 
-    String uploadDir = "D:/T2T/TeachToTech/src/main/resources/static/assets/img/";
+    String uploadDir = "D:/TeachToTech/TeachToTech/src/main/resources/static/assets/img/";
     String fileName = imageFile.getOriginalFilename();
     String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
 

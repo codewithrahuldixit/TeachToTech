@@ -113,8 +113,7 @@
       <h3 class="card-title">Add New Course</h3>
       <form id="addCourseForm" enctype="multipart/form-data">
 
-        <!-- Category Field -->
-        <div class="form-group">
+       <div class="form-group">
           <label for="category">Category</label>
           <select id="category" name="category" class="form-control" required>
             <option value="" disabled selected>Select Category</option>
@@ -122,15 +121,16 @@
           </select>
           <span id="categoryError" class="text-danger"></span>
         </div>
-
-        <!-- Input Field for New Category -->
+        
+        <!-- Input Field for New Category with Add Button -->
         <div class="form-group" id="newCategoryField" style="display: none;">
           <label for="newCategory">New Category Name</label>
           <input type="text" id="newCategory" name="newCategory" class="form-control">
+          <button type="button" id="addCategoryButton" class="read-more" style="margin-top: 10px;">Add Category</button>
         </div>
-
-
-        <!-- Course Name Field -->
+        
+        
+                <!-- Course Name Field -->
         <div class="form-group">
           <label for="courseName">Course Name</label>
           <input type="text" id="courseName" name="courseName" class="form-control" required>
@@ -336,6 +336,49 @@
         }
       });
     });
+    
+    
+    
+    
+    
+    addCategoryButton.addEventListener('click', async () => {
+    const categoryName = newCategoryInput.value.trim();
+    if (!categoryName) {
+      alert('Please enter a category name');
+      return;
+    }
+
+    try {
+      const response = await fetch('/category/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: categoryName }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create new category');
+      }
+
+      const newCategory = await response.json();
+      alert('Category added successfully!');
+      
+      // Optionally, add the new category to the dropdown list without reloading
+      const option = document.createElement('option');
+      option.value = newCategory.categoryId;
+      option.textContent = newCategory.name;
+      categorySelect.appendChild(option);
+
+      // Set the new category as selected
+      categorySelect.value = newCategory.categoryId;
+
+      // Hide the new category input field
+      newCategoryField.style.display = 'none';
+    } catch (error) {
+      alert('Error adding category: ' + error.message);
+      console.error('Error adding category:', error);
+    }
+  });
+    
   </script>
     
 </body>
