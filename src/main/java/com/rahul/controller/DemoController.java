@@ -23,9 +23,7 @@ import com.rahul.service.TrainerService;
 @Controller
 public class DemoController {
 
-	@Autowired
-    private CourseService service;
-    
+	 
 	@Autowired
     private CourseService courseService;
 
@@ -53,28 +51,24 @@ public class DemoController {
 		model.addAttribute("pendingCourses", pendingCourses);
 		model.addAttribute("approvedCourses", approvedCourses);
 		model.addAttribute("rejectedCourses", rejectedCourses);
-	//System.out.println(approvedCourses);
-		return "courses"; // Name of the Thymeleaf template
+		return "courses"; 
 
 	}
  
 	@GetMapping("/courses")
     public String showCourses(@RequestParam(value = "category", required = false) String category, Model model) {
-        // Fetch categories for the filter
+        
         List<Category> categories = categoryService.getCategory();
         model.addAttribute("categories", categories); // Add categories to the model
-
-        // Fetch courses based on category, or all if no category is specified
         List<Course> courses;
         if (category != null && !category.isEmpty()) {
             courses = courseService.getCoursesByCategory(category); // Assuming this method exists in CourseService
         } else {
             courses = courseService.getApprovedCourses(); // Show only approved courses by default
         }
-
         model.addAttribute("courses", courses);
         model.addAttribute("selectedCategory", category); // Pass selected category to the view
-        return "courses"; // Thymeleaf template
+        return "courses";
     }
 	
 	@GetMapping("/pricing")
@@ -91,17 +85,17 @@ public class DemoController {
 	public String events() {
 		return "events";
 	}
-
-	// @GetMapping("/trainers")
-	// public String trainers() {
-	// 	return "trainers";
-	// }
+ 
 
 	@GetMapping("/contact")
 	public String contact() {
 		return "contact";
 	}
 
+	@GetMapping("/course-details")
+    public String coursedetails() {
+        return "course-details"; // This should resolve to course-details.html in templates
+	}
 	@GetMapping("/course-details/{id}")
     public String getCourseDetails(@PathVariable("id") Long courseId, Model model) {
         Course course = courseService.findCourseById(courseId); // Fetch the course by ID from your service layer
@@ -137,12 +131,5 @@ public class DemoController {
         model.addAttribute("trainers", trainers);  // Add trainer data to the model
         return "trainers";  // Return the Thymeleaf template name
     }
-
-	// @GetMapping("/trainer-forms")
-	// public String trainerget(){
-	// 	return "";
-	// }
-
-
 	
 }
