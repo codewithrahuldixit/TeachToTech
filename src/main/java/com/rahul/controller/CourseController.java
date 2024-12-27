@@ -79,7 +79,7 @@ private String saveImage(MultipartFile imageFile) {
         return null; // No image provided
     }
 
-    String uploadDir = "D:/TeachToTech/TeachToTech/src/main/resources/static/assets/img/";
+    String uploadDir = "C:/Users/anous/TeachToTech/src/main/resources/static/assets/img";
     String fileName = imageFile.getOriginalFilename();
     String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
 
@@ -109,11 +109,13 @@ private String saveImage(MultipartFile imageFile) {
        List<Course> course= this.courseService.getPendingCourse();
         return ResponseEntity.ok(course);
     }
+
     @GetMapping("get/approved")
     public ResponseEntity<List<Course>> getApprovedCourses() {
        List<Course> course= this.courseService.getApprovedCourses();
         return ResponseEntity.ok(course);
     }
+    
     @GetMapping("get/rejected")
     public ResponseEntity<List<Course>> getRejectedCourses() {
        List<Course> course= this.courseService.getRejectedCourses();
