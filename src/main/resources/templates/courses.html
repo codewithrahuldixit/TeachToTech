@@ -2,189 +2,201 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Courses - TeachToTech</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<title>Courses - TeachToTech</title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
 
-  <!-- Favicons -->
-  <link href="assets/img/TT.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+	<!-- Favicons -->
+	<link href="assets/img/TT.png" rel="icon">
+	<link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-    rel="stylesheet">
+	<!-- Fonts -->
+	<link href="https://fonts.googleapis.com" rel="preconnect">
+	<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+		rel="stylesheet">
 
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+	<!-- Vendor CSS Files -->
+	<link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+	<link href="assets/vendor/aos/aos.css" rel="stylesheet">
+	<link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+	<link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
-  <!-- Main CSS File -->
-  <link href="assets/css/main.css" rel="stylesheet">
+	<!-- Main CSS File -->
+	<link href="assets/css/main.css" rel="stylesheet">
 
-  <style>
-    .icons {
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      font-size: 14px;
-      color: #777;
-      margin-top: 5px;
-    }
+	<style>
+		
 
-    .icons p {
-      margin-top: 4px;
-    }
+		.icons {
+			display: flex;
+			align-items: center;
+			justify-content: space-around;
+			font-size: 14px;
+			color: #777;
+			margin-top: 5px;
+		}
 
-    .stars i {
-      color: #f39c12;
-    }
+		.icons p {
+			margin-top: 4px;
+		}
 
-    .stars i.far {
-      color: #ddd;
-    }
+		.stars i {
+			color: #f39c12;
+		}
 
-    .heading-course {
-      display: flex;
-      justify-content: space-between;
-    }
+		.stars i.far {
+			color: #ddd;
+		}
 
-    .read-more {
-      background-color: #5fcf80;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      height: 35px;
-      width: 100px;
-    }
-  </style>
+		.heading-course {
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.read-more {
+			background-color: #5fcf80;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			height: 35px;
+			width: 100px;
+		}
+	</style>
 
 </head>
 
 <body class="courses-page">
 
 
-  <div th:replace="header :: header"></div>
+	<div th:replace="header :: header"></div>
 
-  <main class="main">
+	<main class="main">
 
-    <!-- Page Title -->
-    <div class="page-title" data-aos="fade">
-      <div class="heading">
-        <div class="container">
-          <div class="row d-flex justify-content-center text-center">
-            <div class="col-lg-8">
-              <h1>Courses</h1>
-              <p class="mb-0">At TeachToTech, we bridge the gap between curiosity and expertise in the 
-				  world of Information Technology. Our courses are designed to equip learners with practical, in-demand tech skills—from coding and 
-				  cybersecurity to data analytics and cloud computing. Whether you're a beginner or a 
-				  professional looking to upskill, we provide flexible, hands-on learning guided by 
-				  industry experts.Start your journey with us and take a step toward mastering the future of technology!</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <nav class="breadcrumbs">
-        <div class="container">
-          <ol>
-            <li><a href="/index">Home</a></li>
-            <li class="current">Courses</li>
-            <li><a href="/api/courses/addNew">Add Course</a></li>
-          </ol>
-        </div>
-      </nav>
-    </div><!-- End Page Title -->
+		<!-- Page Title -->
+		<div class="page-title" data-aos="fade">
+			<div class="heading">
+				<div class="container">
+					<div class="row d-flex justify-content-center text-center">
+						<div class="col-lg-8">
+							<h1>Courses</h1>
+							<p class="mb-0">At TeachToTech, we bridge the gap between curiosity and expertise in the
+								world of Information Technology. Our courses are designed to equip learners with
+								practical, in-demand tech skills—from coding and
+								cybersecurity to data analytics and cloud computing. Whether you're a beginner or a
+								professional looking to upskill, we provide flexible, hands-on learning guided by
+								industry experts.Start your journey with us and take a step toward mastering the future
+								of technology!</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<nav class="breadcrumbs">
+				<div class="container">
+					<ol>
+						<li><a href="/index">Home</a></li>
+						<li class="current">Courses</li>
+						<li><a href="/api/courses/addNew">Add Course</a></li>
+					</ol>
+				</div>
+			</nav>
+		</div><!-- End Page Title -->
 
-    <!-- Courses Section -->
-    <section id="courses" class="courses section">
+		<!-- Courses Section -->
+		<section id="courses" class="courses section">
 
-      <div class="container">
+			<div class="container">
 
-        <div class="row">
+				<div class="row">
 
 
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100" th:each="course : ${courses}">
+					<div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100"
+						th:each="course : ${courses}">
 
-            <div class="course-item">
+						<div class="course-item">
 
-              <img th:src="@{${course.image}}" class="img-fluid" alt="Course">
-              <div class="course-content">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <p class="category" th:text="${course.category.name}">Web Development</p>
-                  <p class="price" th:text="${course.price}">$169</p>
-                </div>
-                <div class="heading-course">
-                  <h3><a th:href="@{/course-details/{id}(id=${course.id})}" th:text="${course.courseName}">Website Design</a></h3>
-                  <div class="stars">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="far fa-star"></i>
-                  </div>
-                </div>
-                <p class="description text-around" id ="course-description" th:text="${course.description}"></p>
-                <div class="trainer d-flex justify-content-between align-items-center">
-                  <div class="trainer-profile d-flex align-items-center">
-                    <img src="assets/img/trainers/trainer-1-2.jpg" class="img-fluid" alt="">
-                    <a href="" class="trainer-link">Antonio</a>
-                  </div>
-                  <div class="trainer-rank d-flex align-items-center">
-                    <i class="bi bi-person user-icon"></i>&nbsp;50
-                    &nbsp;&nbsp;
-                    <i class="bi bi-heart heart-icon"></i>&nbsp;65
-                  </div>
-                </div>
-                <div class="icons">
-                  <p><i class="far fa-calendar"></i> 
-                    <span th:text="${course.duration != null ? course.duration : 'Duration not available'}"></span> hours
-                 </p>
-                 <p><i class="fas fa-book"></i> <span th:text="${course.modules}"></span></p>
-                  <a th:href="@{/course-details/{id}(id=${course.id})}"><button class="read-more">Read More</button></a>
-                  
-                </div>
-              </div>
-            </div>
-          </div> <!-- End Course Item-->
+							<img th:src=${course.image} class="img-fluid" alt="Course">
+							<div class="course-content">
+								<div class="d-flex justify-content-between align-items-center mb-3">
+									<p class="category" th:text="${course.category.name}">Web Development</p>
+									<p class="price" th:text="${course.price}">$169</p>
+								</div>
+								<div class="heading-course">
+									<h3><a th:href="@{/course-details/{id}(id=${course.id})}"
+											th:text="${course.courseName}">Website Design</a></h3>
+									<div class="stars">
+										<i class="fas fa-star"></i>
+										<i class="fas fa-star"></i>
+										<i class="fas fa-star"></i>
+										<i class="fas fa-star"></i>
+										<i class="far fa-star"></i>
+									</div>
+								</div>
+								<p class="description text-around" id="course-description"
+									th:text="${course.description}">
 
-          
-          <!-- End Course Item-->
+								</p>
+								<div class="trainer d-flex justify-content-between align-items-center">
+									<div class="trainer-profile d-flex align-items-center">
+										<img src="assets/img/trainers/trainer-1-2.jpg" class="img-fluid" alt="">
+										<a href="" class="trainer-link">Antonio</a>
+									</div>
+									<div class="trainer-rank d-flex align-items-center">
+										<i class="bi bi-person user-icon"></i>&nbsp;50
+										&nbsp;&nbsp;
+										<i class="bi bi-heart heart-icon"></i>&nbsp;65
+									</div>
+								</div>
+								<div class="icons">
+									<p><i class="far fa-calendar"></i>
+										<span
+											th:text="${course.duration != null ? course.duration : 'Duration not available'}"></span>
+										hours
+									</p>
+									<p><i class="fas fa-book"></i> <span th:text="${course.modules}"></span></p>
+									<a th:href="@{/course-details/{id}(id=${course.id})}"><button class="read-more">Read
+											More</button></a>
 
-        </div>
+								</div>
+							</div>
+						</div>
+					</div> <!-- End Course Item-->
 
-      </div>
 
-    </section><!-- /Courses Section -->
+					<!-- End Course Item-->
 
-  </main>
-  <div th:replace="footer :: footer"></div>
+				</div>
 
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
+			</div>
 
-  <!-- Preloader -->
-  <div id="preloader"></div>
+		</section><!-- /Courses Section -->
 
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+	</main>
+	<div th:replace="footer :: footer"></div>
 
-  <!-- Main JS File -->
-  <script src="assets/js/main.js"></script>
+	<!-- Scroll Top -->
+	<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+			class="bi bi-arrow-up-short"></i></a>
+
+	<!-- Preloader -->
+	<div id="preloader"></div>
+
+	<!-- Vendor JS Files -->
+	<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="assets/vendor/php-email-form/validate.js"></script>
+	<script src="assets/vendor/aos/aos.js"></script>
+	<script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+	<script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+	<script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+	<!-- Main JS File -->
+	<script src="assets/js/main.js"></script>
 
 </body>
 

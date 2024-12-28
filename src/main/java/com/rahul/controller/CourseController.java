@@ -91,7 +91,7 @@ private String saveImage(MultipartFile imageFile) {
       
       System.out.println(path);
         Files.copy(imageFile.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-        return "/assets/img/" + fileName; // Relative path for frontend use
+        return "/assets/img/" + uniqueFileName; // Relative path for frontend use
     } catch (IOException e) {
         e.printStackTrace();
         throw new RuntimeException("Failed to save image: " + e.getMessage());
