@@ -122,14 +122,15 @@ public class DemoController {
 	public String getMethodName() {
 		return "AddTrainer";
 	}
-	
-	
-
 	@GetMapping("/trainers")
     public String getAllTrainers(Model model) {
         List<Trainer> trainers = trainerService.getallTrainer();  // Fetch data from the service
         model.addAttribute("trainers", trainers);  // Add trainer data to the model
+       
         return "trainers";  // Return the Thymeleaf template name
     }
+	
+
+
 	
 }

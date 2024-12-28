@@ -194,7 +194,7 @@ async function submitLogin(event) {
       // Store the token
       localStorage.setItem("authToken", data.token);
       // Update header before redirect
-      await updateHeader();
+     // await updateHeader();
       window.location.href = "/";
     } else {
       const errorMessage = await response.text();

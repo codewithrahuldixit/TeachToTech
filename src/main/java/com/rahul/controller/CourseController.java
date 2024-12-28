@@ -78,15 +78,20 @@ private String saveImage(MultipartFile imageFile) {
     if (imageFile == null || imageFile.isEmpty()) {
         return null; // No image provided
     }
-
-    String uploadDir = "C:/Users/anous/TeachToTech/src/main/resources/static/assets/img";
+   
+    String uploadDir = "D:/TeachToTech/TeachToTech/src/main/resources/static/assets/img";
     String fileName = imageFile.getOriginalFilename();
+    
     String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
+    System.out.println(uniqueFileName);
 
     try {
-        Path path = Paths.get(uploadDir, uniqueFileName);
+    	
+      Path path = Paths.get(uploadDir, uniqueFileName);
+      
+      System.out.println(path);
         Files.copy(imageFile.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-        return "/assets/img/" + uniqueFileName; // Relative path for frontend use
+        return "/assets/img/" + fileName; // Relative path for frontend use
     } catch (IOException e) {
         e.printStackTrace();
         throw new RuntimeException("Failed to save image: " + e.getMessage());
