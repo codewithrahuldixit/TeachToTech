@@ -37,7 +37,9 @@ public class DemoController {
 
 
 	@GetMapping({ "/", "/index" })
-	public String Home() {
+	public String Home(Model model) {
+		List<Category> categories = categoryService.getCategory();
+        model.addAttribute("categories", categories);
 		return "index";
 	}
 
@@ -73,11 +75,14 @@ public class DemoController {
 	
 	@GetMapping("/pricing")
 	public String pricing() {
+		
 		return "pricing";
 	}
 
 	@GetMapping("/about")
-	public String about() {
+	public String about(Model model) {
+		List<Category> categories = categoryService.getCategory();
+        model.addAttribute("categories", categories);
 		return "about";
 	}
 
@@ -88,7 +93,9 @@ public class DemoController {
  
 
 	@GetMapping("/contact")
-	public String contact() {
+	public String contact(Model model) {
+		List<Category> categories = categoryService.getCategory();
+        model.addAttribute("categories", categories);
 		return "contact";
 	}
 
@@ -124,6 +131,8 @@ public class DemoController {
 	}
 	@GetMapping("/trainers")
     public String getAllTrainers(Model model) {
+		List<Category> categories = categoryService.getCategory();
+        model.addAttribute("categories", categories);
         List<Trainer> trainers = trainerService.getallTrainer();  // Fetch data from the service
         model.addAttribute("trainers", trainers);  // Add trainer data to the model
        
