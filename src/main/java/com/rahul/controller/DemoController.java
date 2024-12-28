@@ -18,8 +18,6 @@ import com.rahul.service.CourseService;
 import com.rahul.service.TrainerService;
 
 
-
-
 @Controller
 public class DemoController {
 

@@ -1,10 +1,6 @@
 package com.rahul.controller;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -42,8 +38,8 @@ public class CourseController {
         return "AddNewCourse"; 
     }
  
-@PostMapping("/add/pending")
-public ResponseEntity<String> addCourse(
+  @PostMapping("/add/pending")
+  public ResponseEntity<String> addCourse(
     @RequestParam("payload") String courseDataJson,
     @RequestParam(value = "image", required = false) MultipartFile imageFile) {
 
@@ -53,7 +49,7 @@ public ResponseEntity<String> addCourse(
         Course course = objectMapper.readValue(courseDataJson, Course.class);
 
         // Handle the uploaded file (image)
-        String imagePath = saveImage(imageFile);
+        String imagePath = this.courseService.saveImage(imageFile);
         if (imagePath != null) {
             course.setImage(imagePath);
         }
@@ -74,30 +70,7 @@ public ResponseEntity<String> addCourse(
     }
 }
 
-private String saveImage(MultipartFile imageFile) {
-    if (imageFile == null || imageFile.isEmpty()) {
-        return null; // No image provided
-    }
-   
-    String uploadDir = "D:/TeachToTech/TeachToTech/src/main/resources/static/assets/img";
-    String fileName = imageFile.getOriginalFilename();
-    
-    String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
-    System.out.println(uniqueFileName);
-
-    try {
-    	
-      Path path = Paths.get(uploadDir, uniqueFileName);
-      
-      System.out.println(path);
-        Files.copy(imageFile.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-        return "/assets/img/" + uniqueFileName; // Relative path for frontend use
-    } catch (IOException e) {
-        e.printStackTrace();
-        throw new RuntimeException("Failed to save image: " + e.getMessage());
-    }
-}
-
+ 
     @PostMapping("/add/approved")
     public ResponseEntity<?> approvedCourse(@RequestBody Course course) {
         this.courseService.approveCourse(course.getId());
