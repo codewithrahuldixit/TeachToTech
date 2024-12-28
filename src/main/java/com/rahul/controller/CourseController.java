@@ -70,6 +70,7 @@ public class CourseController {
     }
 }
 
+ 
     @PostMapping("/add/approved")
     public ResponseEntity<?> approvedCourse(@RequestBody Course course) {
         this.courseService.approveCourse(course.getId());
