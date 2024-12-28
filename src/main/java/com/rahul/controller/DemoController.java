@@ -104,7 +104,7 @@ public class DemoController {
 	@GetMapping("/course-details/{id}")
     public String getCourseDetails(@PathVariable("id") Long courseId, Model model) {
         Course course = courseService.findCourseById(courseId); // Fetch the course by ID from your service layer
-
+       // System.out.println(course);
         model.addAttribute("course", course); // Add the course to the model
         return "course-detail"; // Return the course-details.html template
     }
