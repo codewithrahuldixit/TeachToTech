@@ -68,6 +68,10 @@
 			height: 35px;
 			width: 100px;
 		}
+    .course-description {
+      text-align: justify;
+    }
+
 	</style>
 
 </head>
@@ -138,10 +142,7 @@
 										<i class="far fa-star"></i>
 									</div>
 								</div>
-								<p class="description text-around" id="course-description"
-									th:text="${course.description}">
-
-								</p>
+								<p class="description text-around course-description" th:text="${course.description}"></p>
 								<div class="trainer d-flex justify-content-between align-items-center">
 									<div class="trainer-profile d-flex align-items-center">
 										<img src="assets/img/trainers/trainer-1-2.jpg" class="img-fluid" alt="">
