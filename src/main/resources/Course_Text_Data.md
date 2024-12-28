@@ -222,7 +222,54 @@ Database: PostgreSQL or MySQL.
 Features: User authentication, CRUD operations, and deployment to the cloud.
 	  
 	 
-9- Internship
+9- Internship 
+	1- Pre Placement Activity 
+	
+	Pre-placement Course for Full Stack Development on Java
+This course is designed to prepare aspiring developers for internships or full-time roles as Full Stack Java Developers. It focuses on equipping learners with the necessary skills and practical knowledge of Java-based web development, covering front-end, back-end, and database integration. Below is a brief outline of the content:
+
+1. Introduction to Full Stack Development
+Overview of Full Stack Development
+Importance of Java in Full Stack Development
+Tools and technologies for Java-based full-stack projects (e.g., IntelliJ, Spring Boot, Maven, etc.)
+2. Front-End Development
+HTML, CSS, and JavaScript Basics
+Semantic HTML
+CSS for responsive design
+JavaScript fundamentals and ES6 features
+Front-End Framework
+Introduction to frameworks like Angular or React
+Component-based architecture and state management
+3. Core Java Programming
+Java basics: Syntax, Data types, and OOP principles (Encapsulation, Inheritance, Polymorphism)
+Collections framework and Generics
+Exception handling and Multithreading
+Input/output operations and file handling
+4. Back-End Development with Java
+Spring Framework
+Spring Core and Dependency Injection
+Spring Boot for rapid application development
+RESTful API design and implementation
+Database Integration
+JDBC fundamentals
+ORM with Hibernate/JPA
+Connecting to MySQL/PostgreSQL databases
+Authentication and Security
+Spring Security basics
+JWT-based authentication
+5. Version Control and Deployment
+Version control with Git and GitHub
+CI/CD basics with Jenkins or GitHub Actions
+Deployment on platforms like AWS, Azure, or Heroku
+6. Project Development
+Hands-on project: End-to-end development of a full-stack Java web application
+Requirements gathering and architecture planning
+Front-end and back-end integration
+Testing, debugging, and deployment
+7. Soft Skills and Interview Preparation
+Effective resume building for Java developer roles
+Cracking technical interviews: Problem-solving and DSA
+Mock interviews and coding challenges
 10-Interview Preparation
 11-Technology
 12-Web Development
