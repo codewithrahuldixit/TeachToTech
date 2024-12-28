@@ -1,10 +1,16 @@
 package com.rahul.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.rahul.enum_.CourseStatus;
 import com.rahul.model.Course;
@@ -67,5 +73,24 @@ public class CourseService {
     public Optional<Course> findByPrice(Double price) {
         return this.courseRepository.findByPrice(price);
     }
+
+    public String saveImage(MultipartFile imageFile) {
+    if (imageFile == null || imageFile.isEmpty()) {
+        return null; // No image provided
+    }
+
+    String uploadDir = "D:/T2T/TeachToTech/src/main/resources/static/assets/img/";
+    String fileName = imageFile.getOriginalFilename();
+    String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
+
+    try {
+        Path path = Paths.get(uploadDir, uniqueFileName);
+        Files.copy(imageFile.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        return "/assets/img/" + uniqueFileName; // Relative path for frontend use
+    } catch (IOException e) {
+        e.printStackTrace();
+        throw new RuntimeException("Failed to save image: " + e.getMessage());
+    }
+}
 
 }

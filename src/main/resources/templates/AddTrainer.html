@@ -154,8 +154,9 @@
 
         <!-- Profile Image Field -->
         <div class="form-group">
-          <label for="trainerImage">Profile Image URL</label>
-          <input type="url" id="trainerImage" name="trainerImage" class="form-control" required>
+          <label for="trainerImage">Course Image</label>
+          <input type="file" id="trainerImage" name="trainerImage" class="form-control" accept="image/jpeg, image/png" required>
+          <small class="form-text text-muted">Only .jpg and .png images are allowed.</small>
         </div>
 
         <!-- Category Field -->
@@ -203,6 +204,8 @@
       const form = document.getElementById("addTrainerForm");
       form.addEventListener("submit", event => {
         event.preventDefault(); // Prevent default form submission
+
+        const Data = new FormData(form);
   
         const selectedCategories = Array.from(categorySelect.selectedOptions).map(option => option.value);
         const formData = {
@@ -210,17 +213,18 @@
           trainerDescription: document.getElementById("trainerDescription").value,
           trainerQualification: document.getElementById("trainerQualification").value,
           linkedin: document.getElementById("linkedin").value,
-          trainerImage: document.getElementById("trainerImage").value,
           categories: selectedCategories // Send category IDs as an array
         };
-  
+
+        const imageFile = Data.get('trainerImage');
+        if (imageFile) {
+         Data.append('imageFile', imageFile);
+        }
+         Data.append('formData', JSON.stringify(formData));
         // Send form data as JSON to the server
         fetch("/api/trainer/add", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(formData)
+          body: Data
         })
           .then(response => {
             if (response.ok) {

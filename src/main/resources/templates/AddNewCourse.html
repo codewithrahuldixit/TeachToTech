@@ -324,6 +324,7 @@
   
           if (response.ok) {
             alert('Course added successfully!');
+            form.reset();
           } else {
             if(response.status==500)
             alert(`Failed to load resource and course not added`);
