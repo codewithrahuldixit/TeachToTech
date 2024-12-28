@@ -79,8 +79,10 @@ public class UserController {
     @GetMapping("/name")
     public String getCurrentUsername(@RequestHeader("Authorization") String authorizationHeader) {
         // Remove "Bearer " prefix from the token
+        log.info("Received token: " + authorizationHeader);
         String token = authorizationHeader.substring(7);
         String firstName=this.userService.getUsersDetails(token);
+        log.info("Fetched username: " + firstName);
         return firstName;
     }
 }
