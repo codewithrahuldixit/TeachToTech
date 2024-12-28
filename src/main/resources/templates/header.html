@@ -1,120 +1,84 @@
 <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center">
-        <a href="/index" class="logo d-flex align-items-center me-auto">
-            <img src="assets/img/TT.png" alt="Company Logo">
-            <h1 class="sitename">TeachToTech</h1>
-        </a>
+  <div class="container-fluid container-xl position-relative d-flex align-items-center">
+    <a href="/index" class="logo d-flex align-items-center me-auto">
+      <img src="assets/img/TT.png" alt="Company Logo">
+      <h1 class="sitename">TeachToTech</h1>
+    </a>
 
-       
-      <nav id="navmenu" class="navmenu">
+    <nav id="navmenu" class="navmenu">
+      <ul>
+        <li><a href="/index" class="active">Home<br></a></li>
+        <li class="dropdown">
+          <a href="/courses"><span>All Courses</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
           <ul>
-              <li><a href="/index" class="active">Home<br></a></li>
-           <li class="dropdown">
-                  <a href="/courses"><span>All Courses</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                  <ul>
-                    <!-- Loop through the first 4 categories -->
-                    <li th:each="category, iterStat : ${categories}">
-                        <a th:href="@{/courses?category={category}(category=${category.name})}" th:text="${category.name}" 
-                           th:if="${iterStat.index < 4}"></a> <!-- Display only first 4 categories -->
-                    </li>
-                    
-                    <!-- 'More Categories' Dropdown -->
-                    <li class="dropdown">
-                        <a href="#"><span>More Categories</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                        <ul>
-                            <!-- Loop through the remaining categories -->
-                            <li th:each="category, iterStat : ${categories}">
-                                <a th:href="@{/courses?category={category}(category=${category.name})}" th:text="${category.name}" 
-                                   th:if="${iterStat.index >= 4}"></a> <!-- Display categories starting from index 4 -->
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-              </li>
-              <li><a href="/trainers">Team</a></li>
-              <li><a href="/events">Events</a></li>
-              <li><a href="/pricing">Pricing</a></li>
-              
-                 <li><a href="/about">About</a></li>
-              <li><a href="/contact">Contact</a></li>
+            <li th:each="category, iterStat : ${categories}">
+              <a th:href="@{/courses?category={category}(category=${category.name})}" th:text="${category.name}" th:if="${iterStat.index < 4}"></a>
+            </li>
+            <li class="dropdown">
+              <a href="#"><span>More Categories</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <ul>
+                <li th:each="category, iterStat : ${categories}">
+                  <a th:href="@{/courses?category={category}(category=${category.name})}" th:text="${category.name}" th:if="${iterStat.index >= 4}"></a>
+                </li>
+              </ul>
+            </li>
           </ul>
-          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-      
-      <div id="auth-buttons" style="display: block;">
-        <a class="btn-getstarted" href="/api/users/login">Login</a>
-        <a class="btn-getstarted" href="/api/users/register">Register</a>
-       
-      </div>
-      
-      <div id="user-greeting" style="display: none;">
-        <span id="greeting-message">Hello, [username]</span>
-        <a href="/api/users/logout" class="btn-getstarted">Logout</a>
-      </div>
-      
-      
-    </div>
+        </li>
+        <li><a href="/trainers">Team</a></li>
+        <li><a href="/events">Events</a></li>
+        <li><a href="/pricing">Pricing</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li id="loginButtons">
+          <a class="btn-getstarted" href="/api/users/login">Login</a>
+          <a class="btn-getstarted" href="/api/users/register">Register</a>
+        </li>
+        <!-- Placeholder for dynamic username -->
+        <li id="userGreeting" style="display: none;">
+          <span class="username">Hello, <span id="usernameText"></span></span>
+           <a id="logoutButton" href="/api/users/logout" class="btn-logout">Logout</a>
+        </li>
+
+        <!-- Show login/register if no user -->
+        
+      </ul>
+      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+    </nav>
+  </div>
 </header>
-<script>
-  // Function to fetch the username using the token
-  async function fetchUserName(token) {
+<script th:src="@{/assets/js/main.js}"></script>
+
+
+<!-- <script>
+  // Fetch and display username in header
+  async function fetchUsername() {
+    const token = localStorage.getItem("authToken");
+    console.log("Token from localStorage:", token);
+    if (!token) {
+      return;
+    }
+
     try {
       const response = await fetch("/api/users/name", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`, // Send the token in the header
+          "Authorization": `Bearer ${token}`,
         },
       });
-
+      console.log("Response status:", response.status);
       if (response.ok) {
-        const data = await response.text();  // Assuming the backend returns just the username
-        return data;
-      } else {
-        console.error("Failed to fetch username:", await response.text());
-        return null;
+        const username = await response.text();
+        document.getElementById("usernameText").innerText = username;
+        document.getElementById("userGreeting").style.display = "inline";
+        document.getElementById("loginButtons").style.display = "none";  // Hide login/register buttons
       }
     } catch (error) {
-      console.error("Error while fetching username:", error);
-      return null;
+      console.error("Failed to fetch username:", error);
     }
   }
 
-  // Function to update the header based on token presence
-  async function updateHeader() {
-    const token = localStorage.getItem("authToken");  // Get the token from localStorage
-    const authButtons = document.getElementById("auth-buttons");  // Login/Register buttons
-    const userGreeting = document.getElementById("user-greeting");  // Username greeting
-    const greetingMessage = document.getElementById("greeting-message");  // Greeting message
+  // Call on page load
+  
+    fetchUsername();
 
-    // Check if the token exists
-    if (token) {
-      // Fetch the username using the token
-      const username = await fetchUserName(token);
-
-      if (username) {
-        // Hide the login/register buttons
-        authButtons.style.display = "none";
-
-        // Show the greeting with the username
-        userGreeting.style.display = "block";
-        greetingMessage.textContent = `Hello, ${username}`;  // Display the username in the greeting message
-      } else {
-        console.log("Username not found or token invalid.");
-        // If username not found, keep the login/register buttons visible
-        authButtons.style.display = "block";
-        userGreeting.style.display = "none";
-      }
-    } else {
-      console.log("No token found.");
-      // If no token, ensure login/register buttons are visible
-      authButtons.style.display = "block";
-      userGreeting.style.display = "none";
-    }
-  }
-
-  // Run the function to update the header on page load
-  document.addEventListener('DOMContentLoaded', function() {
-    updateHeader();  // Ensure the function is called when the page is fully loaded
-  });
-</script>
-
+</script> -->

@@ -7,6 +7,7 @@
     <link href="/assets/img/TT.png" rel="icon" />
     <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
     <title>Login</title>
+
     <style>
       /* style.css */
       * {
@@ -130,13 +131,7 @@
       .back-text:hover {
         color: #45a049; /* Change text color on hover */
       }
-      #user-greeting {
-  display: block; /* Ensure it's visible */
-}
-
-#auth-buttons {
-  display: block; /* Ensure login/register buttons are visible when needed */
-}
+      
     </style>
   </head>
 
@@ -147,7 +142,7 @@
         <p class="back-text">Go back</p>
       </div>
       <h2>Login</h2>
-      <form id="loginForm" onsubmit="return submitLogin(event)">
+      <form id="loginForm" onsubmit="submitLogin(event)">
         <!-- Email Field -->
         <div class="form-group">
           <label for="email">Email</label>
@@ -172,40 +167,43 @@
     </div>
 
     <script>
-async function submitLogin(event) {
-  event.preventDefault();
+      // Handle login
+      async function submitLogin(event) {
+        event.preventDefault(); // Prevent form submission
 
-  const loginData = {
-    email: document.getElementById("email").value,
-    contact: document.getElementById("contact").value,
-  };
+        const loginData = {
+          email: document.getElementById("email").value,
+          contact: document.getElementById("contact").value,
+        };
 
-  try {
-    const response = await fetch("/api/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(loginData),
-    });
+        try {
+          const response = await fetch("/api/users/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(loginData),
+          });
 
-    if (response.ok) {
-      const data = await response.json();
-      // Store the token
-      localStorage.setItem("authToken", data.token);
-      // Update header before redirect
-     // await updateHeader();
-      window.location.href = "/";
-    } else {
-      const errorMessage = await response.text();
-      alert(`Login failed: ${errorMessage}`);
-    }
-  } catch (error) {
-    console.error("Error during login:", error);
-    alert("An unexpected error occurred during login.");
-  }
-}
+          if (response.ok) {
+            const data = await response.json();
+            // Store the token in localStorage
+            localStorage.setItem("authToken", data.token);
+            // Fetch and display the username
+            // Redirect user after login
+            window.location.href = "/"; // Or the desired page
+            
+          } else {
+            alert(`Login failed`);
+          }
+        } catch (error) {
+          console.error("Error during login:", error);
+          alert("An unexpected error occurred during login.");
+        }
+      }
 
+      // Attach the login function to form submission
+      document.getElementById("loginForm").addEventListener("submit", submitLogin);
     </script>
   </body>
 </html>

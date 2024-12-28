@@ -148,3 +148,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+
+
+    async function fetchUsername() {
+        const token = localStorage.getItem("authToken");
+        console.log("Token from localStorage:", token);  // Token check
+        if (!token) {
+            document.getElementById("loginButtons").style.display = "block";
+            document.getElementById("userGreeting").style.display = "none";
+            return;
+        }
+        try {
+            const response = await fetch("/api/users/name", {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+            if (response.ok) {
+                const username = await response.text();
+                document.getElementById("usernameText").textContent = username;
+                document.getElementById("userGreeting").style.display = "block";
+                document.getElementById("loginButtons").style.display = "none";
+            }
+        } catch (error) {
+            console.error("Error fetching username:", error);
+        }
+    }
+    document.addEventListener("DOMContentLoaded", fetchUsername);
+
+    document.getElementById('logoutButton')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('authToken'); // Remove token from local storage
+      window.location.href = '/index'; // Redirect to home page after logout
+    });
+    
