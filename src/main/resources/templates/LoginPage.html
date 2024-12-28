@@ -173,16 +173,14 @@
 
     <script>
 async function submitLogin(event) {
-  event.preventDefault(); // Prevent the default form submission
+  event.preventDefault();
 
-  // Collect form data
   const loginData = {
     email: document.getElementById("email").value,
     contact: document.getElementById("contact").value,
   };
 
   try {
-    // Send the data to the backend
     const response = await fetch("/api/users/login", {
       method: "POST",
       headers: {
@@ -192,24 +190,19 @@ async function submitLogin(event) {
     });
 
     if (response.ok) {
-      const data = await response.json(); // Assuming the backend returns the token in JSON format
-      const token = data.token; // Access the token from the response data
-
-      // Save the token in localStorage
-      localStorage.setItem("authToken", token);
-      console.log("Token saved in localStorage:", localStorage.getItem("authToken"));
-
-      alert("Login successful!");
-      updateHeader();
-      // Redirect to home page
-      window.location.href = "/"; // This will reload the page and trigger the updateHeader function
+      const data = await response.json();
+      // Store the token
+      localStorage.setItem("authToken", data.token);
+      // Update header before redirect
+     // await updateHeader();
+      window.location.href = "/";
     } else {
       const errorMessage = await response.text();
-      alert(`Error: ${errorMessage}`);
+      alert(`Login failed: ${errorMessage}`);
     }
   } catch (error) {
-    console.error("Error occurred:", error);
-    alert("An unexpected error occurred.");
+    console.error("Error during login:", error);
+    alert("An unexpected error occurred during login.");
   }
 }
 

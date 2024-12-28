@@ -12,20 +12,21 @@
            <li class="dropdown">
                   <a href="/courses"><span>All Courses</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                   <ul>
-                    <li><a href="/courses?category=Full Stack Web Development">Full Stack Web Development</a></li>
-                    <li><a href="/courses?category=Data Science">Data Science</a></li>
-                    <li><a href="/courses?category=Data Structures and Algorithms">Data Structures and Algorithms</a></li>
-                    <li><a href="/courses?category=Interview Preparation">Interview Preparation</a></li>
+                    <!-- Loop through the first 4 categories -->
+                    <li th:each="category, iterStat : ${categories}">
+                        <a th:href="@{/courses?category={category}(category=${category.name})}" th:text="${category.name}" 
+                           th:if="${iterStat.index < 4}"></a> <!-- Display only first 4 categories -->
+                    </li>
+                    
+                    <!-- 'More Categories' Dropdown -->
                     <li class="dropdown">
                         <a href="#"><span>More Categories</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                         <ul>
-                            <li><a href="/courses?category=Cloud Computing">Cloud Computing</a></li>
-                            <li><a href="/courses?category=Competitive Programming">Competitive Programming</a></li>
-                            <li><a href="/courses?category=DevOps">DevOps</a></li>
-                            <li><a href="/courses?category=Technology">Technology</a></li>
-                            <li><a href="/courses?category=Web Development">Web Development</a></li>
-                            <li><a href="/courses?category=Digital Marketing">Digital Marketing</a></li>
-                            <li><a href="/courses?category=Internship">Internship</a></li>
+                            <!-- Loop through the remaining categories -->
+                            <li th:each="category, iterStat : ${categories}">
+                                <a th:href="@{/courses?category={category}(category=${category.name})}" th:text="${category.name}" 
+                                   th:if="${iterStat.index >= 4}"></a> <!-- Display categories starting from index 4 -->
+                            </li>
                         </ul>
                     </li>
                 </ul>

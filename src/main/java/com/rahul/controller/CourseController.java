@@ -38,8 +38,8 @@ public class CourseController {
         return "AddNewCourse"; 
     }
  
-@PostMapping("/add/pending")
-public ResponseEntity<String> addCourse(
+  @PostMapping("/add/pending")
+  public ResponseEntity<String> addCourse(
     @RequestParam("payload") String courseDataJson,
     @RequestParam(value = "image", required = false) MultipartFile imageFile) {
 
@@ -86,11 +86,13 @@ public ResponseEntity<String> addCourse(
        List<Course> course= this.courseService.getPendingCourse();
         return ResponseEntity.ok(course);
     }
+
     @GetMapping("get/approved")
     public ResponseEntity<List<Course>> getApprovedCourses() {
        List<Course> course= this.courseService.getApprovedCourses();
         return ResponseEntity.ok(course);
     }
+    
     @GetMapping("get/rejected")
     public ResponseEntity<List<Course>> getRejectedCourses() {
        List<Course> course= this.courseService.getRejectedCourses();

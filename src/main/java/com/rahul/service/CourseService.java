@@ -1,10 +1,7 @@
 package com.rahul.service;
 
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,22 +72,32 @@ public class CourseService {
     }
 
     public String saveImage(MultipartFile imageFile) {
-    if (imageFile == null || imageFile.isEmpty()) {
-        return null; // No image provided
+        if (imageFile == null || imageFile.isEmpty()) {
+            return null; // No image provided
+        }
+    
+        // Directory where the image will be stored on the server
+        String uploadDir = "D:/T2T/TeachToTech/src/main/resources/static/assets/img/";
+        String fileName = imageFile.getOriginalFilename();
+    
+        try {
+            // Create the directory if it doesn't exist
+            File directory = new File(uploadDir);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+    
+            // File object representing the destination
+            File destinationFile = new File(uploadDir + fileName);
+    
+            // Save the file using transferTo()
+            imageFile.transferTo(destinationFile);
+    
+            // Returning the saved file's relative path for frontend usage
+            return "/assets/img/" + fileName;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to save image: " + e.getMessage());
+        }
     }
-
-    String uploadDir = "D:/T2T/TeachToTech/src/main/resources/static/assets/img/";
-    String fileName = imageFile.getOriginalFilename();
-    String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
-
-    try {
-        Path path = Paths.get(uploadDir, uniqueFileName);
-        Files.copy(imageFile.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-        return "/assets/img/" + uniqueFileName; // Relative path for frontend use
-    } catch (IOException e) {
-        e.printStackTrace();
-        throw new RuntimeException("Failed to save image: " + e.getMessage());
-    }
-}
-
 }

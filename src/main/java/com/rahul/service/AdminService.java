@@ -2,6 +2,7 @@ package com.rahul.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.rahul.model.Users;
 import com.rahul.repository.UserRepository;
 import com.rahul.util.JwtUtil;
@@ -14,6 +15,11 @@ public class AdminService {
 
     @Autowired
     private UserRepository userRepository;
+
+    public void addAdmin(Users users){
+         users.setRole("ADMIN");
+         this.userRepository.save(users);
+    }
 
     public void promoteToAdmin(String email,String token) throws Exception {
         // Get the authenticated user's username
