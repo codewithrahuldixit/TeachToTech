@@ -83,10 +83,8 @@ public class UserController {
         if(authorizationHeader==null|| !authorizationHeader.startsWith("Bearer ")){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Authorization header is missing or invalid");
         }
-        log.info("Received token: " + authorizationHeader);
         String token = authorizationHeader.substring(7);
         String firstName=this.userService.getUsersDetails(token);
-        log.info("Fetched username: " + firstName);
         return firstName;
     }
 }
