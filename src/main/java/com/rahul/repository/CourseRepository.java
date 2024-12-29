@@ -1,6 +1,7 @@
 package com.rahul.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -12,4 +13,9 @@ import com.rahul.model.Course;
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
     List<Course> findByStatus(CourseStatus approved);
+    //change done by ayushi
+    List<Course> findByCategoryName(String name);
+    Optional<Course> findById(Long id);
+    Optional<Course> findByCourseName(String courseName);
+    Optional<Course> findByPrice(Double price);
 }

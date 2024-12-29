@@ -29,13 +29,7 @@
 	<!-- Main CSS File -->
 	<link href="assets/css/main.css" rel="stylesheet">
 
-	<!-- =======================================================
-  * Template Name: Mentor
-  * Template URL: https://bootstrapmade.com/mentor-free-education-bootstrap-theme/
-  * Updated: Aug 07 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+
 </head>
 
 <body class="trainers-page">
@@ -50,10 +44,10 @@
 				<div class="container">
 					<div class="row d-flex justify-content-center text-center">
 						<div class="col-lg-8">
-							<h1>Trainers</h1>
-							<p class="mb-0">Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo odio
-								sint voluptas consequatur ut a odio voluptatem. Sit dolorum debitis veritatis natus
-								dolores. Quasi ratione sint. Sit quaerat ipsum dolorem.</p>
+							<h1>Meet Your TeachToTech Team</h1>
+							<p class="mb-0">At TeachToTech, our teams consist of skilled trainers and developers who work simultaneously to provide an unparalleled learning experience. With expertise spanning full stack development, competitive programming, web development, internships, programming, cybersecurity, AI, cloud computing, and more, they bring both theoretical knowledge and real-world application to every session.
+
+Our trainers and developers are not just educators—they're mentors and practitioners, committed to guiding you through your learning journey and equipping you with the skills and confidence to excel in the tech world. Learn from the best, and let’s shape the future of technology together!</p>
 						</div>
 					</div>
 				</div>
@@ -63,6 +57,7 @@
 					<ol>
 						<li><a href="/index">Home</a></li>
 						<li class="current">Trainers</li>
+						<li><a href="/api/trainer/addtrainer">Add trainer</a></li>
 					</ol>
 				</div>
 			</nav>
@@ -73,10 +68,10 @@
 
 			<div class="container">
 
-				<div class="row gy-5" th:each="trainer : ${trainers}">
-					<div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="200">
-						<div class="member-img">
-							<img src="assets/img/team/team-2.jpg" class="img-fluid" alt="">
+				<div class="row gy-5" >
+					<div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="200" th:each="trainer : ${trainers}">
+						<div class="member-img" >
+							<img th:src=${trainer.trainerImage} class="img-fluid" alt="Trainer Image">
 							<div class="social">
 								<a href="#"><i class="bi bi-twitter-x"></i></a>
 								<a href="#"><i class="bi bi-facebook"></i></a>
@@ -92,96 +87,9 @@
 						</div>
 					</div><!-- End Team Member -->
 
-					<div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="100" >
-						<div class="member-img">
-							<img src="assets/img/team/Rahul.jpg" class="img-fluid" alt="">
-							<div class="social">
-								<a href="#"><i class="bi bi-twitter-x"></i></a>
-								<a href="#"><i class="bi bi-facebook"></i></a>
-								<a href="#"><i class="bi bi-instagram"></i></a>
-								<a href="#"><i class="bi bi-linkedin"></i></a>
-							</div>
-						</div>
-						<div class="member-info text-center">
-							<h4>Rahul Dixit</h4>
-							<span>Full Stack Trainer</span>
-							<p>Trainer & Talks About #C++ #Java #DSA #Algorithms #datastructures #DevOps #Jenkins #CI/CD Over 8500+ students taught and placed in several companies worked With Great Learning</p>
-						</div>
-					</div><!-- End Team Member -->
-
 					
 
-					<div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="300">
-						<div class="member-img">
-							<img src="assets/img/team/team-3.jpg" class="img-fluid" alt="">
-							<div class="social">
-								<a href="#"><i class="bi bi-twitter-x"></i></a>
-								<a href="#"><i class="bi bi-facebook"></i></a>
-								<a href="#"><i class="bi bi-instagram"></i></a>
-								<a href="#"><i class="bi bi-linkedin"></i></a>
-							</div>
-						</div>
-						<div class="member-info text-center">
-							<h4>William Anderson</h4>
-							<span>Maths</span>
-							<p>Illum minima ea autem doloremque ipsum quidem quas aspernatur modi ut praesentium vel
-								tque sed facilis at qui</p>
-						</div>
-					</div><!-- End Team Member -->
-
-					<div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="400">
-						<div class="member-img">
-							<img src="assets/img/team/team-4.jpg" class="img-fluid" alt="">
-							<div class="social">
-								<a href="#"><i class="bi bi-twitter-x"></i></a>
-								<a href="#"><i class="bi bi-facebook"></i></a>
-								<a href="#"><i class="bi bi-instagram"></i></a>
-								<a href="#"><i class="bi bi-linkedin"></i></a>
-							</div>
-						</div>
-						<div class="member-info text-center">
-							<h4>Amanda Jepson</h4>
-							<span>Foreign Languages</span>
-							<p>Magni voluptatem accusamus assumenda cum nisi aut qui dolorem voluptate sed et veniam
-								quasi quam consectetur</p>
-						</div>
-					</div><!-- End Team Member -->
-
-					<div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="500">
-						<div class="member-img">
-							<img src="assets/img/team/team-5.jpg" class="img-fluid" alt="">
-							<div class="social">
-								<a href="#"><i class="bi bi-twitter-x"></i></a>
-								<a href="#"><i class="bi bi-facebook"></i></a>
-								<a href="#"><i class="bi bi-instagram"></i></a>
-								<a href="#"><i class="bi bi-linkedin"></i></a>
-							</div>
-						</div>
-						<div class="member-info text-center">
-							<h4>Brian Doe</h4>
-							<span>Web Development<br></span>
-							<p>Qui consequuntur quos accusamus magnam quo est molestiae eius laboriosam sunt doloribus
-								quia impedit laborum velit</p>
-						</div>
-					</div><!-- End Team Member -->
-
-					<div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="600">
-						<div class="member-img">
-							<img src="assets/img/team/team-6.jpg" class="img-fluid" alt="">
-							<div class="social">
-								<a href="#"><i class="bi bi-twitter-x"></i></a>
-								<a href="#"><i class="bi bi-facebook"></i></a>
-								<a href="#"><i class="bi bi-instagram"></i></a>
-								<a href="#"><i class="bi bi-linkedin"></i></a>
-							</div>
-						</div>
-						<div class="member-info text-center">
-							<h4>Josepha Palas</h4>
-							<span>Business</span>
-							<p>Sint sint eveniet explicabo amet consequatur nesciunt error enim rerum earum et omnis
-								fugit eligendi cupiditate vel</p>
-						</div>
-					</div><!-- End Team Member -->
+			
 
 				</div>
 

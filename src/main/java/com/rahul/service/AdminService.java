@@ -2,6 +2,7 @@ package com.rahul.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.rahul.model.Users;
 import com.rahul.repository.UserRepository;
 import com.rahul.util.JwtUtil;
@@ -15,6 +16,11 @@ public class AdminService {
     @Autowired
     private UserRepository userRepository;
 
+    public void addAdmin(Users users){
+         users.setRole("ADMIN");
+         this.userRepository.save(users);
+    }
+
     public void promoteToAdmin(String email,String token) throws Exception {
         // Get the authenticated user's username
         String promoterUsername = this.jwtUtil.extractUserName(token);
@@ -25,7 +31,7 @@ public class AdminService {
         if (!promoter.getRole().equals("SUPER_ADMIN")) {
             throw new Exception("Only Super Admins can promote users to Admin.");
         }
-    
+
         Users user = userRepository.findByEmail(email)
             .orElseThrow(() -> new RuntimeException("User not found"));
     

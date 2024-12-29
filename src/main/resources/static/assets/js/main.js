@@ -136,12 +136,55 @@
 })();
 
 document.addEventListener("DOMContentLoaded", () => {
-  const descriptionElement = document.getElementById("course-description");
-  const text = descriptionElement.textContent.trim();
+  const descriptionElements = document.querySelectorAll(".course-description");
   
-  // Split the text into words and limit to 50
-  const words = text.split(" ");
-  if (words.length > 50) {
-    descriptionElement.textContent = words.slice(0, 35).join(" ") + ".";
-  }
+  descriptionElements.forEach((descriptionElement) => {
+    const text = descriptionElement.textContent.trim();
+    
+    // Split the text into words and limit to 50
+    const words = text.split(" ");
+    if (words.length > 50) {
+      descriptionElement.textContent = words.slice(0, 35).join(" ") + ".";
+    }
+  });
 });
+
+
+
+    async function fetchUsername() {
+        const token = localStorage.getItem("authToken");
+        console.log("Token from localStorage:", token);  // Token check
+        if (!token) {
+            document.getElementById("loginButtons").style.display = "block";
+            document.getElementById("userGreeting").style.display = "none";
+            return;
+        }
+        try {
+            const response = await fetch("/api/users/name", {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+            if (response.ok) {
+                const username = await response.text();
+                document.getElementById("usernameText").textContent = username;
+                document.getElementById("userGreeting").style.display = "block";
+                document.getElementById("loginButtons").style.display = "none";
+                document.getElementById("logoutContainer").style.display="block";
+                if (registerIndexButton) {
+                  registerIndexButton.style.display = "none";
+              }
+            }
+        } catch (error) {
+            console.error("Error fetching username:", error);
+        }
+    }
+    document.addEventListener("DOMContentLoaded", fetchUsername);
+
+    document.getElementById('logoutButton')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('authToken'); // Remove token from local storage
+      window.location.href = '/index'; // Redirect to home page after logout
+    });
+    

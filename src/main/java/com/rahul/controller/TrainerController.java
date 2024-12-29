@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rahul.model.Trainer;
 import com.rahul.service.TrainerService;
 
@@ -21,18 +23,34 @@ public class TrainerController {
     private TrainerService TrainerService;
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody Trainer trainer){
+    public ResponseEntity<?> add(@RequestParam("formData") String trainerDataJson,
+    @RequestParam(value = "imageFile", required = false) MultipartFile imageFile)
+    {    
+         try {
+        // Parse the JSON string to get course data
+        ObjectMapper objectMapper = new ObjectMapper();
+        Trainer trainer = objectMapper.readValue(trainerDataJson, Trainer.class);
+
+        // Handle the uploaded file (image)
+        String imagePath = this.TrainerService.saveImage(imageFile);
+        if (imagePath != null) {
+            trainer.setTrainerImage(imagePath);
+        }
+        if (TrainerService.findByLinkedinProfile(trainer.getLinkedin()).isPresent()) {
+            return ResponseEntity.badRequest().body("Trainer is already added");
+        }
         this.TrainerService.addTrainer(trainer);
         return ResponseEntity.ok("Trainer added successfully");
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(500).body("Error adding course: " + e.getMessage());
     }
-
-    @GetMapping("/get")
+}
+   
+ @GetMapping("/get")
     public ResponseEntity<List<Trainer>> getAllTrainer(){
       List<Trainer> trainer=this.TrainerService.getallTrainer();
      
      return ResponseEntity.ok(trainer);
     }
-    
-
-
 }

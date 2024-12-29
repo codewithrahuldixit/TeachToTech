@@ -71,7 +71,7 @@
 </head>
 
 <body class="index-page">
-			<!--first Header is header Id and Second is HtmlFile name-->
+	<!--first Header is header Id and Second is HtmlFile name-->
 	<div th:replace="header :: header"></div>
 
 	<main class="main">
@@ -79,16 +79,18 @@
 		<!-- Hero Section -->
 		<section id="hero" class="hero section dark-background">
 
-			<img src="assets/img/hero-bg.jpg" alt="" data-aos="fade-in">
+			<img src="assets/img/banner.jpg" alt="" data-aos="fade-in">
 
 			<div class="container">
-				<h2 data-aos="fade-up" data-aos-delay="100">Learning Today,<br>Leading Tomorrow</h2>
-				<p data-aos="fade-up" data-aos-delay="200">We are team of talented designers making websites with
-					Bootstrap</p>
+				<h2 data-aos="fade-up" data-aos-delay="100">Learn, Execute, Deploy, <br>and Lead the Future</h2>
+				<p data-aos="fade-up" data-aos-delay="200">"We are a team of trainers and developers committed to
+					bringing the essence of emerging technologies to life. Our mission is to bridge the gap between
+					learners and developers, empowering individuals with the skills and transformation needed to thrive
+					in the tech-driven future."</p>
 				<div class="d-flex mt-4 gap-3" data-aos="fade-up" data-aos-delay="300">
 					<a href="/courses" class="btn-get-started">Get Started</a>
-					<a href="/api/users/register" class="btn-get-started register">Register</a>
-			</div>
+					<a href="/api/users/register"  id="registerIndexButton" class="btn-get-started register" >Register</a>
+				</div>
 			</div>
 
 		</section><!-- /Hero Section -->
@@ -247,26 +249,28 @@
 							<div class="col-xl-4">
 								<div class="icon-box d-flex flex-column justify-content-center align-items-center">
 									<i class="bi bi-clipboard-data"></i>
-									<h4>Corporis voluptates officia eiusmod</h4>
-									<p>Consequuntur sunt aut quasi enim aliquam quae harum pariatur laboris nisi ut
-										aliquip</p>
+									<h4>Expert Trainers and Developers</h4>
+									<p>Our team consists of industry professionals who are not just trainers but also
+										experienced developers. We bring real-world expertise to ensure you gain
+										practical, job-ready skills.</p>
 								</div>
 							</div><!-- End Icon Box -->
 
 							<div class="col-xl-4" data-aos="fade-up" data-aos-delay="300">
 								<div class="icon-box d-flex flex-column justify-content-center align-items-center">
 									<i class="bi bi-gem"></i>
-									<h4>Ullamco laboris ladore pan</h4>
-									<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-										deserunt</p>
+									<h4>Comprehensive Learning Approach</h4>
+									<p>We focus on hands-on learning, helping you transition seamlessly from theory to
+										implementation and deployment.</p>
 								</div>
 							</div><!-- End Icon Box -->
 
 							<div class="col-xl-4" data-aos="fade-up" data-aos-delay="400">
 								<div class="icon-box d-flex flex-column justify-content-center align-items-center">
 									<i class="bi bi-inboxes"></i>
-									<h4>Labore consequatur incidid dolore</h4>
-									<p>Aut suscipit aut cum nemo deleniti aut omnis. Doloribus ut maiores omnis facere
+									<h4>Bridging the Gap</h4>
+									<p>Our tailored courses are designed to bridge the gap between being a learner and
+										becoming a confident developer, ready to take on real-world challenges.
 									</p>
 								</div>
 							</div><!-- End Icon Box -->
@@ -289,7 +293,10 @@
 			<section id="trainers-index" class="section trainers-index">
 
 				<div class="container">
-
+					<div class="container section-title" data-aos="fade-up">
+						<h2>Our Team </h2>
+						<p>Brief Introduction</p>
+					</div><!-- End Section Title -->
 					<div class="row">
 
 						<div class="col-lg-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
@@ -299,7 +306,9 @@
 									<h4>Rahul Dixit</h4>
 									<span>Full Stack Trainer</span>
 									<p>
-										rainer & Talks About #C++ #Java #DSA #Algorithms #datastructures #DevOps #Jenkins #CI/CD Over 8500+ students taught and placed in several companies worked With Great Learning
+										rainer & Talks About #C++ #Java #DSA #Algorithms #datastructures #DevOps
+										#Jenkins #CI/CD Over 8500+ students taught and placed in several companies
+										worked With Great Learning
 									</p>
 									<div class="social">
 										<a href=""><i class="bi bi-twitter-x"></i></a>
@@ -381,6 +390,8 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.js"
 		integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous">
 		</script>
+		
+
 
 </body>
 

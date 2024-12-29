@@ -2,6 +2,7 @@ package com.rahul.model;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rahul.enum_.CourseStatus;
 
 import jakarta.persistence.Column;
@@ -13,27 +14,30 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "courses")
 public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  
     private Long id;
-
-    @Column(nullable = false)
-    private String title;
    
     @Column(nullable = false)
     private String courseName;
 
-    @Column(nullable = false,length = 1000)
+    @Lob
+    @Column(nullable=false,columnDefinition = "LONGTEXT")
     private String description;
 
     @ManyToOne(optional = false)
@@ -62,6 +66,7 @@ public class Course {
     
     @Enumerated(EnumType.STRING)
     private CourseStatus status = CourseStatus.PENDING;
-
+    
+    @JsonIgnore
     private String rejectionComment="";
 }

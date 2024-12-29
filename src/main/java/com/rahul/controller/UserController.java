@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.rahul.dto.LoginDto;
 import com.rahul.model.Users;
@@ -79,8 +80,13 @@ public class UserController {
     @GetMapping("/name")
     public String getCurrentUsername(@RequestHeader("Authorization") String authorizationHeader) {
         // Remove "Bearer " prefix from the token
+        if(authorizationHeader==null|| !authorizationHeader.startsWith("Bearer ")){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Authorization header is missing or invalid");
+        }
+        log.info("Received token: " + authorizationHeader);
         String token = authorizationHeader.substring(7);
         String firstName=this.userService.getUsersDetails(token);
+        log.info("Fetched username: " + firstName);
         return firstName;
     }
 }
