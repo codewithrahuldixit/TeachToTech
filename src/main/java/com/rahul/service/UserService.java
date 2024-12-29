@@ -24,22 +24,11 @@ public class UserService {
     private JwtUtil jwtUtil;
    
 
-    public Users registerUser(Users user) {
-        long existingUserCount = userRepository.count(); // Check the number of existing users
-    
-        // Set role and firstSuperAdmin flag based on whether it's the first user
-        if (existingUserCount == 0) {
-            user.setRole("SUPER_ADMIN"); // First user becomes Super Admin
-            user.setFirstSuperAdmin(true);
-        } else {
+    public Users registerUser(Users user) {    
             user.setRole("USER"); // Subsequent users are regular users
             user.setFirstSuperAdmin(false);
-        }
-    
-        // Encode the password before saving the user
+        
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
-    
-        // Save the user and return the saved instance
         return userRepository.save(user);
     }
     

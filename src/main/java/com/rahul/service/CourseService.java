@@ -77,7 +77,7 @@ public class CourseService {
         }
     
         // Directory where the image will be stored on the server
-        String uploadDir = "C:/Users/anous/TeachToTech/src/main/resources/static/assets/img/";
+        String uploadDir = "D:/T2T/TeachToTech/src/main/resources/static/assets/img/";
         String fileName = imageFile.getOriginalFilename();
     
         try {

@@ -29,19 +29,19 @@ public class Trainer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long trainerId;
 
-    @Column
+    @Column(nullable = false)
     private String trainerName;
 
-    @Column
+    @Column(nullable = false)
     private String trainerDescription;
 
-    @Column
+    @Column(nullable = false)
     private String trainerImage; 
 
-    @Column
+    @Column(nullable = false)
     private String trainerQualification;
 
-    @Column
+    @Column(nullable = false)
     private String linkedin; // LinkedIn profile URL of the trainer
 
     @ManyToMany
@@ -51,6 +51,7 @@ public class Trainer {
         inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     @JsonIgnore
+    @Column(nullable = false)
     private Set<Category> categories;
  
     @ManyToMany(mappedBy = "trainers")

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,10 +24,7 @@ import com.rahul.service.CourseService;
 @Controller
 @RequestMapping("/api/courses")
 public class CourseController {
-	
-    @Autowired
-	private CourseService service;
-
+	 
     @Autowired
     private CourseService courseService;
 
@@ -70,7 +66,6 @@ public class CourseController {
     }
 }
 
- 
     @PostMapping("/add/approved")
     public ResponseEntity<?> approvedCourse(@RequestBody Course course) {
         this.courseService.approveCourse(course.getId());
@@ -82,7 +77,7 @@ public class CourseController {
         return ResponseEntity.ok("Course rejected");
     }
 
-    @GetMapping("get/pending")
+    @GetMapping("/get/pending")
     public ResponseEntity<List<Course>> getPendingCourses() {
        List<Course> course= this.courseService.getPendingCourse();
         return ResponseEntity.ok(course);
@@ -100,7 +95,7 @@ public class CourseController {
         return ResponseEntity.ok(course);
     }
  
-    @DeleteMapping("/{id}")
+    @PostMapping("delete/{id}")
     public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
         courseService.deleteCourse(id);
         return ResponseEntity.noContent().build();
