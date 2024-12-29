@@ -67,7 +67,7 @@ public class DemoController {
             courses = courseService.getApprovedCourses(); // Show only approved courses by default
         }
         model.addAttribute("courses", courses);
-		System.out.println(courses.getClass().);
+		
         model.addAttribute("selectedCategory", category); // Pass selected category to the view
         return "courses";
     }
@@ -105,13 +105,11 @@ public class DemoController {
         model.addAttribute("categories", categories);
       
         model.addAttribute("course", course); // Add the course to the model
-<<<<<<< Updated upstream
+
         return "course-details"; // Return the course-details.html template
     }
-=======
-        return "course-details";
-	    }
->>>>>>> Stashed changes
+
+
 
 	@GetMapping("/api/users/register")
 	public String register(){

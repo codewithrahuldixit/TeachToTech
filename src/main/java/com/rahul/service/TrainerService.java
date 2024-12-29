@@ -54,7 +54,7 @@ public class TrainerService {
             imageFile.transferTo(destinationFile);
     
             // Returning the saved file's relative path for frontend usage
-            return "/assets/img/" + fileName;
+            return "/assets/img/team/" + fileName;
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to save image: " + e.getMessage());
