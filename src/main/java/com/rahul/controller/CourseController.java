@@ -100,7 +100,7 @@ public class CourseController {
         return ResponseEntity.ok(course);
     }
  
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/courses/{id}")
     public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
         courseService.deleteCourse(id);
         return ResponseEntity.noContent().build();
