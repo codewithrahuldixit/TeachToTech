@@ -241,11 +241,9 @@ h6 {
 #logoutButton {
   font-size: 1rem;
   padding: 5px 10px;
-  background-color: #5fcf80; 
   color: white;
   border-radius: 5px;
   text-decoration: none;
-  font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -1947,3 +1945,70 @@ section,
 .starter-section {
   /* Add your styles here */
 }
+
+/* Add this at the bottom of your main CSS file */
+
+/* Style the greeting text */
+#userGreeting .username {
+    font-size: 1.4rem; 
+    font-weight: bold;
+    color: #333;
+    margin-left: 10px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+  }
+  
+  #userGreeting .username span {
+    color: #f37b30; /* Highlight color for the username */
+    font-style:italic;
+    font-weight: bold;
+    font-size: larger;
+    margin-inline: 10px;
+   
+    
+  }
+  
+  /* Style the logout button */
+  #logoutButton {
+    
+    color: rgb(5, 5, 5);
+    border-radius: 5px;
+    text-decoration: underline;
+   
+    margin-right: 12px;
+
+
+  }
+  
+  #logoutButton:hover {
+    color: #f5251aeb;
+  }
+  /* Ensure the buttons are aligned horizontally */
+/* Align the buttons side by side */
+/* Ensure login and register buttons are aligned horizontally */
+#loginButtons {
+    padding: 8px 18px;
+ 
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;/* Align buttons to the left (default) */
+  }
+  
+  #loginButtons a {
+    padding: 10px 20px;        /* Add padding for button size */
+    background-color: #47ff7b; /* Button background color */
+    color: white;              /* Button text color */
+    border-radius: 8px;        /* Rounded corners for buttons */
+    text-decoration: none;     /* Remove underline */
+    font-weight: bold;         /* Make text bold */
+    transition: background-color 0.3s ease; /* Smooth transition on hover */
+    display: inline-block;     /* Ensure it's inline */
+    white-space: nowrap;       /* Prevent text from wrapping */
+  }
+  
+  
+  
+  
+  
+  
+  
