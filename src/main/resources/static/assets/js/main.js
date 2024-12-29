@@ -171,6 +171,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById("usernameText").textContent = username;
                 document.getElementById("userGreeting").style.display = "block";
                 document.getElementById("loginButtons").style.display = "none";
+                document.getElementById("logoutContainer").style.display="block";
+                if (registerIndexButton) {
+                  registerIndexButton.style.display = "none";
+              }
             }
         } catch (error) {
             console.error("Error fetching username:", error);
