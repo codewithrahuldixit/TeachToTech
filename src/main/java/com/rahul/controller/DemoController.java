@@ -104,7 +104,7 @@ public class DemoController {
         model.addAttribute("categories", categories);
        // System.out.println(course);
         model.addAttribute("course", course); // Add the course to the model
-        return "course-detail"; // Return the course-details.html template
+        return "course-details"; // Return the course-details.html template
     }
 
 	@GetMapping("/api/users/register")
