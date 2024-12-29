@@ -136,6 +136,7 @@ public class DemoController {
         model.addAttribute("categories", categories);
         List<Trainer> trainers = trainerService.getallTrainer();  // Fetch data from the service
         model.addAttribute("trainers", trainers);  // Add trainer data to the model
+		System.out.println(trainers);
        
         return "trainers";  // Return the Thymeleaf template name
     }
