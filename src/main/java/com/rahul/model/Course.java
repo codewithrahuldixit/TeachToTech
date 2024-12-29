@@ -40,16 +40,16 @@ public class Course {
     @JoinColumn(name = "category_id", nullable = false) // Foreign key
     private Category category;
 
-    @Column
+    @Column(nullable = false)
     private String image; // URL or file path to the image
 
-    @Column
+    @Column(nullable = false)
     private Integer duration; // Duration of the course (e.g., in hours)
 
-    @Column
+    @Column(nullable = false)
     private Double price; // Price of the course
 
-    @Column
+    @Column(nullable = false)
     private String modules;
 
     @ManyToMany

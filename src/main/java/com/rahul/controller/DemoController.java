@@ -67,6 +67,7 @@ public class DemoController {
             courses = courseService.getApprovedCourses(); // Show only approved courses by default
         }
         model.addAttribute("courses", courses);
+		// System.out.println(courses.get);
         model.addAttribute("selectedCategory", category); // Pass selected category to the view
         return "courses";
     }
