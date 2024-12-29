@@ -9,8 +9,8 @@
   <meta name="keywords" content="">
 
   <!-- Favicons -->
-  <link href="assests/img/TT.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link th:href="@{/assets/img/TT.png}" rel="icon">
+<link th:href="@{/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -2012,7 +2012,74 @@
 <body class="course-details-page">
 
 
-  <div th:replace="header :: header"></div>
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+      <a href="/index" class="logo d-flex align-items-center me-auto">
+        <img th:src="@{/assets/img/TT.png}" alt="Company Logo">
+
+        <h1 class="sitename">TeachToTech</h1>
+      </a>
+  
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="/index" class="active">Home<br></a></li>
+          <li class="dropdown">
+            <a href="/courses"><span>All Courses</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li th:each="category, iterStat : ${categories}">
+                <a th:href="@{/courses?category={category}(category=${category.name})}" th:text="${category.name}" th:if="${iterStat.index < 4}"></a>
+              </li>
+              <li class="dropdown">
+                <a href="#"><span>More Categories</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                <ul>
+                  <li th:each="category, iterStat : ${categories}">
+                    <a th:href="@{/courses?category={category}(category=${category.name})}" th:text="${category.name}" th:if="${iterStat.index >= 4}"></a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><a href="/trainers">Team</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/pricing">Pricing</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li id="loginButtons">
+            <a class="btn-getstarted" href="/api/users/login">Login</a>
+            <a class="btn-getstarted" href="/api/users/register">Register</a>
+          </li>
+          <!-- Placeholder for dynamic username -->
+          <!-- <li id="userGreeting" style="display: none;">
+            <a id="logoutButton" href="/api/users/logout" class="btn-logout">Logout</a>
+  
+            <span class="username">Hello, <span id="usernameText"></span></span>
+          </li> -->
+          <!-- Dynamic Username Greeting (Separate li) -->
+          <li id="logoutContainer" style="display: none;">
+            <a id="logoutButton" href="/api/users/logout" class="btn-logout">Logout</a>
+          </li>
+  
+          <li id="userGreeting" style="display: none;">
+            <span class="username">Hello, <span id="usernameText"></span></span>
+          </li>
+  
+          
+          <!-- Logout Button (Separate li) -->
+         
+  
+          <!-- Show login/register if no user -->
+          
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+    </div>
+  </header>
+  <script th:src="@{/assets/js/main.js}"></script>
+  
+  
+  
+
+  
 
   <main class="main">
 
