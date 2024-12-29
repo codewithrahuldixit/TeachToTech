@@ -221,6 +221,62 @@ h6 {
 /*--------------------------------------------------------------
 # Global Header
 --------------------------------------------------------------*/
+#userGreeting {
+  display: flex; /* Use flexbox to align items horizontally */
+  align-items: center; /* Center items vertically */
+  gap: 10px; /* Add some spacing between elements */
+}
+
+#userGreeting .username {
+  font-size: 1.2rem; 
+  font-weight: bold;
+  color: #333;
+}
+
+#userGreeting .username span {
+  color: #5fcf80; /* Highlight color for the username */
+  font-style: italic;
+}
+
+#logoutButton {
+  font-size: 1rem;
+  padding: 5px 10px;
+  background-color: #5fcf80; 
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#logoutButton:hover {
+  background-color: #4caf70; /* Slightly darker shade on hover */
+}
+
+
+/* Login Buttons Styles */
+#loginButtons {
+  margin-right: 10px; /* Align buttons to the left (default) */
+}
+
+#loginButtons a {
+  padding: 10px 20px;        /* Add padding for button size */
+  background-color: #5fcf80; /* Button background color */
+  color: white;              /* Button text color */
+  border-radius: 5px;        /* Rounded corners for buttons */
+  text-decoration: none;     /* Remove underline */
+  font-weight: bold;         /* Make text bold */
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
+  display: inline-block;     /* Ensure it's inline */
+  white-space: nowrap;       /* Prevent text from wrapping */
+}
+
+#loginButtons a:hover {
+  background-color: #5fcf80; /* Darker color on hover */
+}
+
+/* Header Styles */
 .header {
   color: var(--default-color);
   background-color: var(--background-color);
@@ -266,23 +322,24 @@ h6 {
 
 @media (max-width: 1200px) {
   .header .logo {
-    order: 1;
+      order: 1;
   }
 
   .header .btn-getstarted {
-    order: 2;
-    margin: 0 15px 0 0;
-    padding: 6px 15px;
+      order: 2;
+      margin: 0 15px 0 0;
+      padding: 6px 15px;
   }
 
   .header .navmenu {
-    order: 3;
+      order: 3;
   }
 }
 
 .scrolled .header {
   box-shadow: 0px 0 18px rgba(0, 0, 0, 0.1);
 }
+
 
 /*--------------------------------------------------------------
 # Navigation Menu

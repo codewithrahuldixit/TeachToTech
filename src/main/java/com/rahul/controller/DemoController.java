@@ -97,13 +97,11 @@ public class DemoController {
 		return "contact";
 	}
 
-	@GetMapping("/course-details")
-    public String coursedetails() {
-        return "course-details"; // This should resolve to course-details.html in templates
-	}
 	@GetMapping("/course-details/{id}")
     public String getCourseDetails(@PathVariable("id") Long courseId, Model model) {
         Course course = courseService.findCourseById(courseId); // Fetch the course by ID from your service layer
+		List<Category> categories = categoryService.getCategory();
+        model.addAttribute("categories", categories);
        // System.out.println(course);
         model.addAttribute("course", course); // Add the course to the model
         return "course-detail"; // Return the course-details.html template

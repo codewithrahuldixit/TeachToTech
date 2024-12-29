@@ -12,34 +12,316 @@
   <link href="assets/img/TT.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-    rel="stylesheet">
-
   <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
-  <!-- Main CSS File -->
-  <link href="assets/css/main.css" rel="stylesheet">
+  <style>
+    :root {
+      --background-color: #ffffff;
+      /* Background color for the entire website, including individual sections */
+      --default-color: #444444;
+      /* Default color used for the majority of the text content across the entire website */
+      --heading-color: #37423b;
+      /* Color for headings, subheadings and title throughout the website */
+      --accent-color: #5fcf80;
+      /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
+      --surface-color: #ffffff;
+      /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
+      --contrast-color: #ffffff;
+      /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
+    }
+
+    .page-title {
+      background-color: #5fcf80;
+      color: white;
+      height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .page-title h1 {
+      margin-bottom: 30px;
+      /* Adjust spacing as needed */
+    }
+
+    .header {
+      height: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 20px;
+      /* Add horizontal padding if needed */
+    }
+
+    #header .container-fluid {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    #header .h3 {
+      font-size: 2rem;
+      /* Increase font size of the header title */
+      font-weight: bold;
+      color: #5fcf80;
+    }
+
+    .navbar-nav .nav-link {
+      font-size: 1.2rem;
+      /* Increase font size of navigation links */
+    }
+
+    .navbar-toggler-icon {
+      font-size: 1.5rem;
+      /* Increase the size of the navbar toggle icon */
+    }
+
+    .navbar-collapse {
+      display: flex;
+      justify-content: center;
+      /* Center the navigation links */
+      align-items: center;
+    }
+
+    .section {
+      margin-top: 50px;
+    }
+
+    .course-info {
+      border-radius: 5px;
+      background-color: #f0f0f0;
+      margin-bottom: 20px;
+      height: 50px;
+      padding: 20px;
+    }
+
+    .footer {
+      color: var(--default-color);
+      background-color: #f9f9f9;
+      font-size: 14px;
+      padding-bottom: 50px;
+      position: relative;
+      margin-top: 100px;
+    }
+
+    .footer .footer-top {
+      padding-top: 50px;
+    }
+
+    .footer .footer-about .logo {
+      margin-bottom: 0;
+    }
+
+    .footer .footer-about .logo img {
+      max-height: 40px;
+      margin-right: 6px;
+    }
+
+    .footer .footer-about .logo span {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      font-family: var(--heading-font);
+      color: var(--heading-color);
+    }
+
+    .footer .footer-about p {
+      font-size: 14px;
+      font-family: var(--heading-font);
+    }
+
+    .footer .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 50%);
+      font-size: 16px;
+      color: color-mix(in srgb, var(--default-color), transparent 30%);
+      margin-right: 10px;
+      transition: 0.3s;
+    }
+
+    .footer .social-links a:hover {
+      color: #5fcf80;
+      ;
+      border-color: #5fcf80;
+      ;
+    }
+
+    .footer h4 {
+      font-size: 16px;
+      font-weight: bold;
+      position: relative;
+      padding-bottom: 12px;
+    }
+
+    .footer .footer-links {
+      margin-bottom: 30px;
+    }
+
+    .footer .footer-links ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer .footer-links ul i {
+      padding-right: 2px;
+      font-size: 12px;
+      line-height: 0;
+    }
+
+    .footer .footer-links ul li {
+      padding: 10px 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .footer .footer-links ul li:first-child {
+      padding-top: 0;
+    }
+
+    .footer .footer-links ul a {
+      color: color-mix(in srgb, var(--default-color), transparent 30%);
+      display: inline-block;
+      line-height: 1;
+    }
+
+    .footer .footer-links ul a:hover {
+      color: #5fcf80;
+      ;
+    }
+
+    .footer .footer-contact p {
+      margin-bottom: 5px;
+    }
+
+    .footer .footer-newsletter .newsletter-form {
+      margin-top: 30px;
+      margin-bottom: 15px;
+      padding: 6px 8px;
+      position: relative;
+      border-radius: 50px;
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 80%);
+      display: flex;
+      background-color: var(--surface-color);
+      transition: 0.3s;
+    }
+
+    .footer .footer-newsletter .newsletter-form:focus-within {
+      border-color: #5fcf80;
+      ;
+    }
+
+    .footer .footer-newsletter .newsletter-form input[type=email] {
+      border: 0;
+      padding: 4px 8px;
+      width: 100%;
+      background-color: var(--surface-color);
+      color: var(--default-color);
+    }
+
+    .footer .footer-newsletter .newsletter-form input[type=email]:focus-visible {
+      outline: none;
+    }
+
+    .footer .footer-newsletter .newsletter-form input[type=submit] {
+      border: 0;
+      font-size: 16px;
+      padding: 0 20px 2px 20px;
+      margin: -7px -8px -7px 0;
+      background: #5fcf80;
+      ;
+      color: var(--contrast-color);
+      transition: 0.3s;
+      border-radius: 50px;
+    }
+
+    .footer .footer-newsletter .newsletter-form input[type=submit]:hover {
+      background: color-mix(in srgb, var(--accent-color), transparent 20%);
+    }
+
+    .footer .copyright {
+      padding-top: 25px;
+      padding-bottom: 25px;
+      background-color: color-mix(in srgb, var(--default-color), transparent 95%);
+    }
+
+    .footer .copyright p {
+      margin-bottom: 0;
+    }
+
+    .footer .credits {
+      margin-top: 6px;
+      font-size: 13px;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  </style>
 
 
 </head>
 
 <body class="course-details-page">
+  <header id="header" class="header bg-white shadow-sm sticky-top">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+      <!-- Logo -->
+      <a href="/index" class="d-flex align-items-center text-decoration-none">
+        <img src="assets/img/TT.png" alt="Company Logo" class="me-2" style="height: 50px;">
+        <h1 class="h3 m-0 fw-bold" style="color: #5fcf80;">TEACHTOTECH</h1>
+      </a>
 
+      <!-- Navigation Menu -->
+      <nav id="navmenu" class="navbar navbar-expand-lg">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a href="/index" class="nav-link active">Home</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link dropdown-toggle" id="coursesDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">All Courses</a>
+              <ul class="dropdown-menu" aria-labelledby="coursesDropdown">
+                <li th:each="category, iterStat : ${categories}">
+                  <a th:href="@{/courses?category={category}(category=${category.name})}" th:text="${category.name}"
+                    th:if="${iterStat.index < 4}" class="dropdown-item"></a>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-item dropdown-toggle" id="moreCategoriesDropdown"
+                    data-bs-toggle="dropdown" aria-expanded="false">More Categories</a>
+                  <ul class="dropdown-menu">
+                    <li th:each="category, iterStat : ${categories}">
+                      <a th:href="@{/courses?category={category}(category=${category.name})}" th:text="${category.name}"
+                        th:if="${iterStat.index >= 4}" class="dropdown-item"></a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item"><a href="/trainers" class="nav-link">Team</a></li>
+            <li class="nav-item"><a href="/events" class="nav-link">Events</a></li>
+            <li class="nav-item"><a href="/pricing" class="nav-link">Pricing</a></li>
+            <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
+            <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
 
-  <div th:replace="header :: header"></div>
-
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
   <main class="main">
-
-    <!-- Page Title -->
     <div class="page-title" data-aos="fade">
       <div class="heading">
         <div class="container">
@@ -53,28 +335,16 @@
           </div>
         </div>
       </div>
-      <nav class="breadcrumbs">
-        <div class="container">
-          <ol>
-            <li><a href="/index">Home</a></li>
-            <li class="current">Course Details</li>
-          </ol>
-        </div>
-      </nav>
-    </div><!-- End Page Title -->
-
-    <!-- Courses Course Details Section -->
+    </div>
     <section id="courses-course-details" class="courses-course-details section">
 
       <div class="container" data-aos="fade-up">
 
         <div class="row">
           <div class="col-lg-8">
-            <img src="assets/img/course-details.jpg" class="img-fluid" alt="">
+            <img th:src=${course.image} class="img-fluid" alt="Course">
             <h3 th:text="${course.courseName}">Course Name</h3>
-            <p th:text="${course.description}">
-              na
-            </p>
+            <p th:text="${course.description}">Description</p>
           </div>
           <div class="col-lg-4">
 
@@ -85,7 +355,9 @@
 
             <div class="course-info d-flex justify-content-between align-items-center">
               <h5>Course Fee</h5>
-              <p>$165</p>
+              <p>
+                <span th:text="${course.price}">165</span><span>&nbsp;₹</span>
+              </p>
             </div>
 
             <div class="course-info d-flex justify-content-between align-items-center">
@@ -97,125 +369,77 @@
               <h5>Schedule</h5>
               <p>5.00 pm - 7.00 pm</p>
             </div>
-
-          </div>
-        </div>
-
-      </div>
-
-    </section><!-- /Courses Course Details Section -->
-
-    <!-- Tabs Section -->
-    <section id="tabs" class="tabs section">
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row">
-          <div class="col-lg-3">
-            <ul class="nav nav-tabs flex-column">
-              <li class="nav-item">
-                <a class="nav-link active show" data-bs-toggle="tab" href="#tab-1">Modi sit est</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab-2">Unde praesentium sed</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab-3">Pariatur explicabo vel</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab-4">Nostrum qui quasi</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab-5">Iusto ut expedita aut</a>
-              </li>
-            </ul>
-          </div>
-          <div class="col-lg-9 mt-4 mt-lg-0">
-            <div class="tab-content">
-              <div class="tab-pane active show" id="tab-1">
-                <div class="row">
-                  <div class="col-lg-8 details order-2 order-lg-1">
-                    <h3>Architecto ut aperiam autem id</h3>
-                    <p class="fst-italic">Qui laudantium consequatur laborum sit qui ad sapiente dila parde sonata raqer
-                      a videna mareta paulona marka</p>
-                    <p>Et nobis maiores eius. Voluptatibus ut enim blanditiis atque harum sint. Laborum eos ipsum ipsa
-                      odit magni. Incidunt hic ut molestiae aut qui. Est repellat minima eveniet eius et quis magni
-                      nihil. Consequatur dolorem quaerat quos qui similique accusamus nostrum rem vero</p>
-                  </div>
-                  <div class="col-lg-4 text-center order-1 order-lg-2">
-                    <img src="assets/img/tabs/tab-1.png" alt="" class="img-fluid">
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="tab-2">
-                <div class="row">
-                  <div class="col-lg-8 details order-2 order-lg-1">
-                    <h3>Et blanditiis nemo veritatis excepturi</h3>
-                    <p class="fst-italic">Qui laudantium consequatur laborum sit qui ad sapiente dila parde sonata raqer
-                      a videna mareta paulona marka</p>
-                    <p>Ea ipsum voluptatem consequatur quis est. Illum error ullam omnis quia et reiciendis sunt sunt
-                      est. Non aliquid repellendus itaque accusamus eius et velit ipsa voluptates. Optio nesciunt eaque
-                      beatae accusamus lerode pakto madirna desera vafle de nideran pal</p>
-                  </div>
-                  <div class="col-lg-4 text-center order-1 order-lg-2">
-                    <img src="assets/img/tabs/tab-2.png" alt="" class="img-fluid">
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="tab-3">
-                <div class="row">
-                  <div class="col-lg-8 details order-2 order-lg-1">
-                    <h3>Impedit facilis occaecati odio neque aperiam sit</h3>
-                    <p class="fst-italic">Eos voluptatibus quo. Odio similique illum id quidem non enim fuga. Qui natus
-                      non sunt dicta dolor et. In asperiores velit quaerat perferendis aut</p>
-                    <p>Iure officiis odit rerum. Harum sequi eum illum corrupti culpa veritatis quisquam. Neque
-                      necessitatibus illo rerum eum ut. Commodi ipsam minima molestiae sed laboriosam a iste odio. Earum
-                      odit nesciunt fugiat sit ullam. Soluta et harum voluptatem optio quae</p>
-                  </div>
-                  <div class="col-lg-4 text-center order-1 order-lg-2">
-                    <img src="assets/img/tabs/tab-3.png" alt="" class="img-fluid">
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="tab-4">
-                <div class="row">
-                  <div class="col-lg-8 details order-2 order-lg-1">
-                    <h3>Fuga dolores inventore laboriosam ut est accusamus laboriosam dolore</h3>
-                    <p class="fst-italic">Totam aperiam accusamus. Repellat consequuntur iure voluptas iure porro quis
-                      delectus</p>
-                    <p>Eaque consequuntur consequuntur libero expedita in voluptas. Nostrum ipsam necessitatibus aliquam
-                      fugiat debitis quis velit. Eum ex maxime error in consequatur corporis atque. Eligendi asperiores
-                      sed qui veritatis aperiam quia a laborum inventore</p>
-                  </div>
-                  <div class="col-lg-4 text-center order-1 order-lg-2">
-                    <img src="assets/img/tabs/tab-4.png" alt="" class="img-fluid">
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="tab-5">
-                <div class="row">
-                  <div class="col-lg-8 details order-2 order-lg-1">
-                    <h3>Est eveniet ipsam sindera pad rone matrelat sando reda</h3>
-                    <p class="fst-italic">Omnis blanditiis saepe eos autem qui sunt debitis porro quia.</p>
-                    <p>Exercitationem nostrum omnis. Ut reiciendis repudiandae minus. Omnis recusandae ut non quam ut
-                      quod eius qui. Ipsum quia odit vero atque qui quibusdam amet. Occaecati sed est sint aut vitae
-                      molestiae voluptate vel</p>
-                  </div>
-                  <div class="col-lg-4 text-center order-1 order-lg-2">
-                    <img src="assets/img/tabs/tab-5.png" alt="" class="img-fluid">
-                  </div>
-                </div>
-              </div>
+            <div class="course-info d-flex justify-content-between align-items-center">
+              <h5>Duration(in hours)</h5>
+              <p th:text="${course.duration}"></p>
             </div>
+
           </div>
         </div>
 
       </div>
 
-    </section><!-- /Tabs Section -->
-
+    </section>
   </main>
-  <div th:replace="footer :: footer"></div>
+  <footer id="footer" class="footer position-relative light-background">
+
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span class="sitename">TeachToTech</span>
+          </a>
+          <div class="footer-contact pt-3">
+            <p> C7 , 607 </p>
+            <p>Siddhartha Vihar, Ghaziabad 201009</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>+919015088066</span></p>
+            <p><strong>Email:</strong> <span>posttoteachtoteach@gmail.com</span></p>
+          </div>
+          <div class="social-links d-flex mt-4">
+            <a href=""><i class="bi bi-twitter-x"></i></a>
+            <a href=""><i class="bi bi-facebook"></i></a>
+            <a href=""><i class="bi bi-instagram"></i></a>
+            <a href=""><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="/about">About us</a></li>
+            <li><a href="/courses">Courses</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="#">Privacy policy</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Our Services</h4>
+          <ul>
+            <li><a href="#">Web Design</a></li>
+            <li><a href="#">Web Development</a></li>
+            <li><a href="#">Product Management</a></li>
+            <li><a href="#">Marketing</a></li>
+            <li><a href="#">Graphic Design</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-4 col-md-12 footer-newsletter">
+          <h4>Our Newsletter</h4>
+          <p>Subscribe to our newsletter and receive the latest news about our products and services!</p>
+          <form action="forms/newsletter.php" method="post" class="php-email-form">
+            <div class="newsletter-form"><input type="email" name="email"><input type="submit" value="Subscribe"></div>
+            <div class="loading">Loading</div>
+            <div class="error-message"></div>
+            <div class="sent-message">Your subscription request has been sent. Thank you!</div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+  </footer>
 
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
@@ -225,15 +449,11 @@
   <div id="preloader"></div>
 
   <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+
 
 </body>
 
