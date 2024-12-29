@@ -67,7 +67,7 @@ public class DemoController {
             courses = courseService.getApprovedCourses(); // Show only approved courses by default
         }
         model.addAttribute("courses", courses);
-		// System.out.println(courses.get);
+		
         model.addAttribute("selectedCategory", category); // Pass selected category to the view
         return "courses";
     }
@@ -98,17 +98,18 @@ public class DemoController {
 		return "contact";
 	}
 
-	@GetMapping("/course-details")
-    public String coursedetails() {
-        return "course-details"; // This should resolve to course-details.html in templates
-	}
 	@GetMapping("/course-details/{id}")
     public String getCourseDetails(@PathVariable("id") Long courseId, Model model) {
         Course course = courseService.findCourseById(courseId); // Fetch the course by ID from your service layer
-
+		List<Category> categories = categoryService.getCategory();
+        model.addAttribute("categories", categories);
+      
         model.addAttribute("course", course); // Add the course to the model
-        return "course-detail"; // Return the course-details.html template
+
+        return "course-details"; // Return the course-details.html template
     }
+
+
 
 	@GetMapping("/api/users/register")
 	public String register(){

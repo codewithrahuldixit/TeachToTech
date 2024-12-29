@@ -217,6 +217,7 @@
   
         if (response.ok) {
           alert('User registered successfully');
+          window.location.href = "/api/users/login";
         } else {
           const errorMessage = await response.text();
           alert(`Error: ${errorMessage}`);
