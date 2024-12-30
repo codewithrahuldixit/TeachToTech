@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rahul.configuration.ListStringConverter;
 import com.rahul.enum_.CourseStatus;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -38,7 +40,8 @@ public class Course {
     private String courseName;
 
     @Lob
-    @Column(nullable=false,columnDefinition = "LONGTEXT")
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
+    @Convert(converter = ListStringConverter.class)
     private List<String> description;
 
     @ManyToOne(optional = false)

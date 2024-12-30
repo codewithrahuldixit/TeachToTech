@@ -45,6 +45,9 @@ public class UserController {
         if (userService.findByEmail(user.getEmail()).isPresent()) {
             return ResponseEntity.badRequest().body("Username is already taken");
         }
+        if (userService.findByContact(user.getContact()).isPresent()) {
+            return ResponseEntity.badRequest().body("Contact is already taken");
+        }
         userService.registerUser(user);
         return ResponseEntity.ok("User registered successfully");
 }

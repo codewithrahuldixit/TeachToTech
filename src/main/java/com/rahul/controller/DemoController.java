@@ -68,19 +68,6 @@ public class DemoController {
             courses = courseService.getApprovedCourses(); // Show only approved courses by default
         }
         model.addAttribute("courses", courses);
-		// Trainer trainer = new Trainer();
-		
-	// 	List<Map<String, Object>> trainers = List.of(
-	// 		Map.of(
-	// 				"trainerId",trainer.getTrainerId(),
-	// 				"trainerName",trainer.getTrainerName(),
-	// 				"trainerDescription",trainer.getTrainerDescription(),
-	// 				"trainerImage",trainer.getTrainerImage(),
-	// 				"trainerQualification",trainer.getTrainerQualification(),
-	// 				"linkedin",trainer.getLinkedin()
-	// 		)
-	// );
-	// model.addAttribute("trainers", trainers);
         model.addAttribute("selectedCategory", category); // Pass selected category to the view
         return "courses";
     }
@@ -122,8 +109,6 @@ public class DemoController {
         return "course-details"; // Return the course-details.html template
     }
 
-
-
 	@GetMapping("/api/users/register")
 	public String register(){
 		return "RegistrationForm";
@@ -151,8 +136,9 @@ public class DemoController {
         model.addAttribute("trainers", trainers);  // Add trainer data to the model
         return "trainers";  // Return the Thymeleaf template name
     }
-	
-
-
+	@GetMapping("/api/admin/register")
+	public String addAdmin(){
+		return "RegistrationForm";
+	}
 	
 }
