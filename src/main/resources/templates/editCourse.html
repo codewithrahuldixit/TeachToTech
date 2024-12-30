@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Course</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background-color: #f4f4f4;
+      font-family: Arial, sans-serif;
+    }
+    .content {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      width: 100%;
+      height: 100%;
+      padding-top: 30px;
+      box-sizing: border-box;
+    }
+    .card {
+      border: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 30px;
+      background-color: white;
+      width: 90%;
+      max-width: 2000px;
+      box-sizing: border-box;
+      margin-top: 50px;
+      min-width: 800px;
+    }
+    .card-title {
+      font-size: 25px;
+      color: #5fcf80;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      font-size: 14px;
+      color: #333;
+    }
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    .form-control:focus {
+      border-color: #5fcf80;
+      outline: none;
+    }
+    .read-more {
+      background-color: #5fcf80;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 12px 20px;
+      text-decoration: none;
+      font-size: 16px;
+      margin-top: 20px;
+      width: 100%;
+    }
+    .read-more:hover {
+      background-color: #4caf6a;
+    }
+    .back-arrow {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    .arrow {
+      width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-right: 15px solid #4CAF50;
+      margin-right: 10px;
+    }
+    .arrow:hover {
+      border-right-color: #45a049;
+    }
+    .back-text {
+      font-size: 14px;
+      color: #4CAF50;
+      font-weight: bold;
+    }
+    .back-text:hover {
+      color: #45a049;
+    }
+    /* #trainers {
+      width: 100%;
+      padding: 12px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #fff;
+      color: #000;
+    } */
+  </style>
+</head>
+<body>
+  <div class="content">
+    <div class="back-arrow" onclick="history.back()">
+      <div class="arrow"></div>
+      <p class="back-text">Go back</p>
+    </div>
+    <div class="card">
+      <h3 class="card-title">Add New Course</h3>
+      <form id="addCourseForm">
+
+        <!-- Category Field -->
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" name="category" class="form-control" required>
+            <option value="" disabled selected>Select Category</option>
+            <option value="newCategory">Add New Category</option>
+          </select>
+          <span id="categoryError" class="text-danger"></span>
+        </div>
+        
+        <!-- Input Field for New Category with Add Button -->
+        <div class="form-group" id="newCategoryField" style="display: none;">
+          <label for="newCategory">New Category Name</label>
+          <input type="text" id="newCategory" name="newCategory" class="form-control">
+          <button type="button" id="addCategoryButton" class="read-more" style="margin-top: 10px;">Add Category</button>
+        </div>
+
+    
+        <!-- Course Name Field -->
+        <div class="form-group">
+          <label for="courseName">Course Name</label>
+          <input type="text" id="courseName" name="courseName" class="form-control" required >
+        </div>
+
+        <div class="form-group" id="descriptionGroup">
+          <label for="description">Course Description</label>
+          <div id="descriptionFields">
+            <textarea name="description[]" class="form-control" rows="2" required></textarea>
+          </div>
+          <button type="button" id="addDescriptionField" class="read-more" style="margin-top: 10px;">Add Paragraph</button>
+        </div>
+        
+        <!-- Image Field -->
+        <div class="form-group">
+          <label for="image">Course Image</label>
+          <input type="file" id="image" name="image" class="form-control" accept="image/jpeg, image/png" required>
+          <small class="form-text text-muted">Only .jpg and .png images are allowed.</small>
+        </div>
+        
+
+        <!-- Duration Field -->
+        <div class="form-group">
+          <label for="duration">Course Duration (hours)</label>
+          <input type="number" id="duration" name="duration" class="form-control" required>
+        </div>
+        
+        <!-- Price Field -->
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input type="number" id="price" name="price" class="form-control" required>
+        </div>
+
+        <!-- Modules Field -->
+        <div class="form-group">
+          <label for="modules">Modules</label>
+          <input type="text" id="modules" name="modules" class="form-control">
+        </div>
+
+        <!-- Trainers Field -->
+        <div class="form-group">
+          <label for="trainers">Select Trainers</label>
+          <select id="trainers" name="trainers" class="form-control" multiple required>
+            <option value="" disabled selected>Select Trainer</option>
+
+          </select>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="read-more">Add Course</button>
+      </form>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', async function () {
+  const categorySelect = document.getElementById('category');
+  const errorSpan = document.getElementById('categoryError');
+  const trainersSelect = document.getElementById('trainers');
+  const newCategoryField = document.getElementById('newCategoryField');
+  const newCategoryInput = document.getElementById('newCategory');
+  const addCategoryButton = document.getElementById('addCategoryButton'); // Assuming you have a button for adding the category
+  const descriptionFields = document.getElementById('descriptionFields');
+  const addDescriptionFieldBtn = document.getElementById('addDescriptionField');
+  
+  categorySelect.addEventListener('change', function () {
+    if (categorySelect.value === 'newCategory') {
+      // Show the new category input field
+      newCategoryField.style.display = 'block';
+      newCategoryInput.required = true; // Make it required
+    } else {
+      // Hide the new category input field
+      newCategoryField.style.display = 'none';
+      newCategoryInput.required = false; // Remove required
+      newCategoryInput.value = ''; // Clear the input field
+    }
+  });
+
+  addDescriptionFieldBtn.addEventListener('click', () => {
+    const newField = document.createElement('textarea');
+    newField.name = 'description[]';  // Make it an array
+    newField.className = 'form-control';
+    newField.rows = 2;
+    newField.required = true;
+    descriptionFields.appendChild(newField);
+  });
+
+  // Function to load categories
+  async function loadCategories() {
+    try {
+      const response = await fetch('/category/getallcategory');
+      if (!response.ok) throw new Error('Failed to fetch categories');
+      const data = await response.json();
+      console.log("Categories:", data);
+      data.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.categoryId;
+        option.textContent = category.name;
+        categorySelect.appendChild(option);
+      });
+    } catch (error) {
+      errorSpan.textContent = 'Unable to load categories. Please try again later.';
+      console.error('Error fetching categories:', error);
+    }
+  }
+
+  // Function to load trainers
+  async function loadTrainers() {
+    try {
+      const response = await fetch('/api/trainer/get');
+      if (!response.ok) throw new Error('HTTP error! Status: ${response.status}');
+      const data = await response.json();
+      console.log("Trainers:", data);
+      data.forEach(trainer => {
+        const option = document.createElement('option');
+        option.value = trainer.trainerId;
+        option.textContent = trainer.trainerName;
+        trainersSelect.appendChild(option);
+      });
+    } catch (error) {
+      console.error('Error fetching trainers:', error);
+    }
+  }
+
+  // Load categories and trainers
+  await Promise.all([loadCategories(), loadTrainers()]);
+
+  // Add category when button is clicked
+  addCategoryButton.addEventListener('click', async () => {
+    const categoryName = newCategoryInput.value.trim();
+    if (!categoryName) {
+      alert('Please enter a category name');
+      return;
+    }
+
+    try {
+      const response = await fetch('/category/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: categoryName }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create new category');
+      }
+
+      const newCategory = await response.json();
+      alert('Category added successfully!');
+      
+      // Optionally, add the new category to the dropdown list without reloading
+      const option = document.createElement('option');
+      option.value = newCategory.categoryId;
+      option.textContent = newCategory.name;
+      categorySelect.appendChild(option);
+
+      // Set the new category as selected
+      categorySelect.value = newCategory.categoryId;
+
+      // Hide the new category input field
+      newCategoryField.style.display = 'none';
+    } catch (error) {
+      alert('Error adding category: ' + error.message);
+      console.error('Error adding category:', error);
+    }
+  });
+
+  // Handle form submission
+  const form = document.getElementById('addCourseForm');
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+    const descriptions = Array.from(document.getElementsByName('description[]')).map(d => d.value);
+    const payload = {
+    
+      courseName: formData.get('courseName'),
+      description: descriptions,
+      category: categorySelect.value === 'newCategory' ? { categoryId: parseInt(categorySelect.value, 10) } : { categoryId: parseInt(formData.get('category'), 10) },
+      duration: parseInt(formData.get('duration'), 10),
+      price: parseFloat(formData.get('price')),
+      modules: formData.get('modules'),
+      trainers: formData.getAll('trainers').map(trainerId => ({ trainerId: parseInt(trainerId, 10) }))
+    };
+
+    const imageFile = formData.get('image');
+        if (imageFile) {
+      formData.append('image', imageFile);
+      }
+     formData.append('payload', JSON.stringify(payload));
+
+    // Remove empty fields from payload
+    Object.keys(payload).forEach(key => {
+      if (payload[key] === null || payload[key] === '') {
+        delete payload[key];
+      }
+    });
+
+    console.log("Payload:", payload);
+
+    try {
+      // Send the course data to the backend
+      const response = await fetch('/api/courses/add/pending', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        alert('Course added successfully!');
+        form.reset();
+      } else {
+        const error = await response.text();
+        console.error('Failed response:', error);
+        alert('Failed to add course: ${error}');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('An error occurred while adding the course. Please try again.');
+    }
+  });
+});
+
+  </script>
+  
+</body>
+</html>

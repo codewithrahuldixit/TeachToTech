@@ -146,5 +146,12 @@ public class DemoController {
 		courseService.deleteCourse(id);
 		return "redirect:/courses"; 
 	}
+	@GetMapping("api/courses/edit/{id}")
+public String getCourseEditPage(@PathVariable Long id, Model model) {
+    Course course = courseService.getCourseById(id);
+    model.addAttribute("course", course);
+    return "editCourse";
+}
+
 	
 }
