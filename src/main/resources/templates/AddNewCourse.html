@@ -146,13 +146,19 @@
         </div>
 
         <!-- Description Field -->
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="description">Course Description</label>
           <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
+        </div> -->
+        <!-- Description Field -->
+        <div class="form-group" id="descriptionGroup">
+          <label for="description">Course Description</label>
+          <div id="descriptionFields">
+            <textarea name="description[]" class="form-control" rows="2" required></textarea>
+          </div>
+          <button type="button" id="addDescriptionField" class="read-more" style="margin-top: 10px;">Add Paragraph</button>
         </div>
-
         
-
         <!-- Image Field -->
         <div class="form-group">
           <label for="image">Course Image</label>
@@ -201,6 +207,8 @@
   const newCategoryField = document.getElementById('newCategoryField');
   const newCategoryInput = document.getElementById('newCategory');
   const addCategoryButton = document.getElementById('addCategoryButton'); // Assuming you have a button for adding the category
+  const descriptionFields = document.getElementById('descriptionFields');
+  const addDescriptionFieldBtn = document.getElementById('addDescriptionField');
   
   categorySelect.addEventListener('change', function () {
     if (categorySelect.value === 'newCategory') {
@@ -213,6 +221,15 @@
       newCategoryInput.required = false; // Remove required
       newCategoryInput.value = ''; // Clear the input field
     }
+  });
+
+  addDescriptionFieldBtn.addEventListener('click', () => {
+    const newField = document.createElement('textarea');
+    newField.name = 'description[]';  // Make it an array
+    newField.className = 'form-control';
+    newField.rows = 2;
+    newField.required = true;
+    descriptionFields.appendChild(newField);
   });
 
   // Function to load categories
@@ -300,10 +317,11 @@
     event.preventDefault();
 
     const formData = new FormData(form);
+    const descriptions = Array.from(document.getElementsByName('description[]')).map(d => d.value);
     const payload = {
     
       courseName: formData.get('courseName'),
-      description: formData.get('description'),
+      description: descriptions,
       category: categorySelect.value === 'newCategory' ? { categoryId: parseInt(categorySelect.value, 10) } : { categoryId: parseInt(formData.get('category'), 10) },
       duration: parseInt(formData.get('duration'), 10),
       price: parseFloat(formData.get('price')),
