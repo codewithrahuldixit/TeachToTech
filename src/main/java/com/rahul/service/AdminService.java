@@ -1,6 +1,7 @@
 package com.rahul.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.rahul.model.Users;
@@ -15,10 +16,14 @@ public class AdminService {
 
     @Autowired
     private UserRepository userRepository;
-
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    
     public void addAdmin(Users users){
-         users.setRole("ADMIN");
-         this.userRepository.save(users);
+       users.setRole("ADMIN");
+       users.setPassword(this.passwordEncoder.encode(users.getPassword()));
+       this.userRepository.save(users);
     }
 
     public void promoteToAdmin(String email,String token) throws Exception {
