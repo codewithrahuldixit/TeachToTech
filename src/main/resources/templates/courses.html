@@ -118,8 +118,6 @@
 			<div class="container">
 
 				<div class="row">
-
-
 					<div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100"
 						th:each="course : ${courses}">
 
@@ -143,17 +141,20 @@
 									</div>
 								</div>
 								<p class="description text-around course-description" th:text="${course.description}"></p>
-								<div class="trainer d-flex justify-content-between align-items-center">
-									<div class="trainer-profile d-flex align-items-center">
-										<img src="assets/img/trainers/trainer-1-2.jpg" class="img-fluid" alt="">
-										<a href="" class="trainer-link">Antonio</a>
-									</div>
-									<div class="trainer-rank d-flex align-items-center">
-										<i class="bi bi-person user-icon"></i>&nbsp;50
-										&nbsp;&nbsp;
-										<i class="bi bi-heart heart-icon"></i>&nbsp;65
+								<!-- Trainers Associated with the Course -->
+								<div class="trainers"> 
+									<div class="trainer d-flex justify-content-between align-items-center" 
+										 th:with="firstTrainer=${course.trainers[0]}">
+										<!-- Trainer Profile -->
+										<div class="trainer-profile d-flex align-items-center">
+											<img th:src="${firstTrainer.trainerImage}" class="img-fluid" alt="Trainer Image">
+											<a th:href="${firstTrainer.linkedin}" class="trainer-link" th:text="${firstTrainer.trainerName}" target="_blank">
+												Trainer Name
+											</a>
+										</div>
 									</div>
 								</div>
+								
 								<div class="icons">
 									<p><i class="far fa-calendar"></i>
 										<span
@@ -163,7 +164,7 @@
 									<p><i class="fas fa-book"></i> <span th:text="${course.modules}"></span></p>
 									<a th:href="@{/course-details/{id}(id=${course.id})}"><button class="read-more">Read
 											More</button></a>
-											<form th:action="@{/courses/delete/{id}(id=${course.id})}" method="post" onsubmit="return confirm('Are you sure you want to delete this course?');">
+											<form th:action="@{api/courses/delete/{id}(id=${course.id})}" method="post" onsubmit="return confirm('Are you sure you want to delete this course?');">
 												<button type="submit" class="read-more">Delete</button>
 											</form>
 								</div>

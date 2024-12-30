@@ -57,9 +57,7 @@ public class CourseService {
     }
     public Course findCourseById(Long courseId) {
         return courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
-    }
-
-    
+    }   
     public void deleteCourse(Long id) {
         courseRepository.deleteById(id);
     }
@@ -77,7 +75,7 @@ public class CourseService {
         }
     
         // Directory where the image will be stored on the server
-        String uploadDir = "C:/Users/isp/Documents/ayushi_pagal/TeachToTech/src/main/resources/static/assets/img/";
+        String uploadDir = "D:/T2T/TeachToTech/src/main/resources/static/assets/img/";
         String fileName = imageFile.getOriginalFilename();
     
         try {
@@ -99,5 +97,32 @@ public class CourseService {
             e.printStackTrace();
             throw new RuntimeException("Failed to save image: " + e.getMessage());
         }
+    }
+    public Course updateCourseWithImage(Long courseId, Course updatedCourse, MultipartFile imageFile) throws Exception {
+        Course existingCourse = courseRepository.findById(courseId)
+            .orElseThrow(() -> new Exception("Course not found"));
+
+        // Check for duplicate 
+        Optional<Course> duplicateCourse = courseRepository.findByCourseNameAndPrice(
+            updatedCourse.getCourseName(), updatedCourse.getPrice()
+        );
+
+        if (duplicateCourse.isPresent() && !duplicateCourse.get().getId().equals(courseId)) {
+            throw new Exception("A course with the same name and instructor already exists.");
+        }
+        
+            String imagePath = saveImage(imageFile);
+            existingCourse.setImage(imagePath);  
+        
+
+        // Update other course fields
+        existingCourse.setCourseName(updatedCourse.getCourseName());
+        existingCourse.setDescription(updatedCourse.getDescription());
+        existingCourse.setCategory(updatedCourse.getCategory());
+        existingCourse.setDuration(updatedCourse.getDuration());
+        existingCourse.setModules(updatedCourse.getModules());
+        existingCourse.setTrainers(updatedCourse.getTrainers());
+        
+        return courseRepository.save(existingCourse);
     }
 }

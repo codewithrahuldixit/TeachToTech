@@ -353,6 +353,7 @@
 
       if (response.ok) {
         alert('Course added successfully!');
+        form.reset();
       } else {
         const error = await response.text();
         console.error('Failed response:', error);

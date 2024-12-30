@@ -33,6 +33,7 @@ public class DemoController {
 
 	@Autowired
     private CategoryService categoryService;
+ 
 
 
 	@GetMapping({ "/", "/index" })
@@ -108,8 +109,7 @@ public class DemoController {
 
         return "course-details"; // Return the course-details.html template
     }
-
-
+ 
 	@GetMapping("/api/users/register")
 	public String register(){
 		return "RegistrationForm";
@@ -135,16 +135,16 @@ public class DemoController {
         model.addAttribute("categories", categories);
         List<Trainer> trainers = trainerService.getallTrainer();  // Fetch data from the service
         model.addAttribute("trainers", trainers);  // Add trainer data to the model
-       
         return "trainers";  // Return the Thymeleaf template name
     }
-	
-   //chnage done to delete course
-   @PostMapping("/courses/delete/{id}")
-public String deleteCourse(@PathVariable Long id) {
-    courseService.deleteCourse(id);
-    return "redirect:/courses"; 
-}
-
+	@GetMapping("/api/admin/register")
+	public String addAdmin(){
+		return "RegistrationForm";
+	}
+	@PostMapping("api/courses/delete/{id}")
+	public String deleteCourse(@PathVariable Long id) {
+		courseService.deleteCourse(id);
+		return "redirect:/courses"; 
+	}
 	
 }

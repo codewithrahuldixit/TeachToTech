@@ -31,7 +31,7 @@ public class AdminService {
         if (!promoter.getRole().equals("SUPER_ADMIN")) {
             throw new Exception("Only Super Admins can promote users to Admin.");
         }
-    
+
         Users user = userRepository.findByEmail(email)
             .orElseThrow(() -> new RuntimeException("User not found"));
     
