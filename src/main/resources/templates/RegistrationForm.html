@@ -181,53 +181,59 @@
   </div>
 
   <script>
-    async function submitForm(event) {
-      event.preventDefault(); 
-  
+  async function submitForm(event) {
+    event.preventDefault();
 
-      const password = document.getElementById('password').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
-  
-    
-      if (password !== confirmPassword) {
-        alert('Passwords do not match. Please try again.');
-        return; 
-      }
-  
-      
-      const user = {
-        firstName: document.getElementById('firstName').value,
-        lastName: document.getElementById('lastName').value,
-        email: document.getElementById('email').value,
-        contact: document.getElementById('contact').value,
-        qualification: document.getElementById('qualification').value,
-        dob: document.getElementById('dob').value,
-        password: password, 
-      };
-  
-      try {
-     
-        const response = await fetch('/api/users/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(user),
-        });
-  
-        if (response.ok) {
-          alert('User registered successfully');
-          window.location.href = "/api/users/login";
-        } else {
-          const errorMessage = await response.text();
-          alert(`Error: ${errorMessage}`);
-        }
-      } catch (error) {
-        console.error('Error occurred:', error);
-        alert('An unexpected error occurred.');
-      }
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    if (password !== confirmPassword) {
+      alert('Passwords do not match. Please try again.');
+      return;
     }
-  </script>
-  
+
+    const user = {
+      firstName: document.getElementById('firstName').value,
+      lastName: document.getElementById('lastName').value,
+      email: document.getElementById('email').value,
+      contact: document.getElementById('contact').value,
+      qualification: document.getElementById('qualification').value,
+      dob: document.getElementById('dob').value,
+      password: password,
+    };
+
+    try {
+      // Decide the API endpoint based on the current page URL
+      let apiEndpoint;
+      if (window.location.pathname === '/api/users/register') {
+        apiEndpoint = '/api/users/register';
+      } else if (window.location.pathname === '/api/admin/register') {
+        apiEndpoint = '/api/admin/register';
+      } else {
+        apiEndpoint = '/api/users/register'; // Default API endpoint
+      }
+
+      const response = await fetch(apiEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(user),
+      });
+
+      if (response.ok) {
+        alert('User registered successfully');
+        form.reset();
+        window.location.href = '/api/users/login';
+      } else {
+        const errorMessage = await response.text();
+        alert(`Error: ${errorMessage}`);
+      }
+    } catch (error) {
+      console.error('Error occurred:', error);
+      alert('An unexpected error occurred.');
+    }
+  }
+</script>
 </body>
 </html>

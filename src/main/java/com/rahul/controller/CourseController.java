@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -78,7 +80,7 @@ public class CourseController {
         return ResponseEntity.ok("Course rejected");
     }
 
-    @GetMapping("get/pending")
+    @GetMapping("/get/pending")
     public ResponseEntity<List<Course>> getPendingCourses() {
        List<Course> course= this.courseService.getPendingCourse();
         return ResponseEntity.ok(course);
@@ -95,12 +97,25 @@ public class CourseController {
        List<Course> course= this.courseService.getRejectedCourses();
         return ResponseEntity.ok(course);
     }
- 
-    @DeleteMapping("/courses/{id}")
-    public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
-        courseService.deleteCourse(id);
-        return ResponseEntity.noContent().build();
+
+    @PutMapping("/{courseId}")
+    public ResponseEntity<Course> updateCourse(
+    @PathVariable Long courseId,
+    @RequestParam("updatedCourses") String updatedCourseJson,
+    @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
+
+    // Use the courseId from the URL
+    try {
+        // Parse the JSON string to get course data
+        ObjectMapper objectMapper = new ObjectMapper();
+        Course updatedCourse = objectMapper.readValue(updatedCourseJson, Course.class);
+        Course updated = courseService.updateCourseWithImage(courseId, updatedCourse, imageFile);
+        return ResponseEntity.ok(updated);
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
+}
+
 
     //change done by ayushi 
     @GetMapping("/details/{id}")

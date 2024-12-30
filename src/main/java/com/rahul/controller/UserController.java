@@ -45,6 +45,9 @@ public class UserController {
         if (userService.findByEmail(user.getEmail()).isPresent()) {
             return ResponseEntity.badRequest().body("Username is already taken");
         }
+        if (userService.findByContact(user.getContact()).isPresent()) {
+            return ResponseEntity.badRequest().body("Contact is already taken");
+        }
         userService.registerUser(user);
         return ResponseEntity.ok("User registered successfully");
 }
@@ -78,8 +81,8 @@ public class UserController {
     }
  
     @GetMapping("/name")
-    public String getCurrentUsername(@RequestHeader("Authorization") String authorizationHeader) {
-        // Remove "Bearer " prefix from the token
+        public String getCurrentUsername(@RequestHeader("Authorization") String authorizationHeader) {
+     // Remove "Bearer " prefix from the token
         if(authorizationHeader==null|| !authorizationHeader.startsWith("Bearer ")){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Authorization header is missing or invalid");
         }

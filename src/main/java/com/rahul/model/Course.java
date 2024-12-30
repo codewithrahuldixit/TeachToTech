@@ -1,11 +1,14 @@
 package com.rahul.model;
 
+import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rahul.configuration.ListStringConverter;
 import com.rahul.enum_.CourseStatus;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -20,10 +23,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "courses")
@@ -37,8 +43,9 @@ public class Course {
     private String courseName;
 
     @Lob
-    @Column(nullable=false,columnDefinition = "LONGTEXT")
-    private String description;
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
+    @Convert(converter = ListStringConverter.class)
+    private List<String> description;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "category_id", nullable = false) // Foreign key
