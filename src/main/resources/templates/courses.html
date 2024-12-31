@@ -164,7 +164,7 @@
 					<ol>
 						<li><a href="/index">Home</a></li>
 						<li class="current">Courses</li>
-						<li><a href="/api/courses/addNew">Add Course</a></li>
+						<li class="adminSection" style="display: none;"><a href="/api/courses/addNew" >Add Course</a></li>
 					</ol>
 				</div>
 			</nav>
@@ -278,6 +278,7 @@
 	<script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
 
 	<!-- Main JS File -->
+<<<<<<< Updated upstream
 	<script src="assets/js/main.js" defer></script>
 	<script>
 		function checkAuthAndRedirect(courseId) {
@@ -294,6 +295,21 @@
 
 	</script>
 
+=======
+	<script src="assets/js/main.js"></script>
+	<script>
+		function checkAuthAndRedirect(courseId) {
+    const token = localStorage.getItem("authToken");
+    
+    if (token) {
+        window.location.href = `/course-details/${courseId}`;
+    } else {
+        window.location.href = `/api/users/login?redirect=/course-details/${courseId}`;
+    }
+}
+
+	</script>
+>>>>>>> Stashed changes
 
 </body>
 
