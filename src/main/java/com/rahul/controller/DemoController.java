@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.rahul.model.Category;
 import com.rahul.model.Course;
 import com.rahul.model.Trainer;
@@ -24,22 +25,22 @@ public class DemoController {
 
 	 
 	@Autowired
-    private CourseService courseService;
+	private CourseService courseService;
 
 
 	@Autowired
-    private TrainerService trainerService;
+	private TrainerService trainerService;
 
 
 	@Autowired
-    private CategoryService categoryService;
+	private CategoryService categoryService;
  
 
 
 	@GetMapping({ "/", "/index" })
 	public String Home(Model model) {
 		List<Category> categories = categoryService.getCategory();
-        model.addAttribute("categories", categories);
+		model.addAttribute("categories", categories);
 		return "index";
 	}
 
@@ -58,20 +59,20 @@ public class DemoController {
 	}
  
 	@GetMapping("/courses")
-    public String showCourses(@RequestParam(value = "category", required = false) String category, Model model) {
-        
-        List<Category> categories = categoryService.getCategory();
-        model.addAttribute("categories", categories); // Add categories to the model
-        List<Course> courses;
-        if (category != null && !category.isEmpty()) {
-            courses = courseService.getCoursesByCategory(category); // Assuming this method exists in CourseService
-        } else {
-            courses = courseService.getApprovedCourses(); // Show only approved courses by default
-        }
-        model.addAttribute("courses", courses);
-        model.addAttribute("selectedCategory", category); // Pass selected category to the view
-        return "courses";
-    }
+	public String showCourses(@RequestParam(value = "category", required = false) String category, Model model) {
+		
+		List<Category> categories = categoryService.getCategory();
+		model.addAttribute("categories", categories); // Add categories to the model
+		List<Course> courses;
+		if (category != null && !category.isEmpty()) {
+			courses = courseService.getCoursesByCategory(category); // Assuming this method exists in CourseService
+		} else {
+			courses = courseService.getApprovedCourses(); // Show only approved courses by default
+		}
+		model.addAttribute("courses", courses);
+		model.addAttribute("selectedCategory", category); // Pass selected category to the view
+		return "courses";
+	}
 	
 	@GetMapping("/pricing")
 	public String pricing() {
@@ -82,7 +83,7 @@ public class DemoController {
 	@GetMapping("/about")
 	public String about(Model model) {
 		List<Category> categories = categoryService.getCategory();
-        model.addAttribute("categories", categories);
+		model.addAttribute("categories", categories);
 		return "about";
 	}
 
@@ -95,20 +96,20 @@ public class DemoController {
 	@GetMapping("/contact")
 	public String contact(Model model) {
 		List<Category> categories = categoryService.getCategory();
-        model.addAttribute("categories", categories);
+		model.addAttribute("categories", categories);
 		return "contact";
 	}
 
 	@GetMapping("/course-details/{id}")
-    public String getCourseDetails(@PathVariable("id") Long courseId, Model model) {
-        Course course = courseService.findCourseById(courseId); // Fetch the course by ID from your service layer
+	public String getCourseDetails(@PathVariable("id") Long courseId, Model model) {
+		Course course = courseService.findCourseById(courseId); // Fetch the course by ID from your service layer
 		List<Category> categories = categoryService.getCategory();
-        model.addAttribute("categories", categories);
-      
-        model.addAttribute("course", course); // Add the course to the model
+		model.addAttribute("categories", categories);
+	  
+		model.addAttribute("course", course); // Add the course to the model
 
-        return "course-details"; // Return the course-details.html template
-    }
+		return "course-details"; // Return the course-details.html template
+	}
  
 	@GetMapping("/api/users/register")
 	public String register(){
@@ -130,13 +131,13 @@ public class DemoController {
 		return "AddTrainer";
 	}
 	@GetMapping("/trainers")
-    public String getAllTrainers(Model model) {
+	public String getAllTrainers(Model model) {
 		List<Category> categories = categoryService.getCategory();
-        model.addAttribute("categories", categories);
-        List<Trainer> trainers = trainerService.getallTrainer();  // Fetch data from the service
-        model.addAttribute("trainers", trainers);  // Add trainer data to the model
-        return "trainers";  // Return the Thymeleaf template name
-    }
+		model.addAttribute("categories", categories);
+		List<Trainer> trainers = trainerService.getallTrainer();  // Fetch data from the service
+		model.addAttribute("trainers", trainers);  // Add trainer data to the model
+		return "trainers";  // Return the Thymeleaf template name
+	}
 	@GetMapping("/api/admin/register")
 	public String addAdmin(){
 		return "RegistrationForm";
@@ -146,10 +147,16 @@ public class DemoController {
 		courseService.deleteCourse(id);
 		return "redirect:/courses"; 
 	}
-	@GetMapping("api/courses/edit/{id}")
-public String getCourseEditPage(@PathVariable Long id, Model model) {
+@GetMapping("api/courses/edit/{id}")
+public String getCourseEditPage(@PathVariable Long id, Model model) throws JsonProcessingException {
     Course course = courseService.getCourseById(id);
-    model.addAttribute("course", course);
+	Course courseObject=this.courseService.convertObjectToJsonAndBack(course);
+	List<Category> categories = categoryService.getCategory();  // Fetch all categories
+    List<Trainer> trainers = trainerService.getallTrainer();
+
+    model.addAttribute("course", courseObject);
+	model.addAttribute("categories", categories);
+    model.addAttribute("trainers", trainers);
     return "editCourse";
 }
 
