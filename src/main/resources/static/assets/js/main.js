@@ -152,19 +152,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function fetchRole() {
   const token = localStorage.getItem("authToken");
+  console.log(token);
   if (!token) {
       console.log("No token found in localStorage");
       return null;  // If no token, return null
   }
 
   try {
-      const response = await fetch("/getrole", {
-          method: "GET",
+      const response = await fetch("api/users/getrole", {
+          method: "POST",
           headers: {
               "Authorization": `Bearer ${token}`
           }
       });
-
+      console.log(response);
       if (!response.ok) {
           throw new Error("Failed to fetch role");
       }
@@ -179,15 +180,14 @@ async function fetchRole() {
 
 async function displayAdminContent() {
   const role = await fetchRole();
+  const adminSections = document.querySelectorAll(".adminSection");
 
-  if (role === "ADMIN") {
-      // Show admin-only content
-      document.getElementById("adminSection").style.display = "block";
-  } else {
-      // Hide admin-only content if not an ADMIN
-      document.getElementById("adminSection").style.display = "none";
-  }
+  adminSections.forEach(section => {
+      section.style.display = role === "ROLE_ADMIN" ? "block" : "none";
+  });
 }
+
+
 
 
     async function fetchUsername() {
@@ -211,6 +211,7 @@ async function displayAdminContent() {
                 document.getElementById("userGreeting").style.display = "block";
                 document.getElementById("loginButtons").style.display = "none";
                 document.getElementById("logoutContainer").style.display="block";
+                const registerIndexButton = document.getElementById("registerIndexButton");
                 if (registerIndexButton) {
                   registerIndexButton.style.display = "none";
               }

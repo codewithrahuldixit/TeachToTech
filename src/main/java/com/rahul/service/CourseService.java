@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rahul.enum_.CourseStatus;
 import com.rahul.model.Course;
 import com.rahul.repository.CourseRepository;
@@ -18,6 +20,9 @@ public class CourseService {
 
     @Autowired
     private CourseRepository courseRepository;
+    
+    @Autowired
+    private  ObjectMapper objectMapper;
 
      public void saveCourse(Course course) {
         course.setStatus(CourseStatus.APPROVED);
@@ -67,6 +72,20 @@ public class CourseService {
     }
     public Optional<Course> findByPrice(Double price) {
         return this.courseRepository.findByPrice(price);
+    }
+    public String convertObjectToJsonString(Course course) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(course);
+    }
+
+    // Convert JSON string back to Course object
+    public Course convertJsonToModel(String json) throws JsonProcessingException {
+        return objectMapper.readValue(json, Course.class);
+    }
+
+    // Combined example: Convert object to JSON and back to object
+    public Course convertObjectToJsonAndBack(Course course) throws JsonProcessingException {
+        String json = convertObjectToJsonString(course); // Convert object to JSON
+        return convertJsonToModel(json); // Convert JSON back to object
     }
 
     public String saveImage(MultipartFile imageFile) {

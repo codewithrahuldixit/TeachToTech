@@ -25,12 +25,12 @@ public class UserService {
    
 
     public Users registerUser(Users user) {    
-            user.setRole("USER"); // Subsequent users are regular users
-            user.setFirstSuperAdmin(false);
-        
-        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
-    }
+        user.setRole("USER"); // Subsequent users are regular users
+        user.setFirstSuperAdmin(false);
+    
+    user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+    return userRepository.save(user);
+}
     
     public String getUsersDetails(String token){
        String username=this.jwtUtil.extractUserName(token);
