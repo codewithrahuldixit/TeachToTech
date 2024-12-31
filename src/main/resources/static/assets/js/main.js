@@ -150,6 +150,45 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+async function fetchRole() {
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+      console.log("No token found in localStorage");
+      return null;  // If no token, return null
+  }
+
+  try {
+      const response = await fetch("/getrole", {
+          method: "GET",
+          headers: {
+              "Authorization": `Bearer ${token}`
+          }
+      });
+
+      if (!response.ok) {
+          throw new Error("Failed to fetch role");
+      }
+
+      const role = await response.text();  // Assuming role is returned as plain text (like "ADMIN")
+      return role;
+  } catch (error) {
+      console.error("Error fetching role:", error);
+      return null;
+  }
+}
+
+async function displayAdminContent() {
+  const role = await fetchRole();
+
+  if (role === "ADMIN") {
+      // Show admin-only content
+      document.getElementById("adminSection").style.display = "block";
+  } else {
+      // Hide admin-only content if not an ADMIN
+      document.getElementById("adminSection").style.display = "none";
+  }
+}
+
 
     async function fetchUsername() {
         const token = localStorage.getItem("authToken");
@@ -180,7 +219,10 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Error fetching username:", error);
         }
     }
-    document.addEventListener("DOMContentLoaded", fetchUsername);
+    document.addEventListener("DOMContentLoaded",() =>{
+        fetchUsername();
+        displayAdminContent();
+    });
 
     document.getElementById('logoutButton')?.addEventListener('click', (e) => {
       e.preventDefault();

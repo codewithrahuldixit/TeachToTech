@@ -97,5 +97,16 @@ public class JwtUtil {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
-   
+
+//     public String getRoleFromToken(String token) {
+//         Claims claims = extractClaims(token);
+//         List<String> roles = claims.get("roles", List.class);
+//         return (roles != null && !roles.isEmpty()) ? roles.get(0) : null ; // Return the first role
+//     }
+public String getRoleFromToken(String token) {
+    Claims claims = extractClaims(token);
+    List<String> roles = claims.get("roles", List.class);
+    return (roles != null && !roles.isEmpty()) ? roles.get(0) : null; // Corrected: semicolon added after null
+}
+
 }
