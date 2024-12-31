@@ -32,8 +32,6 @@
 	<link href="assets/css/main.css" rel="stylesheet">
 
 	<style>
-		
-
 		.icons {
 			display: flex;
 			align-items: center;
@@ -68,6 +66,7 @@
 			height: 35px;
 			width: 100px;
 		}
+
 		.edit {
 			background-color: #FFA500;
 			color: white;
@@ -76,6 +75,7 @@
 			height: 35px;
 			width: 100px;
 		}
+
 		.delete {
 			background-color: #FF4D4F;
 			color: white;
@@ -84,43 +84,48 @@
 			height: 35px;
 			width: 100px;
 		}
-    .course-description {
-      text-align: justify;
-    }
-	.trainer-profile {
-	display: flex;
-	align-items: center;
-	
-}
 
-.trainer-img {
-	width: 50px; /* Adjust image size */
-	height: 50px;
-	border-radius: 50%; /* Make the image circular */
-	object-fit: cover;
-}
+		.course-description {
+			text-align: justify;
+		}
 
-.trainer-info {
-	display: flex;
-	flex-direction: row;
-}
+		.trainer-profile {
+			display: flex;
+			align-items: center;
 
-.trainer-details {
-	display: flex;
-	align-items: center;
-	gap: 2rem; /* Spacing between items */
-}
+		}
 
-.trainer-link {
-	font-weight: bold;
-	text-decoration: none;
-	color: #000; /* Change to your preferred color */
-}
-.fa-calendar{
-	margin-left: 10px;
-}
+		.trainer-img {
+			width: 50px;
+			/* Adjust image size */
+			height: 50px;
+			border-radius: 50%;
+			/* Make the image circular */
+			object-fit: cover;
+		}
 
+		.trainer-info {
+			display: flex;
+			flex-direction: row;
+		}
 
+		.trainer-details {
+			display: flex;
+			align-items: center;
+			gap: 2rem;
+			/* Spacing between items */
+		}
+
+		.trainer-link {
+			font-weight: bold;
+			text-decoration: none;
+			color: #000;
+			/* Change to your preferred color */
+		}
+
+		.fa-calendar {
+			margin-left: 10px;
+		}
 	</style>
 
 </head>
@@ -134,21 +139,24 @@
 
 		<!-- Page Title -->
 		<div class="page-title" data-aos="fade">
-			<div class="heading">
+
+
+			<div id="hero" class="hero section dark-background">
+				<img src="assets/img/course_banner.jpg" alt="" data-aos="fade-in">
 				<div class="container">
-					<div class="row d-flex justify-content-center text-center">
-						<div class="col-lg-8">
-							<h1>Courses</h1>
-							<p class="mb-0">At TeachToTech, we bridge the gap between curiosity and expertise in the
-								world of Information Technology. Our courses are designed to equip learners with
-								practical, in-demand tech skills—from coding and
-								cybersecurity to data analytics and cloud computing. Whether you're a beginner or a
-								professional looking to upskill, we provide flexible, hands-on learning guided by
-								industry experts.Start your journey with us and take a step toward mastering the future
-								of technology!</p>
-						</div>
-					</div>
+
+					<h2 data-aos="fade-up" data-aos-delay="100">Courses</h2>
+					<p data-aos="fade-up" data-aos-delay="200">At TeachToTech, we bridge the gap between curiosity and
+						expertise in the
+						world of Information Technology. Our courses are designed to equip learners with
+						practical, in-demand tech skills—from coding and
+						cybersecurity to data analytics and cloud computing. Whether you're a beginner or a
+						professional looking to upskill, we provide flexible, hands-on learning guided by
+						industry experts.Start your journey with us and take a step toward mastering the future
+						of technology!</p>
 				</div>
+
+
 			</div>
 			<nav class="breadcrumbs">
 				<div class="container">
@@ -189,43 +197,50 @@
 										<i class="far fa-star"></i>
 									</div>
 								</div>
-								<p class="description text-around course-description" th:text="${course.description}"></p>
+								<p class="description text-around course-description" th:text="${course.description}">
+								</p>
 								<!-- Trainers Associated with the Course -->
-								<div class="trainers"> 
-									<div class="trainer d-flex justify-content-between align-items-center" 
-										 th:with="firstTrainer=${course.trainers[0]}">
+								<div class="trainers">
+									<div class="trainer d-flex justify-content-between align-items-center"
+										th:with="firstTrainer=${course.trainers[0]}">
 										<!-- Trainer Profile -->
 										<div class="trainer-profile d-flex align-items-center">
-											<img th:src="${firstTrainer.trainerImage}" class="img-fluid trainer-img" alt="Trainer Image">
+											<img th:src="${firstTrainer.trainerImage}" class="img-fluid trainer-img"
+												alt="Trainer Image">
 											<div class="trainer-info d-flex flex-row">
-												<a th:href="${firstTrainer.linkedin}" class="trainer-link" th:text="${firstTrainer.trainerName}" target="_blank">
+												<a th:href="${firstTrainer.linkedin}" class="trainer-link"
+													th:text="${firstTrainer.trainerName}" target="_blank">
 													Trainer Name
 												</a>
-												
-													<p class="mb-0 me-3">
-														<i class="far fa-calendar"></i>
-														<span th:text="${course.duration != null ? course.duration : 'Duration not available'}"></span>
-														hours
-													</p>
-													<p class="mb-0">
-														<i class="fas fa-book"></i>
-														<span th:text="${course.modules}"></span> modules
-													</p>
-												
+
+												<p class="mb-0 me-3">
+													<i class="far fa-calendar"></i>
+													<span
+														th:text="${course.duration != null ? course.duration : 'Duration not available'}"></span>
+													hours
+												</p>
+												<p class="mb-0">
+													<i class="fas fa-book"></i>
+													<span th:text="${course.modules}"></span> modules
+												</p>
+
 											</div>
 										</div>
 									</div>
 								</div>
-								
-								<div class="icons">
-									
-									<a th:href="@{/course-details/{id}(id=${course.id})}"><button class="read-more">Read More</button></a>
-									
-									<a th:href="@{api/courses/edit/{id}(id=${course.id})}"><button class="edit">Edit</button></a>
 
-									<form th:action="@{api/courses/delete/{id}(id=${course.id})}" method="post" onsubmit="return confirm('Are you sure you want to delete this course?');">
+								<div class="icons">
+
+									<a th:href="@{/course-details/{id}(id=${course.id})}"><button class="read-more">Read
+											More</button></a>
+
+									<a th:href="@{api/courses/edit/{id}(id=${course.id})}"><button
+											class="edit">Edit</button></a>
+
+									<form th:action="@{api/courses/delete/{id}(id=${course.id})}" method="post"
+										onsubmit="return confirm('Are you sure you want to delete this course?');">
 										<button type="submit" class="delete">Delete</button>
-							        </form>
+									</form>
 								</div>
 							</div>
 						</div>
@@ -260,7 +275,7 @@
 
 	<!-- Main JS File -->
 	<script src="assets/js/main.js"></script>
-	
+
 
 </body>
 
