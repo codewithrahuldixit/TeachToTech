@@ -90,4 +90,17 @@ public class UserController {
         String firstName=this.userService.getUsersDetails(token);
         return firstName;
     }
+    @PostMapping("/getrole")
+public ResponseEntity<String> getRole(@RequestHeader("Authorization") String authorizationHeader) {
+    if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Authorization header is missing or invalid");
+    }
+    String token = authorizationHeader.substring(7);
+    String role = this.jwtUtil.getRoleFromToken(token);
+    if (role == null || role.isEmpty()) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Role not found in token");
+    }
+    return ResponseEntity.ok(role);  // Ensure semicolon and closing bracket are in place
+}
+
 }
