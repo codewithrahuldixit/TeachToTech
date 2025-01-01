@@ -191,7 +191,10 @@
             localStorage.setItem("authToken", data.token);
             // Fetch and display the username
             // Redirect user after login
-            window.location.href = "/"; // Or the desired page
+            const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
+            console.log('Redirect URL:', redirectUrl); 
+            // Redirect to the intended page or fallback to homepage
+            window.location.href = redirectUrl || "/";
             
           } else {
             alert(`Login failed`);

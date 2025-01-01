@@ -100,15 +100,8 @@
     .back-text:hover {
       color: #45a049;
     }
-    /* #trainers {
-      width: 100%;
-      padding: 12px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      background-color: #fff;
-      color: #000;
-    } */
+   
+
   </style>
 </head>
 <body>
@@ -119,7 +112,7 @@
     </div>
     <div class="card">
       <h3 class="card-title">Add New Course</h3>
-      <form id="addCourseForm">
+      <form id="addCourseForm" th:object="${course}">
 
         <!-- Category Field -->
         <div class="form-group">
@@ -127,6 +120,7 @@
           <select id="category" name="category" class="form-control" required>
             <option value="" disabled selected>Select Category</option>
             <option value="newCategory">Add New Category</option>
+            <!-- <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.name}" th:selected="${category.categoryId == course.categoryId}"></option> -->
           </select>
           <span id="categoryError" class="text-danger"></span>
         </div>
@@ -142,19 +136,13 @@
         <!-- Course Name Field -->
         <div class="form-group">
           <label for="courseName">Course Name</label>
-          <input type="text" id="courseName" name="courseName" class="form-control" required>
-        </div>
+          <input type="text" id="courseName" th:field="*{courseName}" class="form-control" placeholder="Enter course name" required/>
+      </div>
 
-        <!-- Description Field -->
-        <!-- <div class="form-group">
-          <label for="description">Course Description</label>
-          <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
-        </div> -->
-        <!-- Description Field -->
         <div class="form-group" id="descriptionGroup">
           <label for="description">Course Description</label>
           <div id="descriptionFields">
-            <textarea name="description[]" class="form-control" rows="2" required></textarea>
+            <textarea id="description" th:field="*{description}" class="form-control" rows="2" placeholder="Enter course description" required></textarea>
           </div>
           <button type="button" id="addDescriptionField" class="read-more" style="margin-top: 10px;">Add Paragraph</button>
         </div>
@@ -170,19 +158,19 @@
         <!-- Duration Field -->
         <div class="form-group">
           <label for="duration">Course Duration (hours)</label>
-          <input type="number" id="duration" name="duration" class="form-control" required>
+          <input type="number" id="duration" th:field="*{duration}" class="form-control" required>
         </div>
         
         <!-- Price Field -->
         <div class="form-group">
           <label for="price">Price</label>
-          <input type="number" id="price" name="price" class="form-control" required>
-        </div>
+          <input type="number" id="price" th:field="*{price}" class="form-control" placeholder="Enter price" required/>
+      </div>
 
         <!-- Modules Field -->
         <div class="form-group">
           <label for="modules">Modules</label>
-          <input type="text" id="modules" name="modules" class="form-control">
+          <input type="text" id="modules" th:field="*{modules}" class="form-control">
         </div>
 
         <!-- Trainers Field -->
@@ -193,7 +181,6 @@
 
           </select>
         </div>
-
         <!-- Submit Button -->
         <button type="submit" class="read-more">Add Course</button>
       </form>
