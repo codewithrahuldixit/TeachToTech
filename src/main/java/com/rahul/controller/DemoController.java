@@ -2,6 +2,7 @@ package com.rahul.controller;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import com.rahul.service.CourseService;
 import com.rahul.service.TrainerService;
 
 
+
 @Controller
 public class DemoController {
 
@@ -34,9 +36,8 @@ public class DemoController {
 
 	@Autowired
 	private CategoryService categoryService;
+
  
-
-
 	@GetMapping({ "/", "/index" })
 	public String Home(Model model) {
 		List<Category> categories = categoryService.getCategory();
@@ -147,18 +148,19 @@ public class DemoController {
 		courseService.deleteCourse(id);
 		return "redirect:/courses"; 
 	}
-@GetMapping("api/courses/edit/{id}")
-public String getCourseEditPage(@PathVariable Long id, Model model) throws JsonProcessingException {
+  @GetMapping("api/courses/edit/{id}")
+  public String getCourseEditPage(@PathVariable Long id, Model model) throws JsonProcessingException {
     Course course = courseService.getCourseById(id);
 	Course courseObject=this.courseService.convertObjectToJsonAndBack(course);
-	List<Category> categories = categoryService.getCategory();  // Fetch all categories
-    List<Trainer> trainers = trainerService.getallTrainer();
-
     model.addAttribute("course", courseObject);
-	model.addAttribute("categories", categories);
-    model.addAttribute("trainers", trainers);
     return "editCourse";
-}
-
+  }
+  @GetMapping("api/trainer/edit/{id}")
+  public String getTrainerEditPage(@PathVariable Long id, Model model) throws JsonProcessingException {
+    Trainer trainer = this.trainerService.getByTrainerId(id);
+	Trainer trainerObject=this.trainerService.convertObjectToJsonAndBack(trainer);
+    model.addAttribute("trainer", trainerObject);
+    return "editTrainer";
+  }
 	
 }

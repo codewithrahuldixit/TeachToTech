@@ -278,24 +278,6 @@
 	<script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
 
 	<!-- Main JS File -->
-<<<<<<< Updated upstream
-	<script src="assets/js/main.js" defer></script>
-	<script>
-		function checkAuthAndRedirect(courseId) {
-			const token = localStorage.getItem("authToken");
-
-			if (token) {
-				window.location.href = `/course-details/${courseId}`;
-			} else {
-				// Store the current page as 'redirect' in the URL so user returns here after login
-				const currentUrl = window.location.href;
-				window.location.href = `/api/users/login?redirect=${encodeURIComponent(currentUrl)}`;
-			}
-		}
-
-	</script>
-
-=======
 	<script src="assets/js/main.js"></script>
 	<script>
 		function checkAuthAndRedirect(courseId) {
@@ -309,7 +291,6 @@
 }
 
 	</script>
->>>>>>> Stashed changes
 
 </body>
 

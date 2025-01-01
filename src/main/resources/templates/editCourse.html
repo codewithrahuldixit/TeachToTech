@@ -115,12 +115,16 @@
       <form id="addCourseForm" th:object="${course}">
 
         <!-- Category Field -->
+        <div>
+          <p th:each="category : ${course.category}">
+            <strong>Selected Category:-</strong><span th:text="${category.name}">Trainer Name</span>
+          </p>
+       <div>
         <div class="form-group">
           <label for="category">Category</label>
           <select id="category" name="category" class="form-control" required>
             <option value="" disabled selected>Select Category</option>
             <option value="newCategory">Add New Category</option>
-            <!-- <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.name}" th:selected="${category.categoryId == course.categoryId}"></option> -->
           </select>
           <span id="categoryError" class="text-danger"></span>
         </div>
@@ -150,11 +154,19 @@
         <!-- Image Field -->
         <div class="form-group">
           <label for="image">Course Image</label>
-          <input type="file" id="image" name="image" class="form-control" accept="image/jpeg, image/png" required>
+        
+          <!-- Display the current image if available -->
+          <div th:if="${course.image}">
+            <strong>Selected Image: </strong>
+            <img th:src="@{${course.image}}" alt="Course Image" style="max-width: 200px;">
+          </div>
+        
+          <!-- File input for image upload -->
+          <input type="file" id="image" name="image" class="form-control" accept="image/jpeg, image/png">
           <small class="form-text text-muted">Only .jpg and .png images are allowed.</small>
         </div>
         
-
+        
         <!-- Duration Field -->
         <div class="form-group">
           <label for="duration">Course Duration (hours)</label>
@@ -173,7 +185,13 @@
           <input type="text" id="modules" th:field="*{modules}" class="form-control">
         </div>
 
+
         <!-- Trainers Field -->
+        <div>
+          <p th:each="trainer : ${course.trainers}">
+            <strong>Selected Trainers:</strong><span th:text="${trainer.trainerName}">Trainer Name</span>
+          </p>
+       <div>
         <div class="form-group">
           <label for="trainers">Select Trainers</label>
           <select id="trainers" name="trainers" class="form-control" multiple required>
@@ -186,7 +204,7 @@
       </form>
     </div>
   </div>
-  <script>
+  <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', async function () {
   const categorySelect = document.getElementById('category');
   const errorSpan = document.getElementById('categoryError');
@@ -331,9 +349,12 @@
 
     console.log("Payload:", payload);
 
+    var courseId = /*[[${course.id}]]*/
+    console.log(courseId);
+
     try {
       // Send the course data to the backend
-      const response = await fetch('/api/courses/add/pending', {
+      const response = await fetch(`/api/courses/edit/${courseId}`, {
         method: 'POST',
         body: formData,
       });
@@ -352,6 +373,8 @@
     }
   });
 });
+
+
 
   </script>
   

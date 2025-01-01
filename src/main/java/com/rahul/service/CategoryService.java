@@ -30,5 +30,8 @@ public class CategoryService {
     public Category findByName(String name) {
       return categoryRepository.findByName(name); 
     }
+    public List<Category> findByTrainer(Long trainerId){
+      return this.categoryRepository.findByTrainerId(trainerId);
+    }
     
 }
