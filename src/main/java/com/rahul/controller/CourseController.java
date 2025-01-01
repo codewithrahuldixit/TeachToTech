@@ -126,4 +126,9 @@ public class CourseController {
             return ResponseEntity.notFound().build();
         }
     }
+    @PostMapping("/api/courses/edit/{id}")
+    public ResponseEntity<?> getCourseEditPage(@PathVariable Long id) {
+    Course course = courseService.getCourseById(id);
+    return ResponseEntity.ok(course);
+}
 }

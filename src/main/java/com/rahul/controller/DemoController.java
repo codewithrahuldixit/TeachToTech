@@ -146,5 +146,4 @@ public class DemoController {
 		courseService.deleteCourse(id);
 		return "redirect:/courses"; 
 	}
-	
 }

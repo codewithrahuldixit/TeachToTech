@@ -112,7 +112,7 @@ public class CourseService {
         }
         
             String imagePath = saveImage(imageFile);
-            existingCourse.setImage(imagePath);  
+            existingCourse.setImage(imagePath);
         
 
         // Update other course fields
