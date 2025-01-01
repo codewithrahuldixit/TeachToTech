@@ -100,6 +100,11 @@
     .back-text:hover {
       color: #45a049;
     }
+    .selected-trainer{
+      font-weight: bold; /* Make text bold */
+    background-color: #2a91f7; /* Set background to blue */
+    color: white; 
+    }
    
 
   </style>
@@ -123,8 +128,17 @@
         <div class="form-group">
           <label for="category">Category</label>
           <select id="category" name="category" class="form-control" required>
-            <option value="" disabled selected>Select Category</option>
+
+            <option value="" disabled >Select Category</option>
             <option value="newCategory">Add New Category</option>
+            <option th:each="category : ${course.category}" 
+              th:value="${category.categoryId}" 
+              th:text="${category.name}" 
+              th:selected="${category.categoryId == course.category?.categoryId}"
+              class="selected-trainer"
+                      selected>
+        Category Name
+      </option>
           </select>
           <span id="categoryError" class="text-danger"></span>
         </div>
@@ -146,7 +160,14 @@
         <div class="form-group" id="descriptionGroup">
           <label for="description">Course Description</label>
           <div id="descriptionFields">
-            <textarea id="description" th:field="*{description}" class="form-control" rows="2" placeholder="Enter course description" required></textarea>
+            <div th:each="desc, iterStat : ${course.description}">
+              <!-- Bind each textarea to the corresponding index in the description list -->
+              <textarea th:field="*{description[__${iterStat.index}__]}" 
+                        class="form-control" 
+                        rows="2" 
+                        placeholder="Enter course description" 
+                        required></textarea>
+            </div>
           </div>
           <button type="button" id="addDescriptionField" class="read-more" style="margin-top: 10px;">Add Paragraph</button>
         </div>
@@ -188,16 +209,29 @@
 
         <!-- Trainers Field -->
         <div>
-          <p th:each="trainer : ${course.trainers}">
-            <strong>Selected Trainers:</strong><span th:text="${trainer.trainerName}">Trainer Name</span>
+          <p id="selectedTrainers">
+            <strong>Selected Trainers:</strong>
+            <span th:each="trainer : ${course.trainers}" th:text="${trainer.trainerName}">Trainer Name</span>
           </p>
-       <div>
-        <div class="form-group">
-          <label for="trainers">Select Trainers</label>
-          <select id="trainers" name="trainers" class="form-control" multiple required>
-            <option value="" disabled selected>Select Trainer</option>
-
-          </select>
+        </div>
+        
+        <div>
+          <div class="form-group">
+            <label for="trainers">Select Trainers</label>
+            <select id="trainers" name="trainers" class="form-control" multiple required>
+              <!-- Pre-select trainers associated with the course -->
+              <option value="" disabled >Select Trainer</option>
+              <option value="" disabled >rahul dixit</option>
+              <option value="" disabled >anoushka goel</option>
+              <option th:each="trainer : ${course.trainers}"
+                      th:value="${trainer.trainerId}"
+                      th:text="${trainer.trainerName}" 
+                      class="selected-trainer"
+                      selected>
+                Trainer Name
+              </option>
+            </select>
+          </div>
         </div>
         <!-- Submit Button -->
         <button type="submit" class="read-more">Add Course</button>
@@ -240,38 +274,56 @@
   // Function to load categories
   async function loadCategories() {
     try {
-      const response = await fetch('/category/getallcategory');
-      if (!response.ok) throw new Error('Failed to fetch categories');
-      const data = await response.json();
-      console.log("Categories:", data);
-      data.forEach(category => {
-        const option = document.createElement('option');
-        option.value = category.categoryId;
-        option.textContent = category.name;
-        categorySelect.appendChild(option);
-      });
-    } catch (error) {
-      errorSpan.textContent = 'Unable to load categories. Please try again later.';
-      console.error('Error fetching categories:', error);
-    }
+      const categorySelect = document.getElementById('category');
+
+    // Fetch categories from your API
+    const response = await fetch('/category/getallcategory');
+    if (!response.ok) throw new Error('Failed to fetch categories');
+    const categories = await response.json();
+
+    console.log("Categories:", categories);
+
+    // Populate categories into the dropdown
+    categories.forEach(category => {
+      const option = document.createElement('option');
+      option.value = category.categoryId;
+      option.textContent = category.name;
+
+      categorySelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+  }
   }
 
   // Function to load trainers
   async function loadTrainers() {
     try {
-      const response = await fetch('/api/trainer/get');
-      if (!response.ok) throw new Error('HTTP error! Status: ${response.status}');
-      const data = await response.json();
-      console.log("Trainers:", data);
-      data.forEach(trainer => {
+      const trainersSelect = document.getElementById('trainers');
+    const existingTrainerIds = Array.from(trainersSelect.options).map(option => Number(option.value));
+
+    console.log("Existing Trainer IDs:", existingTrainerIds);
+
+    const response = await fetch('/api/trainer/get');
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const trainers = await response.json();
+    console.log("Fetched Trainers:", trainers);
+
+    // Add only trainers not already in the dropdown
+    trainers
+      .filter(trainer => !existingTrainerIds.includes(trainer.trainerId))
+      .forEach(trainer => {
         const option = document.createElement('option');
         option.value = trainer.trainerId;
         option.textContent = trainer.trainerName;
         trainersSelect.appendChild(option);
       });
-    } catch (error) {
-      console.error('Error fetching trainers:', error);
-    }
+  } catch (error) {
+    console.error('Error fetching or processing trainers:', error);
+  }
   }
 
   // Load categories and trainers
