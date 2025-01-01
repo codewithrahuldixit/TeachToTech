@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rahul.model.Course;
 import com.rahul.model.Trainer;
 import com.rahul.repository.TrainerRepository;
 
@@ -17,6 +20,9 @@ public class TrainerService {
     
     @Autowired
     private TrainerRepository trainerRepository;
+
+    @Autowired
+    private  ObjectMapper objectMapper;
 
     public void addTrainer(Trainer trainer){
         this.trainerRepository.save(trainer);
@@ -35,7 +41,7 @@ public class TrainerService {
         }
     
         // Directory where the image will be stored on the server
-        String uploadDir = "C:/Users/anous/TeachToTech/src/main/resources/static/assets/img/team/";
+        String uploadDir = "D:/T2T/TeachToTech/src/main/resources/static/assets/img/team/";
         String fileName = imageFile.getOriginalFilename();
     
         try {
@@ -57,6 +63,46 @@ public class TrainerService {
             e.printStackTrace();
             throw new RuntimeException("Failed to save image: " + e.getMessage());
         }
+    }
+    public Trainer getByTrainerId(Long id) {
+       return this.trainerRepository.findByTrainerId(id).orElse(null);
+    }
+
+    public String convertObjectToJsonString(Trainer trainer) throws JsonProcessingException {
+        return this.objectMapper.writeValueAsString(trainer);
+    }
+
+    // Convert JSON string back to Course object
+    public Trainer convertJsonToModel(String json) throws JsonProcessingException {
+        return this.objectMapper.readValue(json, Trainer.class);
+    }
+
+    // Combined example: Convert object to JSON and back to object
+    public Trainer convertObjectToJsonAndBack(Trainer trainer) throws JsonProcessingException {
+        String json = convertObjectToJsonString(trainer); // Convert object to JSON
+        return convertJsonToModel(json); // Convert JSON back to object
+    }
+    public Trainer updateTrainerWithImage(Long trainerId, Trainer updatedTrainer, MultipartFile imageFile) throws Exception {
+        Trainer existingTrainer = this.trainerRepository.findById(trainerId)
+            .orElseThrow(() -> new Exception("Trainer not found"));
+
+        // Check for duplicate 
+        Optional<Trainer> duplicateTrainer =this.trainerRepository.findByLinkedin(existingTrainer.getLinkedin());
+
+        if (duplicateTrainer.isPresent() && !duplicateTrainer.get().getTrainerId().equals(trainerId)) {
+            throw new Exception("A course with the same name and instructor already exists.");
+        }
+        
+            String imagePath = this.saveImage(imageFile);
+            existingTrainer.setTrainerImage(imagePath);
+
+            existingTrainer.setTrainerName(updatedTrainer.getTrainerName());
+            existingTrainer.setTrainerDescription(updatedTrainer.getTrainerDescription());
+            existingTrainer.setTrainerQualification(updatedTrainer.getTrainerQualification());
+            existingTrainer.setLinkedin(updatedTrainer.getLinkedin());
+            existingTrainer.setCategories(updatedTrainer.getCategories());
+        
+        return this.trainerRepository.save(existingTrainer);
     }
    
 

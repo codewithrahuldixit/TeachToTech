@@ -20,18 +20,9 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
     
-    // @PostMapping("/add")
-    // public ResponseEntity<?> add(@RequestBody Category category){
-    //  this.categoryService.addCategory(category);
-    //  return ResponseEntity.ok("Category saved successfully");
-    // }
-
     @PostMapping("/add")
-public ResponseEntity<?> add(@RequestBody Category category){
-    // Save the category
+    public ResponseEntity<?> add(@RequestBody Category category){
     Category savedCategory = this.categoryService.addCategory(category);
-    
-    // Return the saved category (including the categoryId)
     return ResponseEntity.ok(savedCategory);
 }
 
@@ -42,7 +33,7 @@ public ResponseEntity<?> add(@RequestBody Category category){
     }
 
     @GetMapping("/getByName/{name}")
-public ResponseEntity<Category> getCategoryByName(@PathVariable String name) {
+    public ResponseEntity<Category> getCategoryByName(@PathVariable String name) {
     Category category = categoryService.findByName(name);  // Assuming you have a service method that fetches category by name
     if (category != null) {
         return ResponseEntity.ok(category);
@@ -50,5 +41,9 @@ public ResponseEntity<Category> getCategoryByName(@PathVariable String name) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);  // Category not found
     }
 }
-
+   @GetMapping("/get/{trainerId}")
+   public ResponseEntity<?> getCategoryByTrainerId(@PathVariable Long trainerId){
+     List<Category> category=this.categoryService.findByTrainer(trainerId);
+     return ResponseEntity.ok(category);
+   }
 }

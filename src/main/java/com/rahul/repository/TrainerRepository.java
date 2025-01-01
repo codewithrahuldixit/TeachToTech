@@ -12,4 +12,5 @@ import com.rahul.model.Trainer;
 @Repository
 public interface  TrainerRepository extends JpaRepository<Trainer, Long> {
   Optional<Trainer> findByLinkedin(String linkedin);
+  Optional<Trainer> findByTrainerId(Long id);
 }

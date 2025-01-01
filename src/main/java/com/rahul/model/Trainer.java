@@ -4,6 +4,7 @@ package com.rahul.model;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -50,7 +51,7 @@ public class Trainer {
         joinColumns = @JoinColumn(name = "trainer_id"),
         inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    @JsonIgnore
+    @JsonIncludeProperties({"categoryId","name"})
     @Column(nullable = false)
     private Set<Category> categories;
  
