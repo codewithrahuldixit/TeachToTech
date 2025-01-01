@@ -109,7 +109,7 @@ public class DemoController {
 
         return "course-details"; // Return the course-details.html template
     }
-
+ 
 	@GetMapping("/api/users/register")
 	public String register(){
 		return "RegistrationForm";

@@ -248,9 +248,7 @@ h6 {
   transition: background-color 0.3s ease;
 }
 
-#logoutButton:hover {
-  background-color: #4caf70; /* Slightly darker shade on hover */
-}
+
 
 
 /* Login Buttons Styles */
@@ -1969,10 +1967,10 @@ section,
   
   /* Style the logout button */
   #logoutButton {
-    
+    background-color: #ca1f16eb;
     color: rgb(5, 5, 5);
     border-radius: 5px;
-    text-decoration: underline;
+   
    
     margin-right: 12px;
 
@@ -1980,7 +1978,7 @@ section,
   }
   
   #logoutButton:hover {
-    color: #f5251aeb;
+    color: white;
   }
   /* Ensure the buttons are aligned horizontally */
 /* Align the buttons side by side */
@@ -1996,7 +1994,7 @@ section,
   
   #loginButtons a {
     padding: 10px 20px;        /* Add padding for button size */
-    background-color: #47ff7b; /* Button background color */
+    background-color: #5fcf80; /* Button background color */
     color: white;              /* Button text color */
     border-radius: 8px;        /* Rounded corners for buttons */
     text-decoration: none;     /* Remove underline */
