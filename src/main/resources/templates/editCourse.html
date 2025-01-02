@@ -100,6 +100,11 @@
     .back-text:hover {
       color: #45a049;
     }
+    .selected-trainer{
+      font-weight: bold; /* Make text bold */
+    background-color: #2a91f7; /* Set background to blue */
+    color: white; 
+    }
    
 
   </style>
@@ -123,8 +128,17 @@
         <div class="form-group">
           <label for="category">Category</label>
           <select id="category" name="category" class="form-control" required>
-            <option value="" disabled selected>Select Category</option>
+
+            <option value="" disabled >Select Category</option>
             <option value="newCategory">Add New Category</option>
+            <option th:each="category : ${course.category}" 
+              th:value="${category.categoryId}" 
+              th:text="${category.name}" 
+              th:selected="${category.categoryId == course.category?.categoryId}"
+              class="selected-trainer"
+                      selected>
+        Category Name
+      </option>
           </select>
           <span id="categoryError" class="text-danger"></span>
         </div>
@@ -196,16 +210,29 @@
 
         <!-- Trainers Field -->
         <div>
-          <p th:each="trainer : ${course.trainers}">
-            <strong>Selected Trainers:</strong><span th:text="${trainer.trainerName}">Trainer Name</span>
+          <p id="selectedTrainers">
+            <strong>Selected Trainers:</strong>
+            <span th:each="trainer : ${course.trainers}" th:text="${trainer.trainerName}">Trainer Name</span>
           </p>
-       <div>
-        <div class="form-group">
-          <label for="trainers">Select Trainers</label>
-          <select id="trainers" name="trainers" class="form-control" multiple required>
-            <option value="" disabled selected>Select Trainer</option>
-
-          </select>
+        </div>
+        
+        <div>
+          <div class="form-group">
+            <label for="trainers">Select Trainers</label>
+            <select id="trainers" name="trainers" class="form-control" multiple required>
+              <!-- Pre-select trainers associated with the course -->
+              <option value="" disabled >Select Trainer</option>
+              <option value="" disabled >rahul dixit</option>
+              <option value="" disabled >anoushka goel</option>
+              <option th:each="trainer : ${course.trainers}"
+                      th:value="${trainer.trainerId}"
+                      th:text="${trainer.trainerName}" 
+                      class="selected-trainer"
+                      selected>
+                Trainer Name
+              </option>
+            </select>
+          </div>
         </div>
         <!-- Submit Button -->
         <button type="submit" class="read-more">Add Course</button>

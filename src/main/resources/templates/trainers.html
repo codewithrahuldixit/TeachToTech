@@ -28,6 +28,44 @@
 
 	<!-- Main CSS File -->
 	<link href="assets/css/main.css" rel="stylesheet">
+	<style>
+		.admin-buttons {
+  display: flex;
+  justify-content: center;  /* Center buttons horizontally */
+  gap: 10px;  /* Space between buttons */
+  margin-top: 10px;
+}
+
+.edit-btn, .delete-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: auto; /* Let the button width adjust based on the content */
+}
+
+/* Edit Button Styles */
+.edit-btn {
+   background-color: #FFA500;;
+  color: white;
+  border: none;
+  width: 100px;
+}
+
+
+/* Delete Button Styles */
+.delete-btn {
+	background-color: #FF4D4F;
+  color: white;
+  border: none;
+  width: 100px;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+	</style>
 
 
 </head>
@@ -96,9 +134,18 @@
 								laboriosam laudantium aut quod dolores
 								exercitationem ut</p>
 						</div>
-						<a th:href="@{api/trainer/edit/{id}(id=${trainer.trainerId})}" class="adminSection"
-						style="display: none;">
-						<button class="edit">Edit</button>
+						<div class="admin-buttons">
+							<a th:href="@{api/trainer/edit/{id}(id=${trainer.trainerId})}" class="adminSection" style="display: none;">
+							  <button class="edit-btn">Edit</button>
+							</a>
+				  
+							<form th:action="@{api/trainer/delete/{id}(id=${trainer.trainerId})}" method="post" 
+							  onsubmit="return confirm('Are you sure you want to delete this trainer?');" 
+							  class="adminSection" style="display: none;">
+							  <button type="submit" class="delete-btn">Delete</button>
+							</form>
+						  </div>
+
 					</div><!-- End Team Member -->
 
 

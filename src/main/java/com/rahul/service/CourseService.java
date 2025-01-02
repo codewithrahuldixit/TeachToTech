@@ -95,7 +95,7 @@ public class CourseService {
     
         // Directory where the image will be stored on the server
         String fileName = imageFile.getOriginalFilename();
-        String uploadDir = "D:/T2T/TeachToTech/src/main/resources/static/assets/img/";
+        String uploadDir = "C:/Users/isp/Documents/ayushi_pagal/TeachToTech/src/main/resources/static/assets/img/";
     
         try {
             // Create the directory if it doesn't exist
