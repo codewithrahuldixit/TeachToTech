@@ -2,6 +2,8 @@ package com.rahul.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,13 +13,23 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rahul.model.Course;
+import com.rahul.model.Category;
 import com.rahul.model.Trainer;
 import com.rahul.repository.TrainerRepository;
 
 @Service
 public class TrainerService {
-    
+
+      private static final Trainer DEFAULT_TRAINER = new Trainer(
+            0L, // Static ID for the default trainer
+            "Default Trainer", // Name
+            "This is a default trainer added automatically.", // Description
+            "default-image.png", // Image
+            "Default Qualification", // Qualification
+            "https://www.linkedin.com/in/default-trainer", // LinkedIn URL
+            new HashSet<>(Collections.singleton(new Category(0L, "Default Category", null))), // Categories
+            new HashSet<>() // Courses
+    );
     @Autowired
     private TrainerRepository trainerRepository;
 
@@ -104,8 +116,14 @@ public class TrainerService {
         
         return this.trainerRepository.save(existingTrainer);
     }
-   public void deleteById(Long trainerId){
-    this.trainerRepository.deleteById(trainerId);
-   }
+    public void deleteById(Long trainerId) {
+        this.trainerRepository.deleteById(trainerId);
+        ensureDefaultTrainer();
+    }
+    private void ensureDefaultTrainer() {
+        if (trainerRepository.count() == 0) {
+            trainerRepository.save(DEFAULT_TRAINER);
+        }
+    }
 
 }

@@ -2,7 +2,6 @@ package com.rahul.controller;
 
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -162,7 +161,9 @@ public class DemoController {
     model.addAttribute("trainer", trainerObject);
     return "editTrainer";
   }
-  @PostMapping("api/trainer/delete/{id}")
+
+  @PostMapping("api/trainers/delete/{id}")
+
   public String deleteTrainer(@PathVariable Long id) {
 	  this.trainerService.deleteById(id);
 	  return "redirect:/trainer"; 
