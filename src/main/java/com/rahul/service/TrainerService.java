@@ -104,6 +104,8 @@ public class TrainerService {
         
         return this.trainerRepository.save(existingTrainer);
     }
-   
+   public void deleteById(Long trainerId){
+    this.trainerRepository.deleteById(trainerId);
+   }
 
 }
