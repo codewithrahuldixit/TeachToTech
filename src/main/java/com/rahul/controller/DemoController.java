@@ -162,10 +162,10 @@ public class DemoController {
     return "editTrainer";
   }
 
-  @PostMapping("api/trainers/delete/{id}")
+  @PostMapping("api/trainer/delete/{id}")
 
   public String deleteTrainer(@PathVariable Long id) {
 	  this.trainerService.deleteById(id);
-	  return "redirect:/trainer"; 
+	  return "redirect:/trainers"; 
   }
 }
