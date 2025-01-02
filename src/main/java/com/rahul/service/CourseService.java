@@ -132,12 +132,10 @@ public class CourseService {
         
             String imagePath = this.saveImage(imageFile);
             existingCourse.setImage(imagePath);
-        
-
         // Update other course fields
         existingCourse.setCourseName(updatedCourse.getCourseName());
-        existingCourse.setDescription(updatedCourse.getDescription());
         existingCourse.setCategory(updatedCourse.getCategory());
+        existingCourse.setDescription(updatedCourse.getDescription());
         existingCourse.setDuration(updatedCourse.getDuration());
         existingCourse.setModules(updatedCourse.getModules());
         existingCourse.setTrainers(updatedCourse.getTrainers());

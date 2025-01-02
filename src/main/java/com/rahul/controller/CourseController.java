@@ -21,8 +21,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rahul.model.Course;
 import com.rahul.service.CourseService;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 @Controller
+@Slf4j
 @RequestMapping("/api/courses")
 public class CourseController {
 	 
@@ -107,7 +110,9 @@ public class CourseController {
         // Parse the JSON string to get course data
         ObjectMapper objectMapper = new ObjectMapper();
         Course updatedCourse = objectMapper.readValue(updatedCourseJson, Course.class);
+        log.info(updatedCourseJson);
         Course updated = courseService.updateCourseWithImage(courseId, updatedCourse, imageFile);
+        log.info(updated+"");
         return ResponseEntity.ok(updated);
     } catch (Exception e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
