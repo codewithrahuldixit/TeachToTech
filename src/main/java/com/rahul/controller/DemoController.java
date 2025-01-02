@@ -162,7 +162,7 @@ public class DemoController {
     model.addAttribute("trainer", trainerObject);
     return "editTrainer";
   }
-  @PostMapping("api/courses/delete/{id}")
+  @PostMapping("api/trainer/delete/{id}")
   public String deleteTrainer(@PathVariable Long id) {
 	  this.trainerService.deleteById(id);
 	  return "redirect:/trainer"; 
