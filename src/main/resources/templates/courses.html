@@ -12,7 +12,7 @@
 	<link href="assets/img/TT.png" rel="icon">
 	<link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 	<!-- Fonts -->
 	<link href="https://fonts.googleapis.com" rel="preconnect">
@@ -22,7 +22,7 @@
 		rel="stylesheet">
 
 	<!-- Vendor CSS Files -->
-	<link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<!-- <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
 	<link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
 	<link href="assets/vendor/aos/aos.css" rel="stylesheet">
 	<link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
@@ -92,7 +92,6 @@
 		.trainer-profile {
 			display: flex;
 			align-items: center;
-
 		}
 
 		.trainer-img {
@@ -126,7 +125,122 @@
 		.fa-calendar {
 			margin-left: 10px;
 		}
-	</style>
+
+		#hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 600px;
+    background: #000;
+    overflow: hidden;
+}
+
+#hero .carousel,
+#hero .carousel-inner,
+#hero .carousel-item {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+#hero .carousel-image {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#hero .carousel-image:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+#hero .carousel-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    z-index: 2;
+    text-align: center;
+    padding: 0 15px;
+}
+
+.hero-content .container {
+    max-width: 1140px;
+  
+}
+
+.hero-content h2 {
+    color: #fff;
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.hero-content p {
+    color: #fff;
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.carousel-indicators {
+    z-index: 3;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    z-index: 3;
+    width: 5%;
+    opacity: 0.7;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #hero {
+        height: 80vh;
+        min-height: 500px;
+    }
+
+    .hero-content h2 {
+        font-size: 36px;
+        margin-bottom: 20px;
+    }
+
+    .hero-content p {
+        font-size: 30px;
+        padding: 0 20px;
+    }
+}
+
+.carousel-text{
+	font-size: 2rem;
+}
+
+@media (max-width: 576px) {
+    .hero-content h2 {
+        font-size: 28px;
+    }
+
+    .hero-content p {
+        font-size: 14px;
+    }
+}
+</style>
 
 </head>
 
@@ -140,25 +254,60 @@
 		<!-- Page Title -->
 		<div class="page-title" data-aos="fade">
 
-
-			<div id="hero" class="hero section dark-background">
-
-				<img src="assets/img/course-rahul.jpg" alt="" data-aos="fade-in">
-				<div class="container">
-
-					<h2 data-aos="fade-up" data-aos-delay="100">Courses</h2>
-					<p data-aos="fade-up" data-aos-delay="200">At TeachToTech, we bridge the gap between curiosity and
-						expertise in the
-						world of Information Technology. Our courses are designed to equip learners with
-						practical, in-demand tech skills—from coding and
-						cybersecurity to data analytics and cloud computing. Whether you're a beginner or a
-						professional looking to upskill, we provide flexible, hands-on learning guided by
-						industry experts.Start your journey with us and take a step toward mastering the future
-						of technology!</p>
+			<section id="hero" class="hero section dark-background">
+				<div id="courseCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+					<!-- Carousel Indicators -->
+					<div class="carousel-indicators">
+						<button type="button" data-bs-target="#courseCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+						<button type="button" data-bs-target="#courseCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+						<button type="button" data-bs-target="#courseCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+					</div>
+					
+					<!-- Carousel Items -->
+					<div class="carousel-inner">
+						<div class="carousel-item active">
+							<div class="carousel-image">
+								<img src="assets/img/course-rahul.jpg" alt="Course Image 1">
+							</div>
+						</div>
+						<div class="carousel-item">
+							<div class="carousel-image">
+								<img src="assets/img/course-1.jpg" alt="Course Image 2">
+							</div>
+						</div>
+						<div class="carousel-item">
+							<div class="carousel-image">
+								<img src="assets/img/course-2.jpg" alt="Course Image 3">
+							</div>
+						</div>
+					</div>
+			
+					<!-- Static Text Overlay -->
+					<div class="hero-content">
+						<div class="container">
+							<h2>Courses</h2>
+							<p class="carousel-text">
+								At TeachToTech, we bridge the gap between curiosity and expertise in the world of Information Technology. 
+								Our courses are designed to equip learners with practical, in-demand tech skills—from coding and cybersecurity 
+								to data analytics and cloud computing. Whether you're a beginner or a professional looking to upskill, 
+								we provide flexible, hands-on learning guided by industry experts. Start your journey with us and take a step 
+								toward mastering the future of technology!
+							</p>
+						</div>
+					</div>
+			
+					<!-- Carousel Controls -->
+					<button class="carousel-control-prev" type="button" data-bs-target="#courseCarousel" data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#courseCarousel" data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Next</span>
+					</button>
 				</div>
-
-
-			</div>
+			</section>
+			
 			<nav class="breadcrumbs">
 				<div class="container">
 					<ol>
@@ -263,13 +412,14 @@
 	<div th:replace="footer :: footer"></div>
 
 	<!-- Scroll Top -->
-	<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+	<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i>
 			class="bi bi-arrow-up-short"></i></a>
 
 	<!-- Preloader -->
 	<div id="preloader"></div>
 
 	<!-- Vendor JS Files -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="assets/vendor/php-email-form/validate.js"></script>
 	<script src="assets/vendor/aos/aos.js"></script>
@@ -280,16 +430,34 @@
 	<!-- Main JS File -->
 	<script src="assets/js/main.js"></script>
 	<script>
-		function checkAuthAndRedirect(courseId) {
-    const token = localStorage.getItem("authToken");
-    
-    if (token) {
-        window.location.href = `/course-details/${courseId}`;
-    } else {
-        window.location.href = `/api/users/login?redirect=/course-details/${courseId}`;
-    }
-}
+		changeBackgroundColor();
+		    'bg-red-500',    
+        'bg-blue-500',   // Blue
+        'bg-green-500',  // Green
+        'bg-yellow-500', // Yellow
+        'bg-purple-500'  // Purple
+  
+    let currentColorIndex = 0;
 
+    // Function to change background color
+    function changeBackgroundColor() {
+        const heroBg = document.getElementById("hero-bg");
+
+        // Reset by removing all color classes (ensure only one color class is present)
+        heroBg.classList.remove(...colors);
+
+        // Add the current color class
+        heroBg.classList.add(colors[currentColorIndex]);
+
+        // Increment the index to change the background color
+        currentColorIndex = (currentColorIndex + 1) % colors.length;
+    }
+
+    // Change the background color every 5 seconds
+    setInterval(changeBackgroundColor, 5);
+    
+    // Call the function initially to apply the first background color
+    changeBackgroundColor();
 	</script>
 
 </body>
