@@ -430,34 +430,17 @@
 	<!-- Main JS File -->
 	<script src="assets/js/main.js"></script>
 	<script>
-		changeBackgroundColor();
-		    'bg-red-500',    
-        'bg-blue-500',   // Blue
-        'bg-green-500',  // Green
-        'bg-yellow-500', // Yellow
-        'bg-purple-500'  // Purple
-  
-    let currentColorIndex = 0;
+		
 
-    // Function to change background color
-    function changeBackgroundColor() {
-        const heroBg = document.getElementById("hero-bg");
-
-        // Reset by removing all color classes (ensure only one color class is present)
-        heroBg.classList.remove(...colors);
-
-        // Add the current color class
-        heroBg.classList.add(colors[currentColorIndex]);
-
-        // Increment the index to change the background color
-        currentColorIndex = (currentColorIndex + 1) % colors.length;
-    }
-
-    // Change the background color every 5 seconds
-    setInterval(changeBackgroundColor, 5);
+	function checkAuthAndRedirect(courseId) {
+    const token = localStorage.getItem("authToken");
     
-    // Call the function initially to apply the first background color
-    changeBackgroundColor();
+    if (token) {
+        window.location.href = `/course-details/${courseId}`;
+    } else {
+        window.location.href = `/api/users/login?redirect=/course-details/${courseId}`;
+    }
+}
 	</script>
 
 </body>
