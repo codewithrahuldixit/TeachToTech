@@ -223,8 +223,7 @@
             <select id="trainers" name="trainers" class="form-control" multiple required>
               <!-- Pre-select trainers associated with the course -->
               <option value="" disabled >Select Trainer</option>
-              <option value="" disabled >rahul dixit</option>
-              <option value="" disabled >anoushka goel</option>
+           
               <option th:each="trainer : ${course.trainers}"
                       th:value="${trainer.trainerId}"
                       th:text="${trainer.trainerName}" 
