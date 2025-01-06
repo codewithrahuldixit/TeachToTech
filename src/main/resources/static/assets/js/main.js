@@ -230,4 +230,15 @@ async function displayAdminContent() {
       localStorage.removeItem('authToken'); // Remove token from local storage
       window.location.href = '/index'; // Redirect to home page after logout
     });
+
+
+	window.addEventListener("beforeunload", function (event) {
+		// Send logout request to server
+
+		// Clear any session/local storage if used
+		sessionStorage.clear();
+		localStorage.removeItem('authToken'); // Optional if you store tokens
+	});
+
+
     
