@@ -17,6 +17,8 @@ import com.rahul.model.Category;
 import com.rahul.model.Trainer;
 import com.rahul.repository.TrainerRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class TrainerService {
 
@@ -35,7 +37,7 @@ public class TrainerService {
 
     @Autowired
     private  ObjectMapper objectMapper;
-
+    
     public void addTrainer(Trainer trainer){
         this.trainerRepository.save(trainer);
     }
@@ -53,7 +55,7 @@ public class TrainerService {
         }
     
         // Directory where the image will be stored on the server
-        String uploadDir = "C:/Users/isp/Documents/ayushi_pagal/TeachToTech/src/main/resources/static/assets/img/team/";
+        String uploadDir = "D:/T2T/TeachToTech/src/main/resources/static/assets/img/team/";
         String fileName = imageFile.getOriginalFilename();
     
         try {
@@ -99,10 +101,10 @@ public class TrainerService {
             .orElseThrow(() -> new Exception("Trainer not found"));
 
         // Check for duplicate 
-        Optional<Trainer> duplicateTrainer =this.trainerRepository.findByLinkedin(existingTrainer.getLinkedin());
+        Optional<Trainer> duplicateTrainer =this.findByLinkedinProfile(existingTrainer.getLinkedin());
 
         if (duplicateTrainer.isPresent() && !duplicateTrainer.get().getTrainerId().equals(trainerId)) {
-            throw new Exception("A course with the same name and instructor already exists.");
+            throw new Exception("A Trainer with the same name already exists.");
         }
         
             String imagePath = this.saveImage(imageFile);

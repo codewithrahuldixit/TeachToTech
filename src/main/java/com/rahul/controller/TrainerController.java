@@ -2,7 +2,6 @@ package com.rahul.controller;
 
 import java.util.List;
 
-import org.eclipse.angus.mail.iap.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rahul.model.Course;
 import com.rahul.model.Trainer;
 import com.rahul.service.TrainerService;
 
@@ -50,14 +48,13 @@ public class TrainerController {
         return ResponseEntity.status(500).body("Error adding course: " + e.getMessage());
     }
 }
-   
     @GetMapping("/get")
     public ResponseEntity<List<Trainer>> getAllTrainer(){
       List<Trainer> trainer=this.TrainerService.getallTrainer();
      
      return ResponseEntity.ok(trainer);
     }
-
+    
     @PostMapping("/edit/{trainerId}")
     public ResponseEntity<?> update(@PathVariable Long trainerId,
     @RequestParam("formData") String trainerDataJson,

@@ -230,6 +230,7 @@
         })
           .then(response => {
             if (response.ok) {
+              console.log(response.text());
               alert("Trainer added successfully!");
               form.reset(); // Reset the form
             } else {

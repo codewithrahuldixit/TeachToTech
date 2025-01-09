@@ -12,8 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
- 
- 
 
 @Configuration
 @EnableWebSecurity
@@ -34,7 +32,11 @@ public class SpringSecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/admin/**").permitAll()
-                .requestMatchers("/**").permitAll()
+                .requestMatchers("/api/t2t/admin/transaction/**").hasRole("ADMIN")
+                .requestMatchers("api/courses/add/**","api/courses/edit/**",
+                                "api/courses/delete/**","api/trainer/add/**",
+                                "api/trainer/edit/**","api/trainer/delete/**").hasRole("ADMIN")
+                .requestMatchers("/","/index","/courses","/course-details/**","/trainers","/assets/**","/contact","/about","api/users/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .authenticationProvider(customAuthenticationProvider)

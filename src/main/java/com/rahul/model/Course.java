@@ -6,7 +6,6 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rahul.configuration.ListStringConverter;
 import com.rahul.enum_.CourseStatus;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -62,7 +61,7 @@ public class Course {
     @Column(nullable = false)
     private String modules;
 
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(
         name = "course_trainer", // Name of the join table
         joinColumns = @JoinColumn(name = "course_id"), // Foreign key to the Course table
