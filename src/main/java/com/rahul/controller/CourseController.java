@@ -125,6 +125,11 @@ public class CourseController {
             return ResponseEntity.notFound().build();
         }
     }
+    @PostMapping("/delete/{id}")
+	public ResponseEntity<?> deleteCourse(@PathVariable Long id) {
+		courseService.deleteCourse(id);
+		return ResponseEntity.ok().build(); 
+	}
    
 
 }

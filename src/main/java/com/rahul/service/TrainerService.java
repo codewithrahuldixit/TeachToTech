@@ -17,17 +17,18 @@ import com.rahul.model.Category;
 import com.rahul.model.Trainer;
 import com.rahul.repository.TrainerRepository;
 
+
 @Service
 public class TrainerService {
 
       private static final Trainer DEFAULT_TRAINER = new Trainer(
-            0L, // Static ID for the default trainer
+            1L, // Static ID for the default trainer
             "Default Trainer", // Name
             "This is a default trainer added automatically.", // Description
             "default-image.png", // Image
             "Default Qualification", // Qualification
             "https://www.linkedin.com/in/default-trainer", // LinkedIn URL
-            new HashSet<>(Collections.singleton(new Category(0L, "Default Category", null))), // Categories
+            new HashSet<>(Collections.singleton(new Category(1L, "Default Category", null))), // Categories
             new HashSet<>() // Courses
     );
     @Autowired
@@ -118,9 +119,9 @@ public class TrainerService {
     }
     public void deleteById(Long trainerId) {
         this.trainerRepository.deleteById(trainerId);
-        ensureDefaultTrainer();
+        this.ensureDefaultTrainer();
     }
-    private void ensureDefaultTrainer() {
+    public void ensureDefaultTrainer() {
         if (trainerRepository.count() == 0) {
             trainerRepository.save(DEFAULT_TRAINER);
         }

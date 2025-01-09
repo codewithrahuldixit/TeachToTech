@@ -70,4 +70,9 @@ public class TrainerController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 }
+      @PostMapping("/delete/{id}")
+      public ResponseEntity<?> deleteTrainer(@PathVariable Long id) {
+        this.TrainerService.deleteById(id);
+       return ResponseEntity.ok().build();
+   }
 }

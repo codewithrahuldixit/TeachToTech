@@ -435,11 +435,15 @@
 									<a th:href="@{api/courses/edit/{id}(id=${course.id})}" class="adminSection"
 										style="display: none;"><button class="edit">Edit</button></a>
 
-									<form th:action="@{api/courses/delete/{id}(id=${course.id})}" method="post"
-										onsubmit="return confirm('Are you sure you want to delete this course?');"
-										class="adminSection" style="display: none;">
-										<button type="submit" class="delete">Delete</button>
-									</form>
+								<form method="post" class="adminSection" 
+										style="display: none;" 
+										onsubmit="deleteCourse(this); return false;">
+									  <input type="hidden" th:value="${course.id}" class="course-id">
+									  <button type="submit" class="delete">Delete</button>
+								  </form>
+								  
+								  
+								  
 								</div>
 							</div>
 						</div>
@@ -477,9 +481,8 @@
 	<script src="assets/js/main.js"></script>
 	<script>
 
-
-		function checkAuthAndRedirect(courseId) {
-			const token = localStorage.getItem("authToken");
+         function checkAuthAndRedirect(courseId) {
+			const token = localStorage.getItem("token");
 
 			if (token) {
 				window.location.href = `/course-details/${courseId}`;
@@ -487,6 +490,38 @@
 				window.location.href = `/api/users/login?redirect=/course-details/${courseId}`;
 			}
 		}
+
+		async function deleteCourse(form) {
+        // Extract the course ID from the data attribute
+		const courseId = form.querySelector('.course-id').value;
+        const apiUrl = `/api/courses/delete/${courseId}`;
+		const token = localStorage.getItem("token")
+
+        // Confirm deletion
+        if (confirm('Are you sure you want to delete this course?')) {
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        "Authorization": `Bearer ${token}`, // Replace with your actual token
+                    }
+                });
+
+                // Handle the response
+                if (response.ok) {
+                    alert('Course deleted successfully.');
+                    // Optionally refresh the page or update the UI
+                    window.location.href = "/courses";
+                } else {
+                    const error = await response.json();
+                    alert(`Failed to delete course: ${error.message || response.statusText}`);
+                }
+            } catch (error) {
+                console.error('Error deleting course:', error);
+                alert('An error occurred while deleting the course.');
+            }
+        }
+    }
 	</script>
 
 </body>
