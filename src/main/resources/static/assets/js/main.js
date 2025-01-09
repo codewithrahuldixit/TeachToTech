@@ -230,4 +230,37 @@ async function displayAdminContent() {
       localStorage.removeItem('authToken'); // Remove token from local storage
       window.location.href = '/index'; // Redirect to home page after logout
     });
+
+    let navigating = false;
+
+    document.addEventListener('click', (event) => {
+        const target = event.target.closest('a, button, form');
+        if (target) {
+            navigating = true;
+        }
+    });
+    
+
+    window.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'hidden') {
+            localStorage.setItem('lastActive', Date.now().toString());
+        }
+    });
+    
+
+    window.addEventListener('pagehide', function (event) {
+        if (!navigating) {
+            // Tab close detected
+            navigator.sendBeacon('/logout');
+            sessionStorage.clear();
+            localStorage.removeItem('authToken');
+        }
+        navigating = false;
+    });
+    
+    // On page load, reset activity tracking
+    window.addEventListener('load', function () {
+        navigating = false;
+    });
+    
     

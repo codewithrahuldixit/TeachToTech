@@ -17,8 +17,6 @@ import com.rahul.model.Category;
 import com.rahul.model.Trainer;
 import com.rahul.repository.TrainerRepository;
 
-import jakarta.transaction.Transactional;
-
 @Service
 public class TrainerService {
 
