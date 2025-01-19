@@ -17,17 +17,18 @@ import com.rahul.model.Category;
 import com.rahul.model.Trainer;
 import com.rahul.repository.TrainerRepository;
 
+
 @Service
 public class TrainerService {
 
       private static final Trainer DEFAULT_TRAINER = new Trainer(
-            0L, // Static ID for the default trainer
+            1L, // Static ID for the default trainer
             "Default Trainer", // Name
             "This is a default trainer added automatically.", // Description
             "default-image.png", // Image
             "Default Qualification", // Qualification
             "https://www.linkedin.com/in/default-trainer", // LinkedIn URL
-            new HashSet<>(Collections.singleton(new Category(0L, "Default Category", null))), // Categories
+            new HashSet<>(Collections.singleton(new Category(1L, "Default Category", null))), // Categories
             new HashSet<>() // Courses
     );
     @Autowired
@@ -35,7 +36,7 @@ public class TrainerService {
 
     @Autowired
     private  ObjectMapper objectMapper;
-
+    
     public void addTrainer(Trainer trainer){
         this.trainerRepository.save(trainer);
     }
@@ -53,7 +54,7 @@ public class TrainerService {
         }
     
         // Directory where the image will be stored on the server
-        String uploadDir = "D:/TeachToTech/TeachToTech/src/main/resources/static/assets/img/team/";
+        String uploadDir = "D:/T2T/TeachToTech/src/main/resources/static/assets/img/team/";
         String fileName = imageFile.getOriginalFilename();
     
         try {
@@ -99,10 +100,10 @@ public class TrainerService {
             .orElseThrow(() -> new Exception("Trainer not found"));
 
         // Check for duplicate 
-        Optional<Trainer> duplicateTrainer =this.trainerRepository.findByLinkedin(existingTrainer.getLinkedin());
+        Optional<Trainer> duplicateTrainer =this.findByLinkedinProfile(existingTrainer.getLinkedin());
 
         if (duplicateTrainer.isPresent() && !duplicateTrainer.get().getTrainerId().equals(trainerId)) {
-            throw new Exception("A course with the same name and instructor already exists.");
+            throw new Exception("A Trainer with the same name already exists.");
         }
         
             String imagePath = this.saveImage(imageFile);
@@ -118,9 +119,9 @@ public class TrainerService {
     }
     public void deleteById(Long trainerId) {
         this.trainerRepository.deleteById(trainerId);
-        ensureDefaultTrainer();
+        this.ensureDefaultTrainer();
     }
-    private void ensureDefaultTrainer() {
+    public void ensureDefaultTrainer() {
         if (trainerRepository.count() == 0) {
             trainerRepository.save(DEFAULT_TRAINER);
         }

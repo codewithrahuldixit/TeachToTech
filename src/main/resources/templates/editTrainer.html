@@ -235,21 +235,23 @@
         }
          Data.append('formData', JSON.stringify(formData));
 
-        
+    const token = localStorage.getItem("token");   
     var trainerId = /*[[${trainer.trainerId}]]*/
 
-
+   
         // Send form data as JSON to the server
         fetch(`/api/trainer/edit/${trainerId}`, {
           method: "POST",
-          body: Data
+          body: Data, 
+          headers: {
+              "Authorization": `Bearer ${token}`
+          }
         })
           .then(response => {
             if (response.ok) {
               alert("Trainer added successfully!");
               form.reset(); // Reset the form
             } else {
-              // console.log(response.json());
               alert("Trainer already selected");
             }
           })

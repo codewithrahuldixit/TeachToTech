@@ -27,7 +27,6 @@ import com.rahul.util.JwtUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -55,13 +54,10 @@ public class UserController {
     public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDto) {
         // Combine email and contact into one string (this could also be done by creating a custom identifier)
         String identifier = loginDto.getEmail() + "|" + loginDto.getContact();
-        log.info("before authentication");
-    
         // Use UsernamePasswordAuthenticationToken with the combined identifier
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(identifier, null));
  
         if (authentication.isAuthenticated()) {
-            log.info("after authentication");
             Map<String, String> authResponse = new HashMap<>();
             User user = (User) authentication.getPrincipal();   
             String jwtToken = this.jwtUtil.generateToken(user);  

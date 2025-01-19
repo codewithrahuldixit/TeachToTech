@@ -402,11 +402,15 @@
             console.log("Payload:", payload);
             var courseId = /*[[${course.id}]]*/
             console.log(courseId);
-    
+            
+            const token = localStorage.getItem("token");  
             try {
                 const response = await fetch(`/api/courses/edit/${courseId}`, {
                     method: 'POST',
                     body: formData,
+                    headers: {
+              "Authorization": `Bearer ${token}`
+                }
                 });
     
                 if (response.ok) {

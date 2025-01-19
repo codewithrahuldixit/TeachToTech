@@ -343,12 +343,16 @@
     });
 
     console.log("Payload:", payload);
+    const token = localStorage.getItem("token");
 
     try {
       // Send the course data to the backend
       const response = await fetch('/api/courses/add/pending', {
         method: 'POST',
         body: formData,
+        headers: {
+              "Authorization": `Bearer ${token}`
+          }
       });
 
       if (response.ok) {

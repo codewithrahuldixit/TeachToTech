@@ -151,8 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 async function fetchRole() {
-  const token = localStorage.getItem("authToken");
-  console.log(token);
+  const token = localStorage.getItem("token");
   if (!token) {
       console.log("No token found in localStorage");
       return null;  // If no token, return null
@@ -165,7 +164,6 @@ async function fetchRole() {
               "Authorization": `Bearer ${token}`
           }
       });
-      console.log(response);
       if (!response.ok) {
           throw new Error("Failed to fetch role");
       }
@@ -191,8 +189,8 @@ async function displayAdminContent() {
 
 
     async function fetchUsername() {
-        const token = localStorage.getItem("authToken");
-        console.log("Token from localStorage:", token);  // Token check
+        const token = localStorage.getItem("token");
+           // Token check
         if (!token) {
             document.getElementById("loginButtons").style.display = "block";
             document.getElementById("userGreeting").style.display = "none";
@@ -227,7 +225,7 @@ async function displayAdminContent() {
 
     document.getElementById('logoutButton')?.addEventListener('click', (e) => {
       e.preventDefault();
-      localStorage.removeItem('authToken'); // Remove token from local storage
+      localStorage.removeItem('token'); // Remove token from local storage
       window.location.href = '/index'; // Redirect to home page after logout
     });
 
@@ -253,7 +251,7 @@ async function displayAdminContent() {
             // Tab close detected
             navigator.sendBeacon('/logout');
             sessionStorage.clear();
-            localStorage.removeItem('authToken');
+            localStorage.removeItem('token');
         }
         navigating = false;
     });

@@ -2,6 +2,7 @@ package com.rahul.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,8 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
- 
- 
 
 @Configuration
 @EnableWebSecurity
@@ -34,7 +33,13 @@ public class SpringSecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/admin/**").permitAll()
-                .requestMatchers("/**").permitAll()
+                .requestMatchers("/api/t2t/admin/transaction/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST,"api/courses/add/**","api/courses/edit/**",
+                                "api/courses/delete/**","api/trainer/add/**",
+                                "api/trainer/edit/**","/api/trainer/delete/**","api/category/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET,"api/courses/add/**","api/courses/edit/**",
+                                            "api/trainer/add/**","api/trainer/edit/**","/category/**").permitAll()
+                .requestMatchers("/","/index","/courses","/course-details/**","/trainers","/assets/**","/contact","/about","api/users/**","/api/trainer/get").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .authenticationProvider(customAuthenticationProvider)

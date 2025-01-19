@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -126,7 +125,7 @@ public class DemoController {
 
 	}
 	
-	@GetMapping("/api/trainer/addtrainer")
+	@GetMapping("/api/trainer/add")
 	public String getMethodName() {
 		return "AddTrainer";
 	}
@@ -142,11 +141,6 @@ public class DemoController {
 	public String addAdmin(){
 		return "RegistrationForm";
 	}
-	@PostMapping("api/courses/delete/{id}")
-	public String deleteCourse(@PathVariable Long id) {
-		courseService.deleteCourse(id);
-		return "redirect:/courses"; 
-	}
   @GetMapping("api/courses/edit/{id}")
   public String getCourseEditPage(@PathVariable Long id, Model model) throws JsonProcessingException {
     Course course = courseService.getCourseById(id);
@@ -160,12 +154,5 @@ public class DemoController {
 	Trainer trainerObject=this.trainerService.convertObjectToJsonAndBack(trainer);
     model.addAttribute("trainer", trainerObject);
     return "editTrainer";
-  }
-
-  @PostMapping("api/trainer/delete/{id}")
-
-  public String deleteTrainer(@PathVariable Long id) {
-	  this.trainerService.deleteById(id);
-	  return "redirect:/trainers"; 
   }
 }

@@ -2365,7 +2365,7 @@
 
 
 		async function fetchUsername() {
-			const token = localStorage.getItem("authToken");
+			const token = localStorage.getItem("token");
 			console.log("Token from localStorage:", token);  // Token check
 			if (!token) {
 				document.getElementById("loginButtons").style.display = "block";
@@ -2393,7 +2393,7 @@
 
 		document.getElementById('logoutButton')?.addEventListener('click', (e) => {
 			e.preventDefault();
-			localStorage.removeItem('authToken'); // Remove token from local storage
+			localStorage.removeItem('token'); // Remove token from local storage
 			window.location.href = '/index'; // Redirect to home page after logout
 		});
 

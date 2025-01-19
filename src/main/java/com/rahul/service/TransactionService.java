@@ -18,7 +18,7 @@ public class TransactionService {
     @Autowired
     private JavaMailSender emailSender;
 
-    private static final String email="keshchaurasiya448@gmail.com";
+    private static final String email="posttoteachtoteach@gmail.com";
 
     public void addTransactions(Transactions transaction){
         this.transactionRepo.save(transaction);

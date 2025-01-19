@@ -223,13 +223,19 @@
          Data.append('imageFile', imageFile);
         }
          Data.append('formData', JSON.stringify(formData));
+         const token = localStorage.getItem("token");
+
         // Send form data as JSON to the server
         fetch("/api/trainer/add", {
           method: "POST",
-          body: Data
+          body: Data,
+          headers: {
+              "Authorization": `Bearer ${token}`
+          }
         })
           .then(response => {
             if (response.ok) {
+              console.log(response.text());
               alert("Trainer added successfully!");
               form.reset(); // Reset the form
             } else {

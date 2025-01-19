@@ -188,7 +188,7 @@
           if (response.ok) {
             const data = await response.json();
             // Store the token in localStorage
-            localStorage.setItem("authToken", data.token);
+            localStorage.setItem("token", data.token);
             // Fetch and display the username
             // Redirect user after login
             const redirectUrl = new URLSearchParams(window.location.search).get('redirect');

@@ -18,10 +18,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.extern.slf4j.Slf4j;
 
 @Component
-@Slf4j
 public class JwtUtil {
 
     @Value("${jwt.secret.key}")
@@ -65,7 +63,6 @@ public class JwtUtil {
     }
 
     private Claims extractClaims(String token) {
-      log.info("Inside extract claims");
         return Jwts
                 .parser()
                 .verifyWith(generateKey())

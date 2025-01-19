@@ -24,7 +24,7 @@ public class CourseService {
     @Autowired
     private  ObjectMapper objectMapper;
 
-     public void saveCourse(Course course) {
+    public void saveCourse(Course course) {
         course.setStatus(CourseStatus.APPROVED);
         this.courseRepository.save(course);
     }
@@ -95,7 +95,7 @@ public class CourseService {
     
         // Directory where the image will be stored on the server
         String fileName = imageFile.getOriginalFilename();
-        String uploadDir = "D:/TeachToTech/TeachToTech/src/main/resources/static/assets/img/";
+        String uploadDir = "D:/T2T/TeachToTech/src/main/resources/static/assets/img/";
     
         try {
             // Create the directory if it doesn't exist

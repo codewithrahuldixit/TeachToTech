@@ -1,5 +1,6 @@
 package com.rahul.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,5 +16,6 @@ public class Transactions {
     @GeneratedValue(strategy = GenerationType.IDENTITY)   
     private Long count;   
     
-    private String transactionId;   
+    @Column(nullable = false)
+    private String transactionId;
 }

@@ -11,7 +11,7 @@ import com.rahul.model.Transactions;
 import com.rahul.service.TransactionService;
 
 @RestController
-@RequestMapping("/api/admin/")
+@RequestMapping("/api/t2t/admin/")
 public class TransactionController {
     @Autowired
     private TransactionService transactionService;
