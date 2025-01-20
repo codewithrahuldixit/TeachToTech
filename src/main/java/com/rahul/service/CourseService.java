@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,6 +15,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rahul.enum_.CourseStatus;
 import com.rahul.model.Course;
 import com.rahul.repository.CourseRepository;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Service
 public class CourseService {
@@ -24,6 +28,10 @@ public class CourseService {
     @Autowired
     private  ObjectMapper objectMapper;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+    
+    @Transactional
     public void saveCourse(Course course) {
         course.setStatus(CourseStatus.APPROVED);
         this.courseRepository.save(course);
@@ -117,6 +125,7 @@ public class CourseService {
             throw new RuntimeException("Failed to save image: " + e.getMessage());
         }
     }
+    @Transactional
     public Course updateCourseWithImage(Long courseId, Course updatedCourse, MultipartFile imageFile) throws Exception {
         Course existingCourse = courseRepository.findById(courseId)
             .orElseThrow(() -> new Exception("Course not found"));

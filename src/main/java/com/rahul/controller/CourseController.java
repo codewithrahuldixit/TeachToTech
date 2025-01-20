@@ -21,7 +21,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rahul.model.Course;
 import com.rahul.service.CourseService;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/api/courses")
 public class CourseController {
@@ -58,7 +60,10 @@ public class CourseController {
                 return ResponseEntity.badRequest().body("This course already exists");
             }
         }
+        // log.info(""+course);
         this.courseService.saveCourse(course);
+       
+
 
         return ResponseEntity.ok("Course added successfully");
     } catch (Exception e) {

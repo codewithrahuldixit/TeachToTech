@@ -279,11 +279,15 @@
       alert('Please enter a category name');
       return;
     }
+    const token = localStorage.getItem("token");
 
     try {
       const response = await fetch('/category/add', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json"
+          },
         body: JSON.stringify({ name: categoryName }),
       });
 
@@ -344,6 +348,7 @@
 
     console.log("Payload:", payload);
     const token = localStorage.getItem("token");
+    
 
     try {
       // Send the course data to the backend
