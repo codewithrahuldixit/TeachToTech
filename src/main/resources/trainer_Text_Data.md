@@ -55,6 +55,10 @@ Description : Rajeev Singh is a versatile professional skilled in web developmen
 linkedIn : https://www.linkedin.com/in/rajeev-singh-83b309b/
 
 
+Abhishek Shukla
+A passionate tech enthusiast skilled in C, C++, Python, SQL, PowerBI, and Excel. Abhishek has led projects like IoT malware detection using machine learning, sales analysis through dynamic dashboards, and sorting algorithm visualizers. Proficient in tools like VS Code, Jupyter Notebook, and data science libraries, he combines technical expertise with strong interpersonal skills, including collaboration, adaptability, and problem-solving. Focused on delivering innovative, data-driven solutions, Abhishek excels in creating impactful applications and real-time insights.
+
+
 Couses Details : 
 
 Internship Program' : 
