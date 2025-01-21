@@ -6,7 +6,6 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +13,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,19 +31,20 @@ public class Trainer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long trainerId;
 
-    @Column(nullable = false)
+    @NotNull
     private String trainerName;
 
-    @Column(nullable = false)
+    @NotNull
+    @Size(max = 5000)
     private String trainerDescription;
 
-    @Column(nullable = false)
+    @NotNull
     private String trainerImage; 
 
-    @Column(nullable = false)
+    @NotNull
     private String trainerQualification;
 
-    @Column(nullable = false)
+    @NotNull
     private String linkedin; // LinkedIn profile URL of the trainer
 
     @ManyToMany

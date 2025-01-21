@@ -16,6 +16,7 @@ import com.rahul.model.Course;
 import com.rahul.model.Trainer;
 import com.rahul.service.CategoryService;
 import com.rahul.service.CourseService;
+import com.rahul.service.LargeObjectService;
 import com.rahul.service.TrainerService;
 
 
@@ -34,7 +35,6 @@ public class DemoController {
 
 	@Autowired
 	private CategoryService categoryService;
-
  
 	@GetMapping({ "/", "/index" })
 	public String Home(Model model) {
@@ -63,6 +63,7 @@ public class DemoController {
 		List<Category> categories = categoryService.getCategory();
 		model.addAttribute("categories", categories); // Add categories to the model
 		List<Course> courses;
+
 		if (category != null && !category.isEmpty()) {
 			courses = courseService.getCoursesByCategory(category); // Assuming this method exists in CourseService
 		} else {

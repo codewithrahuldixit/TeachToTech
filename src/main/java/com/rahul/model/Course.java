@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rahul.configuration.ListStringConverter;
 import com.rahul.enum_.CourseStatus;
+import com.rahul.service.ListStringConverter;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -16,10 +17,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,11 +38,12 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)  
     private Long id;
    
-    @Column(nullable = false)
+    @NotNull
     private String courseName;
 
-    @Lob
-    @Column(nullable = false, columnDefinition = "LONGTEXT")
+     
+    @Column(columnDefinition = "TEXT")
+    @NotNull
     @Convert(converter = ListStringConverter.class)
     private List<String> description;
 
@@ -49,16 +51,16 @@ public class Course {
     @JoinColumn(name = "category_id", nullable = false) // Foreign key
     private Category category;
 
-    @Column(nullable = false)
+    @NotNull
     private String image; // URL or file path to the image
 
-    @Column(nullable = false)
+    @NotNull
     private Integer duration; // Duration of the course (e.g., in hours)
 
-    @Column(nullable = false)
+    @NotNull
     private Double price; // Price of the course
 
-    @Column(nullable = false)
+    @NotNull
     private String modules;
 
     @ManyToMany()
