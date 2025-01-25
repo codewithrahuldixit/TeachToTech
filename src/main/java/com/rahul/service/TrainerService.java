@@ -56,14 +56,12 @@ public class TrainerService {
         if (imageFile == null || imageFile.isEmpty()) {
             return null; // No image provided
         }
-
         // Extract original file name and sanitize it
         String originalFileName = imageFile.getOriginalFilename();
         if (originalFileName == null) {
             throw new RuntimeException("File name cannot be null.");
         }
         String sanitizedFileName = originalFileName.replaceAll("[^a-zA-Z0-9.\\-_]", "_");
-
         try {
             // Ensure the upload directory ends with a separator
             if (!uploadDir.endsWith(File.separator)) {
