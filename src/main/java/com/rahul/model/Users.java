@@ -1,6 +1,8 @@
 package com.rahul.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -59,7 +61,12 @@ public class Users {
    
     private boolean isFirstSuperAdmin = false;
 
+    private String otp;
+    
+    private LocalDateTime createdAt;
+
+    private boolean otpUsed= false;
+
     @Column(nullable = false)
     private String role = "USER";
-
 }

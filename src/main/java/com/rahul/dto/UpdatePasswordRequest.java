@@ -14,12 +14,9 @@ import lombok.With;
 @AllArgsConstructor
 @Builder
 @With
-public class LoginDto {
+public class UpdatePasswordRequest {
     @Email
     private String email;
-
-    private String contact;
-
-    private String password;
     
+    private String newPassword;
 }

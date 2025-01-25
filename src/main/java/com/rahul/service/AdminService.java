@@ -1,6 +1,9 @@
 package com.rahul.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -98,6 +101,14 @@ public class AdminService {
 
         // Delete the user
         userRepository.delete(userToDelete);
+    }
+
+    public Optional<Users> findByEmail(String email) {
+         return this.userRepository.findByEmail(email);
+    }
+
+    public Optional<Users> findByContact(String contact) {
+         return this.userRepository.findByContact(contact);
     }
     
     

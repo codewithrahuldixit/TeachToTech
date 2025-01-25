@@ -13,7 +13,6 @@ import com.rahul.model.Course;
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
     List<Course> findByStatus(CourseStatus approved);
-    //change done by ayushi
     List<Course> findByCategoryName(String name);
     Optional<Course> findById(Long id);
     Optional<Course> findByCourseName(String courseName);

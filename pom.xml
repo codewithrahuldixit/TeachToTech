@@ -113,5 +113,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>teachtotech_App</finalName>
 	</build>
 </project>
