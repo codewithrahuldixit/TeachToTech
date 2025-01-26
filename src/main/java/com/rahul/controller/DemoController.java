@@ -16,7 +16,6 @@ import com.rahul.model.Course;
 import com.rahul.model.Trainer;
 import com.rahul.service.CategoryService;
 import com.rahul.service.CourseService;
-import com.rahul.service.LargeObjectService;
 import com.rahul.service.TrainerService;
 
 
@@ -156,4 +155,10 @@ public class DemoController {
     model.addAttribute("trainer", trainerObject);
     return "editTrainer";
   }
+  @GetMapping("api/users/update-password/{email}")
+  public String forgotpassword(@PathVariable String email,Model model) {
+       model.addAttribute("email",email);
+	   return "forgotPassword";
+  }
+  
 }

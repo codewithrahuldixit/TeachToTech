@@ -1,5 +1,4 @@
 package com.rahul.service;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -14,34 +13,29 @@ import com.rahul.repository.UserRepository;
 
 @Service
 public class UserDetailService implements UserDetailsService {
- @Autowired
- private UserRepository userRepository;
 
- @Override
- public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
-     // Split identifier into email and mobile number
-     String[] parts = identifier.split("\\|");
-     if (parts.length != 2) {
-         throw new UsernameNotFoundException("Invalid identifier format. Use 'email|mobileNo'.");
-     }
+    @Autowired
+    private UserRepository userRepository;
 
-     String email = parts[0];
-     String mobileNo = parts[1];
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Users foundUser;
 
-     // Find user by both email and mobile number
-     Optional<Users> user = userRepository.findByEmailAndContact(email, mobileNo);
-     if (user.isEmpty()) {
-         throw new UsernameNotFoundException("User not found with provided email and mobile number");
-     }
+        // Check if username is an email or a mobile number
+        if (username.contains("@")) {
+            // Treat as email
+            foundUser = userRepository.findByEmail(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+        } else {
+            // Treat as mobile number
+            foundUser = userRepository.findByContact(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found with mobile: " + username));
+        }
 
-     Users foundUser = user.get();
-
-    
-     return User.builder()
-             .username(foundUser.getEmail())
-             .password("")
-             .roles(foundUser.getRole())
-             .build();
- }
+        return User.builder()
+                .username(foundUser.getEmail())
+                .password(foundUser.getPassword())
+                .roles(foundUser.getRole())
+                .build();
+    }
 }
-

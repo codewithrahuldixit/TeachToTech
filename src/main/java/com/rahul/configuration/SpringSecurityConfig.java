@@ -18,12 +18,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SpringSecurityConfig {
 
-    private CustomAuthenticationProvider customAuthenticationProvider;
+ 
     private JwtRequestFilter jwtRequestFilter;
 
-    public SpringSecurityConfig(CustomAuthenticationProvider customAuthenticationProvider,
-    JwtRequestFilter jwtRequestFilter) {
-        this.customAuthenticationProvider = customAuthenticationProvider;
+    public SpringSecurityConfig( JwtRequestFilter jwtRequestFilter) {
         this.jwtRequestFilter=jwtRequestFilter;
     }
 
@@ -32,17 +30,17 @@ public class SpringSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/admin/**").permitAll()
+                .requestMatchers("/api/admin/**","/api/otp/**").permitAll()
                 .requestMatchers("/api/t2t/admin/transaction/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST,"api/courses/add/**","api/courses/edit/**",
                                 "api/courses/delete/**","api/trainer/add/**",
                                 "api/trainer/edit/**","/api/trainer/delete/**","/category/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET,"api/courses/add/**","api/courses/edit/**",
                                             "api/trainer/add/**","api/trainer/edit/**","/category/**").permitAll()
-                .requestMatchers("/","/index","/courses","/course-details/**","/trainers","/assets/**","/contact","/about","api/users/**","/api/trainer/get").permitAll()
+                .requestMatchers("/","/index","/courses","/course-details/**","/trainers","/assets/**","/contact",
+                      "/about","api/users/**","/api/trainer/get","/teachtotech-app/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .authenticationProvider(customAuthenticationProvider)
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
             );
 

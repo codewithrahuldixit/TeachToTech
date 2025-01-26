@@ -137,76 +137,226 @@
 
   <body>
     <div class="login-container">
-      <div class="back-arrow" onclick="history.back()">
-        <div class="arrow"></div>
-        <p class="back-text">Go back</p>
-      </div>
-      <h2>Login</h2>
-      <form id="loginForm" onsubmit="submitLogin(event)">
-        <!-- Email Field -->
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required />
+        <div class="back-arrow" onclick="history.back()">
+            <div class="arrow"></div>
+            <p class="back-text">Go back</p>
+        </div>
+        <h2>Login</h2>
+        <form id="loginForm" onsubmit="submitLogin(event)">
+            <!-- Email/Mobile Field -->
+            <div class="form-group">
+                <label for="username">Email or Mobile Number</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    placeholder="Enter your email or mobile number" 
+                    required 
+                />
+            </div>
+
+            <!-- Password Field -->
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="Enter your password" 
+                    required 
+                />
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group">
+                <button type="submit" class="btn">Login</button>
+            </div>
+        </form>
+
+        <p>
+            <a href="#" id="forgotPasswordLink" onclick="showForgotPasswordForm()">Forgot Password?</a>
+        </p>
+
+        <!-- Forgot Password Form -->
+        <div id="forgotPasswordForm" style="display: none;">
+            <div class="form-group">
+                <label for="forgotEmail">Enter Your Email:</label>
+                <input 
+                    type="email" 
+                    id="forgotEmail" 
+                    name="forgotEmail" 
+                    placeholder="Enter your email" 
+                    required 
+                />
+            </div>
+            <div class="form-group">
+                <button onclick="sendForgotPasswordOtp()">Send OTP</button>
+            </div>
         </div>
 
-        <!-- Contact Field -->
-        <div class="form-group">
-          <label for="contact">Contact</label>
-          <input type="text" id="contact" name="contact" required />
+        <!-- OTP Validation Form (Initially Hidden) -->
+        <div id="otpValidationForm" style="display: none;">
+            <div class="form-group">
+                <label for="otp">Enter OTP:</label>
+                <input 
+                    type="text" 
+                    id="otp" 
+                    name="otp" 
+                    placeholder="Enter the OTP sent to your email" 
+                    required 
+                />
+            </div>
+            <p id="otpTimer"></p>
+            <div class="form-group">
+                <button onclick="validateOtp()">Validate OTP</button>
+            </div>
         </div>
 
-        <!-- Submit Button -->
-        <div class="form-group">
-          <button type="submit" class="btn">Login</button>
-        </div>
-      </form>
-
-      <p>
-        Don't have an account? <a href="/api/users/register">Register here</a>
-      </p>
+        <p>
+            Don't have an account? <a href="/api/users/register">Register here</a>
+        </p>
     </div>
 
     <script>
-      // Handle login
-      async function submitLogin(event) {
-        event.preventDefault(); // Prevent form submission
+        let otpTimeout;
 
-        const loginData = {
-          email: document.getElementById("email").value,
-          contact: document.getElementById("contact").value,
-        };
-
-        try {
-          const response = await fetch("/api/users/login", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(loginData),
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            // Store the token in localStorage
-            localStorage.setItem("token", data.token);
-            // Fetch and display the username
-            // Redirect user after login
-            const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
-            console.log('Redirect URL:', redirectUrl); 
-            // Redirect to the intended page or fallback to homepage
-            window.location.href = redirectUrl || "/";
-            
-          } else {
-            alert(`Login failed`);
-          }
-        } catch (error) {
-          console.error("Error during login:", error);
-          alert("An unexpected error occurred during login.");
+        function showForgotPasswordForm() {
+            document.getElementById("forgotPasswordForm").style.display = "block";
+            document.getElementById("forgotPasswordLink").style.display = "none";
         }
-      }
 
-      // Attach the login function to form submission
-      document.getElementById("loginForm").addEventListener("submit", submitLogin);
+        async function sendForgotPasswordOtp() {
+            const email = document.getElementById('forgotEmail').value.trim();
+
+            if (!email) {
+                alert("Please enter your email.");
+                return;
+            }
+
+            try {
+                const response = await fetch("/api/otp/send", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: `email=${encodeURIComponent(email)}`,
+                });
+
+                if (response.ok) {
+                    alert("OTP has been sent to your registered email.");
+                    // Show OTP validation form
+                    document.getElementById("otpValidationForm").style.display = "block";
+                    startOtpTimer();
+                } else {
+                    alert("Failed to send OTP. Please try again.");
+                }
+            } catch (error) {
+                console.error("Error sending OTP:", error);
+                alert("An unexpected error occurred.");
+            }
+        }
+
+        function startOtpTimer() {
+            const timerElement = document.getElementById("otpTimer");
+            let timeLeft = 300; // 5 minutes in seconds
+
+            clearInterval(otpTimeout); // Clear any existing timers
+            otpTimeout = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(otpTimeout);
+                    timerElement.textContent = "OTP has expired. Please request a new OTP.";
+                } else {
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    timerElement.textContent = `Time remaining: ${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+                    timeLeft--;
+                }
+            }, 1000);
+        }
+
+        async function validateOtp() {
+            const otp = document.getElementById('otp').value.trim();
+            const email = document.getElementById('forgotEmail').value.trim();
+
+            if (!otp || !email) {
+                alert("Both email and OTP are required.");
+                return;
+            }
+
+            try {
+                const response = await fetch("/api/otp/validate", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: `email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}`,
+                });
+
+                if (response.ok) {
+                    alert("OTP validated successfully!");
+                    // Redirect to the update password page
+                    window.location.href = `/api/users/update-password/${encodeURIComponent(email)}`;
+                } else {
+                    alert("Invalid or expired OTP. Please try again.");
+                }
+            } catch (error) {
+                console.error("Error validating OTP:", error);
+                alert("An unexpected error occurred.");
+            }
+        }
+
+        async function submitLogin(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get form values
+            const usernameInput = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            // Validate inputs
+            if (!usernameInput || !password) {
+                alert("Both fields are required.");
+                return;
+            }
+
+            // Determine if the input is an email or mobile number
+            let loginData;
+            const isEmail = usernameInput.includes("@");
+            const isMobile = /^\d+$/.test(usernameInput); // Check if input contains only digits
+
+            if (isEmail) {
+                loginData = { email: usernameInput, password: password };
+            } else if (isMobile) {
+                loginData = { contact: usernameInput, password: password };
+            } else {
+                alert("Please enter a valid email or mobile number.");
+                return;
+            }
+
+            try {
+                // Send login data to the backend
+                const response = await fetch("/api/users/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(loginData),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    // Store the token in localStorage
+                    localStorage.setItem("token", data.token);
+                    // Redirect user after login
+                    const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
+                    window.location.href = redirectUrl || "/";
+                } else {
+                    alert(`Login failed`);
+                }
+            } catch (error) {
+                console.error("Error during login:", error);
+                alert("An unexpected error occurred during login.");
+            }
+        }
     </script>
-  </body>
+</body>
 </html>

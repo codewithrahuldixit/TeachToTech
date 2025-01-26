@@ -47,4 +47,12 @@ public class UserService {
     public Optional<Users> findByContact(String contact) {
       return this.userRepository.findByContact(contact);
     }
+
+    public boolean updatePassword(String email, String newPassword) {
+        Optional<Users> user = this.userRepository.findByEmail(email);
+        Users user1=user.get();
+        user1.setPassword(this.passwordEncoder.encode(newPassword));
+        this.userRepository.save(user1);
+        return true;
+    }
 }

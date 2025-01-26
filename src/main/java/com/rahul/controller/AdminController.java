@@ -19,9 +19,14 @@ public class AdminController {
     
     @PostMapping("/register")
     public ResponseEntity<?> add(@RequestBody Users user){
+        if (adminService.findByEmail(user.getEmail()).isPresent()) {
+            return ResponseEntity.badRequest().body("Username is already taken");
+        }
+        if (adminService.findByContact(user.getContact()).isPresent()) {
+            return ResponseEntity.badRequest().body("Contact is already taken");
+        }
        this.adminService.addAdmin(user);
            return ResponseEntity.ok().build();
-       
-    }
+       }
     
 }

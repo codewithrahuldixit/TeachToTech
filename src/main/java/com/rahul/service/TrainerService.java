@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +21,9 @@ import com.rahul.repository.TrainerRepository;
 
 @Service
 public class TrainerService {
+
+    @Value("${file.trainer-upload-dir}")
+    private String uploadDir;
 
       private static final Trainer DEFAULT_TRAINER = new Trainer(
             1L, // Static ID for the default trainer
@@ -48,35 +52,43 @@ public class TrainerService {
       return this.trainerRepository.findByLinkedin(linkedin);
     }
 
-     public String saveImage(MultipartFile imageFile) {
+    public String saveImage(MultipartFile imageFile) {
         if (imageFile == null || imageFile.isEmpty()) {
             return null; // No image provided
         }
-    
-        // Directory where the image will be stored on the server
-        String uploadDir = "D:/TeachToTech/TeachToTech/src/main/resources/static/assets/img/team/";
-        String fileName = imageFile.getOriginalFilename();
-    
+        // Extract original file name and sanitize it
+        String originalFileName = imageFile.getOriginalFilename();
+        if (originalFileName == null) {
+            throw new RuntimeException("File name cannot be null.");
+        }
+        String sanitizedFileName = originalFileName.replaceAll("[^a-zA-Z0-9.\\-_]", "_");
         try {
+            // Ensure the upload directory ends with a separator
+            if (!uploadDir.endsWith(File.separator)) {
+                uploadDir += File.separator;
+            }
+
             // Create the directory if it doesn't exist
             File directory = new File(uploadDir);
-            if (!directory.exists()) {
-                directory.mkdirs();
+            if (!directory.exists() && !directory.mkdirs()) {
+                throw new RuntimeException("Failed to create upload directory: " + uploadDir);
             }
-    
-            // File object representing the destination
-            File destinationFile = new File(uploadDir + fileName);
-    
-            // Save the file using transferTo()
+
+            // Destination file path
+            File destinationFile = new File(directory, sanitizedFileName);
+
+            // Save the file
             imageFile.transferTo(destinationFile);
-    
-            // Returning the saved file's relative path for frontend usage
-            return "/assets/img/team/" + fileName;
+
+            // Return the relative path to the file
+            return "/teachtotech-app/static/assets/img/team/"+ sanitizedFileName;
+
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to save image: " + e.getMessage());
         }
     }
+
     public Trainer getByTrainerId(Long id) {
        return this.trainerRepository.findByTrainerId(id).orElse(null);
     }
