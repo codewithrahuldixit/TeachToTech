@@ -1,7 +1,9 @@
 package com.rahul.service;
 
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,4 +57,40 @@ public class UserService {
         this.userRepository.save(user1);
         return true;
     }
+
+    public List<Users> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public Optional<Users> findById(UUID id) {
+        return userRepository.findById(id);
+    }
+    public void deleteUser(UUID id) {
+        userRepository.deleteById(id);
+    }
+    public Users updateUser(String email, Users updatedUsers) {
+        // Retrieve the existing user from the repository
+        Optional<Users> optionalUser = this.userRepository.findByEmail(email);
+    
+        // Check if the user exists
+        if (optionalUser.isPresent()) {
+            Users existingUser = optionalUser.get();
+    
+            // Update the user details with the new data
+            existingUser.setFirstName(updatedUsers.getFirstName());
+            existingUser.setLastName(updatedUsers.getLastName());
+            existingUser.setContact(updatedUsers.getContact());
+            existingUser.setEmail(updatedUsers.getEmail());
+            existingUser.setDob(updatedUsers.getDob());
+            existingUser.setQualification(updatedUsers.getQualification());
+            existingUser.setRole(updatedUsers.getRole());
+    
+            // Save and return the updated user
+            return this.userRepository.save(existingUser);
+        } else {
+            // Handle case where user is not found
+            throw new RuntimeException("User with id " + email + " not found");
+        }
+    }
+    
 }
