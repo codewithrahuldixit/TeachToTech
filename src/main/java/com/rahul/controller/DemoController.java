@@ -19,11 +19,9 @@ import com.rahul.service.CourseService;
 import com.rahul.service.TrainerService;
 
 
-
 @Controller
-public class DemoController {
+public class DemoController {	
 
-	 
 	@Autowired
 	private CourseService courseService;
 
@@ -160,5 +158,5 @@ public class DemoController {
        model.addAttribute("email",email);
 	   return "forgotPassword";
   }
-  
+
 }
