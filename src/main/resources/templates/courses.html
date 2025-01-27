@@ -170,16 +170,18 @@
 .hero-content {
     position: absolute;
     top: 45%;
-    left: 45%;
+    left: 48%;
     transform: translate(-50%, -50%);
     width: 100%;
     z-index: 5;
     text-align: center;
-    padding: 0 15px;
+    padding: 0 30px;
 }
 
 		.hero-content .container {
-			max-width: 1140px;
+			/* max-width: 1140px; */
+			padding: 0 30px; 
+			margin: 0 auto;
 
 		}
 
@@ -194,10 +196,18 @@
 		.hero-content p {
 			color: #fff;
 			font-size: 24px;
+			line-height: 1.5;
 			max-width: 100%;
-			margin: 0;
+			margin: 0 auto;
 			text-align: left;
 		}
+
+		.carousel-text {
+			font-size: 2rem;
+		}
+
+
+
 
 
 .carousel-control-prev,
@@ -208,35 +218,52 @@
 }
 
 		
-		@media (max-width: 768px) {
+@media (max-width: 992px) {
+    #hero {
+        height: 70vh;
+        min-height: 500px;
+    }
 
-			#hero {
-				height: 80vh;
-				min-height: 500px;
-			}
-
-			.hero-content h2 {
-				font-size: 48px;
-				font-weight: 700;
-				margin-bottom: 20px;
-			}
-
-			.hero-content p {
-				font-size: 24px;
-				padding: 0 20px;
-			}
-		}
-
-		.carousel-text {
-			font-size: 2rem;
-		}
-
+    .hero-content h2 {
+        font-size: 36px;
+    }
 
     .hero-content p {
+        font-size: 20px;
+        max-width: 90%;
+    }
+}
+
+
+@media (max-width: 768px) {
+    #hero {
+        height: 60vh;
+    }
+
+    .hero-content h2 {
+        font-size: 28px;
+        text-align: left;
+    }
+
+    .hero-content p {
+        font-size: 16px;
+        text-align: left;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-content h2 {
         font-size: 24px;
     }
 
-.carousel-caption {
+    .hero-content p {
+        font-size: 10px;
+        max-width: 100%;
+    }
+}
+
+
+/* .carousel-caption {
     position: absolute;
     bottom: 20%;
     left: 50%;
@@ -257,7 +284,7 @@
 .carousel-caption p {
     font-size: 18px;
     line-height: 1.5;
-}
+} */
 
 </style>
 
@@ -311,28 +338,26 @@
 
 						<div class="carousel-item">
 							<div class="carousel-image">
-								<img src="assets/img/course-1.jpg" alt="Course Image 2">
+								<img src="assets/img/Internship.jpg" alt="Course Image 2">
 							</div>
 							<div class="hero-content">
 								<div class="container">
 									<h2>Internship</h2>
-									<p>Kickstart your tech career with hands-on internship opportunities. Work on
-										real-world projects, collaborate with industry experts, and gain practical
-										experience that bridges the gap between learning and professional success</p>
+									<p>An internship program for students is designed to provide hands-on learning and professional experience in a specific field. It bridges the gap between academic knowledge and practical application, helping students develop industry-relevant skills and insights. These programs often involve mentoring, real-world projects, and exposure to workplace environments, fostering personal and professional growth.
+
+By participating in internships, students enhance their problem-solving, teamwork, and communication abilities while building a professional network. Tailored to various industries and disciplines, such programs prepare students for their future careers, offering a platform to explore their interests and contribute to meaningful projects.</p>
 								</div>
 							</div>
 						</div>
 
 						<div class="carousel-item">
 							<div class="carousel-image">
-								<img src="assets/img/course-2.jpg" alt="Course Image 3">
+								<img src="assets/img/WebDevelopment.jpg" alt="Course Image 3">
 							</div>
 							<div class="hero-content">
 								<div class="container">
 									<h2>Web Development</h2>
-									<p>Learn to build dynamic, responsive websites and applications through our web
-										development programs. Master front-end and back-end technologies, and gain the
-										skills to create cutting-edge digital solutions.</p>
+									<p>TeachToTech offers a comprehensive learning experience. It covers core Java, Servlets, JSP, and advanced frameworks like Spring and Hibernate. Students learn to build dynamic web applications, integrate databases with JDBC and Hibernate, and create RESTful APIs. The program emphasizes hands-on projects, deployment on servers like Tomcat, and front-end integration with tools like Thymeleaf. A capstone project ensures practical expertise, preparing students for real-world Java web development challenges.</p>
 								</div>
 							</div>
 						</div>

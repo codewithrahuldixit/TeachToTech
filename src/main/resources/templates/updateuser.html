@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Favicons -->
+  <link href="/assets/img/TT.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  
+  <title>Update User</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f4f4f4;
+    }
+
+    .content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    .card {
+      border: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 30px;
+      background-color: white;
+      width: 100%;
+      max-width: 1200px;
+      box-sizing: border-box;
+    }
+
+    .card-title {
+      font-size: 25px;
+      color: #5fcf80;
+      font-weight: bold;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      font-size: 14px;
+      color: #333;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .form-control:focus {
+      border-color: #5fcf80;
+      outline: none;
+    }
+
+    .read-more {
+      background-color: #5fcf80;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    .read-more:hover {
+      background-color: #4caf6a;
+    }
+
+    .back-arrow {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .arrow {
+      width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-right: 15px solid #4CAF50;
+      margin-right: 10px;
+    }
+
+    .arrow:hover {
+      border-right-color: #45a049;
+    }
+
+    .back-text {
+      font-size: 14px;
+      color: #4CAF50;
+      font-weight: bold;
+    }
+
+    .back-text:hover {
+      color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="content">
+    <div class="card">
+      <div class="back-arrow" onclick="history.back()">
+        <div class="arrow"></div>
+        <p class="back-text">Go back</p>
+      </div>
+      <h3 class="card-title">Update User</h3>
+      <form th:action="@{/api/users/allusers/update/{email}(email=${user.email})}" method="post">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" name="firstName" th:value="${user.firstName}" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" name="lastName" th:value="${user.lastName}" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" th:value="${user.email}" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+          <label for="contact">Contact Number</label>
+          <input type="text" id="contact" name="contact" th:value="${user.contact}" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+          <label for="qualification">Qualification</label>
+          <input type="text" id="qualification" name="qualification" th:value="${user.qualification}" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob" name="dob" th:value="${user.dob}" class="form-control" required />
+        </div>
+
+       
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select name="role" id="role" th:value="${user.role}" class="form-control">
+            <option value="USER">User</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+        </div>
+
+        <button type="submit" class="read-more">Update</button>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>
