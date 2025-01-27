@@ -104,7 +104,6 @@ public class CourseService {
         if (imageFile == null || imageFile.isEmpty()) {
             return null; // No image provided
         }
-
         // Extract original file name and sanitize it
         String originalFileName = imageFile.getOriginalFilename();
         if (originalFileName == null) {
@@ -112,6 +111,7 @@ public class CourseService {
         }
         String sanitizedFileName = originalFileName.replaceAll("[^a-zA-Z0-9.\\-_]", "_");
 
+ 
         try {
             // Ensure the upload directory ends with a separator
             if (!uploadDir.endsWith(File.separator)) {
@@ -131,7 +131,7 @@ public class CourseService {
             imageFile.transferTo(destinationFile);
 
            // Return the relative path to the file (match your WebConfig handler)
-            return "/teachtotech-app/static/assets/img/" + sanitizedFileName;
+            return "assets/img/" + sanitizedFileName;
 
         } catch (IOException e) {
             e.printStackTrace();
