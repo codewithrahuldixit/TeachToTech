@@ -131,7 +131,7 @@ public class CourseService {
             imageFile.transferTo(destinationFile);
 
            // Return the relative path to the file (match your WebConfig handler)
-            return "/teachtotech-app/static/assets/img/" + sanitizedFileName;
+            return "assets/img/" + sanitizedFileName;
 
         } catch (IOException e) {
             e.printStackTrace();
