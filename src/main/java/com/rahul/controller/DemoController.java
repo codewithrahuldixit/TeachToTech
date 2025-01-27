@@ -2,21 +2,28 @@ package com.rahul.controller;
 
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.rahul.model.Category;
 import com.rahul.model.Course;
 import com.rahul.model.Trainer;
+import com.rahul.model.Users;
 import com.rahul.service.CategoryService;
 import com.rahul.service.CourseService;
 import com.rahul.service.TrainerService;
+import com.rahul.service.UserService;
+
 
 
 @Controller
@@ -24,6 +31,9 @@ public class DemoController {
 
 	@Autowired
 	private CourseService courseService;
+
+	@Autowired
+	private UserService userService;
 
 
 	@Autowired
@@ -141,22 +151,55 @@ public class DemoController {
 	}
   @GetMapping("api/courses/edit/{id}")
   public String getCourseEditPage(@PathVariable Long id, Model model) throws JsonProcessingException {
-    Course course = courseService.getCourseById(id);
+	Course course = courseService.getCourseById(id);
 	Course courseObject=this.courseService.convertObjectToJsonAndBack(course);
-    model.addAttribute("course", courseObject);
-    return "editCourse";
+	model.addAttribute("course", courseObject);
+	return "editCourse";
   }
   @GetMapping("api/trainer/edit/{id}")
   public String getTrainerEditPage(@PathVariable Long id, Model model) throws JsonProcessingException {
-    Trainer trainer = this.trainerService.getByTrainerId(id);
+	Trainer trainer = this.trainerService.getByTrainerId(id);
 	Trainer trainerObject=this.trainerService.convertObjectToJsonAndBack(trainer);
-    model.addAttribute("trainer", trainerObject);
-    return "editTrainer";
+	model.addAttribute("trainer", trainerObject);
+	return "editTrainer";
   }
   @GetMapping("api/users/update-password/{email}")
   public String forgotpassword(@PathVariable String email,Model model) {
-       model.addAttribute("email",email);
+	   model.addAttribute("email",email);
 	   return "forgotPassword";
   }
 
+
+  @GetMapping("/api/users/allusers")
+public String getAllUsers(Model model) {
+	List<Users> users = userService.findAllUsers();
+	model.addAttribute("users", users);
+	return "allusers";
+}
+@PostMapping("/api/users/allusers/update/{email}")
+public String updateUser(@PathVariable String email,@RequestBody Users user, Model model) {
+	Users user1 =this.userService.updateUser(email, user);
+	return "redirect:/users";
+}
+@GetMapping("/api/users/allusers/update/{email}")
+public String getUser(@PathVariable String email, Model model) {
+    Optional<Users> optionalUser = this.userService.findByEmail(email);
+
+    // Check if the user is present
+    if (optionalUser.isPresent()) {
+        Users user = optionalUser.get();
+        model.addAttribute("user", user);  // Add the user object directly
+        return "updateuser";  // Return the template
+    } else {
+        // Handle the case where the user is not found (optional)
+        model.addAttribute("error", "User not found");
+        return "error";  // Optionally redirect to an error page
+    }
+}
+@GetMapping("/api/users/allusers/delete/{id}")
+public String deleteUser(@PathVariable UUID id) {
+    userService.deleteUser(id);
+    return "redirect:/api/users/allusers"; // Redirect to the user list page
+}
+  
 }
