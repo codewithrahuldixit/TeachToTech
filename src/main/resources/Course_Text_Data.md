@@ -59,6 +59,7 @@ Debug effectively: Use Java’s System.out.println and IDE debuggers.
 8- Full Stack Development : 
 	 
 	 1- Using Java & Spring Boot: 
+	 Java Full Stack development equips students with skills to build complete web applications, covering front-end (HTML, CSS, JavaScript, React/Angular), back-end (Core Java, Spring Boot), and databases (MySQL, MongoDB). Java’s beginner-friendly nature and extensive use across industries make it ideal for students. It opens career paths in high-demand areas like cloud computing, microservices, and big data. Learning Java Full Stack enhances problem-solving, versatility, and employability, as companies value developers who manage end-to-end processes. Additionally, students can create real-world projects to strengthen resumes, ensuring job security and competitive salaries in diverse industries like fintech, e-commerce, and healthcare.
 	 Module 1: Core Java Basics
 Introduction to Java
 Java overview and ecosystem

@@ -81,7 +81,7 @@ public class TrainerService {
             imageFile.transferTo(destinationFile);
 
             // Return the relative path to the file
-            return "/teachtotech-app/static/assets/img/team/"+ sanitizedFileName;
+            return "assets/img/team/"+ sanitizedFileName;
 
         } catch (IOException e) {
             e.printStackTrace();
