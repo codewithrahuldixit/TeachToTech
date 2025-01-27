@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<title>All users - TeachToTech</title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+
+	<!-- Favicons -->
+	<link th:href="@{/assets/img/TT.png}" rel="icon">
+	<link th:href="@{/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
+
+	<!-- Fonts -->
+	<link href="https://fonts.googleapis.com" rel="preconnect">
+	<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+		rel="stylesheet">
+
+	<!-- Vendor CSS Files -->
+	<link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+	<link th:href="@{/assets/vendor/aos/aos.css}" rel="stylesheet">
+	<link th:href="@{/assets/vendor/glightbox/css/glightbox.min.css}" rel="stylesheet">
+	<link th:href="@{/assets/vendor/swiper/swiper-bundle.min.css}" rel="stylesheet">
+
+	<!-- Main CSS File -->
+	<link href="assets/css/main.css" rel="stylesheet">
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+		integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+       
+  <style>
+ /* General Table Styling */
+.table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+/* Header Styling */
+.heading th {
+  background-color: #5fcf80;
+  color: white;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+/* Zebra Stripes for Table Rows */
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f9f9f9;
+}
+
+/* Hover effect on rows */
+.table-hover tbody tr:hover {
+  background-color: #eaf2e5;
+}
+
+/* Button Styling */
+.btn {
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+/* Improve Table Typography */
+.table th, .table td {
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+}
+.update-btn {
+    background-color: #FFA500; /* Orange background */
+    color: white; /* White text */
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    padding: 8px 12px; /* More padding for a better button size */
+    font-size: 14px; /* Larger font for better readability */
+    text-align: center;
+    display: inline-block; /* Keeps the button inline */
+    text-decoration: none; /* Removes underline */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .table th, .table td {
+    font-size: 12px;
+  }
+  .btn {
+    font-size: 12px;
+  }
+}
+
+  </style>
+
+</head>
+
+<body class="allusers-page">
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <!-- Heading -->
+            <h2 class="mb-2">All Users</h2>
+        
+            <!-- Search Bar -->
+            <input type="text" id="searchInput" class="form-control w-25" placeholder="Search by name or email..." onkeyup="searchUsers()">
+            <select id="sortDropdown" class="form-control w-25 ml-4" onchange="sortUsers()">
+                <option value="">Sort by</option>
+                <option value="firstNameAsc">First Name Asc</option>
+                <option value="firstNameDesc">First Name Desc</option>
+                <option value="dobAsc">Date of Birth Asc</option>
+                <option value="dobDesc">Date of Birth Desc</option>
+            </select>
+        </div>
+        
+        <!-- Table -->
+        <table class="table table-bordered">
+            <thead class="heading">
+                <tr>
+                    <th>S.no</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Qualification</th>
+                    <th>Date of Birth</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                <tr th:each="user, iterStat : ${users}">
+                    <td th:text="${iterStat.index + 1}"></td>
+                    <td th:text="${user.firstName}"></td>
+                    <td th:text="${user.lastName}"></td>
+                    <td th:text="${user.email}"></td>
+                    <td th:text="${user.contact}"></td>
+                    <td th:text="${user.qualification}"></td>
+                    <td th:text="${user.dob}"></td>
+                    <td th:text="${user.role}"></td>
+                    <td>
+                        <a th:href="@{'/api/users/allusers/update/' + ${user.email}}" class="update-btn">Update</a>
+                        <a th:href="@{'/api/users/allusers/delete/' + ${user.id}}" class="btn btn-danger btn-sm" 
+                           onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Scroll Top -->
+    <!-- Preloader -->
+    <div id="preloader"></div>
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Main JS File -->
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        function searchUsers() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.getElementById('userTableBody').getElementsByTagName('tr');
+    
+            for (let i = 0; i < rows.length; i++) {
+                const firstName = rows[i].getElementsByTagName('td')[1].textContent.toLowerCase();
+                const lastName = rows[i].getElementsByTagName('td')[2].textContent.toLowerCase();
+                const email = rows[i].getElementsByTagName('td')[3].textContent.toLowerCase();
+                const contact = rows[i].getElementsByTagName('td')[4].textContent.toLowerCase();
+                const qualification = rows[i].getElementsByTagName('td')[5].textContent.toLowerCase();
+                
+                if (
+                    firstName.includes(input) ||
+                    lastName.includes(input) ||
+                    email.includes(input) ||
+                    contact.includes(input) ||
+                    qualification.includes(input)
+                ) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }
+        function sortUsers() {
+    let sortValue = document.getElementById('sortDropdown').value;
+    let rows = Array.from(document.querySelectorAll('table tbody tr'));
+
+    rows.sort((a, b) => {
+        let valA, valB;
+
+        if (sortValue === 'firstNameAsc') {
+            valA = a.querySelector('td:nth-child(2)').textContent;
+            valB = b.querySelector('td:nth-child(2)').textContent;
+        } else if (sortValue === 'firstNameDesc') {
+            valA = a.querySelector('td:nth-child(2)').textContent;
+            valB = b.querySelector('td:nth-child(2)').textContent;
+            return valB.localeCompare(valA);
+        } else if (sortValue === 'dobAsc') {
+            valA = new Date(a.querySelector('td:nth-child(7)').textContent);
+            valB = new Date(b.querySelector('td:nth-child(7)').textContent);
+        } else if (sortValue === 'dobDesc') {
+            valA = new Date(a.querySelector('td:nth-child(7)').textContent);
+            valB = new Date(b.querySelector('td:nth-child(7)').textContent);
+            return valB - valA;
+        }
+
+        return valA.localeCompare(valB);
+    });
+
+    let tbody = document.querySelector('table tbody');
+    tbody.innerHTML = ''; // Clear the table body
+    rows.forEach(row => tbody.appendChild(row)); // Append the sorted rows
+}
+    </script>
+</body>
+
+</html>
