@@ -3,6 +3,7 @@ package com.rahul.controller;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,10 +29,7 @@ import com.rahul.service.OtpService;
 import com.rahul.service.UserService;
 import com.rahul.util.JwtUtil;
 
-import lombok.extern.slf4j.Slf4j;
-
 @RestController
-@Slf4j
 @RequestMapping("/api/users")
 public class UserController {
 
@@ -57,39 +54,32 @@ public class UserController {
         }
         userService.registerUser(user);
         return ResponseEntity.ok("User registered successfully");
-}
-@PostMapping("/login")
-public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDto) {
-    String username = null;
-
-    // Determine whether to use email or mobile number
-    if (loginDto.getEmail() != null && !loginDto.getEmail().isEmpty()) {
-        username = loginDto.getEmail();
-    } else if (loginDto.getContact() != null && !loginDto.getContact().isEmpty()) {
-        username = loginDto.getContact();
-    } else {
-        throw new IllegalArgumentException("Either email or mobile number must be provided");
-    }
-    log.info("users start authentication process with "+username);
-    // Authenticate using the provided identifier and password
-    Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(username, loginDto.getPassword())
-    );
-    log.info("User authenticating....with "+username);
-    if (authentication.isAuthenticated()) {
-        log.info("user authenticated successfully");
-        Map<String, String> authResponse = new HashMap<>();
-        User user = (User) authentication.getPrincipal();
-        String jwtToken = this.jwtUtil.generateToken(user);
-        authResponse.put("token", jwtToken);
-
-        return new ResponseEntity<>(authResponse, HttpStatus.OK);
     }
 
-    throw new UsernameNotFoundException("Invalid credentials");
-}
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDto) {
+        String username = null;
 
-    
+        if (loginDto.getEmail() != null && !loginDto.getEmail().isEmpty()) {
+            username = loginDto.getEmail();
+        } else if (loginDto.getContact() != null && !loginDto.getContact().isEmpty()) {
+            username = loginDto.getContact();
+        } else {
+            throw new IllegalArgumentException("Either email or mobile number must be provided");
+        }
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, loginDto.getPassword()));
+        if (authentication.isAuthenticated()) {
+            Map<String, String> authResponse = new HashMap<>();
+            User user = (User) authentication.getPrincipal();
+            String jwtToken = this.jwtUtil.generateToken(user);
+            authResponse.put("token", jwtToken);
+
+            return new ResponseEntity<>(authResponse, HttpStatus.OK);
+        }
+
+        throw new UsernameNotFoundException("Invalid credentials");
+    }
 
     @GetMapping("profile/{email}")
     public ResponseEntity<Users> getUserByUsername(@PathVariable String email) {
@@ -97,50 +87,63 @@ public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDto) {
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
- 
+
     @GetMapping("/name")
-        public String getCurrentUsername(@RequestHeader("Authorization") String authorizationHeader) {
-     // Remove "Bearer " prefix from the token
-        if(authorizationHeader==null|| !authorizationHeader.startsWith("Bearer ")){
+    public String getCurrentUsername(@RequestHeader("Authorization") String authorizationHeader) {
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Authorization header is missing or invalid");
         }
         String token = authorizationHeader.substring(7);
-        String firstName=this.userService.getUsersDetails(token);
+        String firstName = this.userService.getUsersDetails(token);
         return firstName;
     }
+
     @PostMapping("/getrole")
-    public ResponseEntity<String> getRole(@RequestHeader("Authorization") String authorizationHeader){
-        if(authorizationHeader==null|| !authorizationHeader.startsWith("Bearer ")){
+    public ResponseEntity<String> getRole(@RequestHeader("Authorization") String authorizationHeader) {
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Authorization header is missing or invalid");
         }
         String token = authorizationHeader.substring(7);
-        String role=this.jwtUtil.getRoleFromToken(token);
+        String role = this.jwtUtil.getRoleFromToken(token);
         if (role == null || role.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Role not found in token");
         }
         return ResponseEntity.ok(role);
     }
-@PostMapping("/update-password")
-public ResponseEntity<String> updatePassword(@RequestBody UpdatePasswordRequest request){
-    Optional<Users> user = this.userService.findByEmail(request.getEmail());
 
-    if (user.isPresent()) {
-        if (user.get().isOtpUsed()) {
-            // Call the user service to update the password
-            boolean isPasswordUpdated = userService.updatePassword(request.getEmail(), request.getNewPassword());
+    @PostMapping("/update-password")
+    public ResponseEntity<String> updatePassword(@RequestBody UpdatePasswordRequest request) {
+        Optional<Users> user = this.userService.findByEmail(request.getEmail());
 
-            if (isPasswordUpdated) {
-                return ResponseEntity.ok("Password updated successfully!");
+        if (user.isPresent()) {
+            if (user.get().isOtpUsed()) {
+                boolean isPasswordUpdated = userService.updatePassword(request.getEmail(), request.getNewPassword());
+
+                if (isPasswordUpdated) {
+                    return ResponseEntity.ok("Password updated successfully!");
+                } else {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .body("Failed to update password. Please try again.");
+                }
             } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("Failed to update password. Please try again.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired OTP.");
             }
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired OTP.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
         }
-    } else {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
     }
-}
+
+    @PostMapping("/allusers/delete/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable String id) {
+        UUID userId = UUID.fromString(id);
+        this.userService.deleteUser(userId);
+        return ResponseEntity.ok("User Deleted Successfully");
+    }
+
+    @PostMapping("/allusers/update/{email}")
+    public ResponseEntity<?> updateUser(@PathVariable String email, @RequestBody Users user) {
+              this.userService.updateUser(email, user);
+        return ResponseEntity.ok("User Updated Successfully");
+    }
 
 }
