@@ -3,7 +3,7 @@ console.log("common.js is loaded");
 
 async function fetchAndDisplayUsername() {
     console.log("fetchAndDisplayUsername called");
-    const authToken = localStorage.getItem("authToken");
+    const authToken = localStorage.getItem("token");
   
     // Check if the token exists
     if (!authToken) {
@@ -40,7 +40,7 @@ async function fetchAndDisplayUsername() {
 
   function handleLogout() {
     // Remove the auth token from localStorage
-    localStorage.removeItem("authToken");
+    localStorage.removeItem("token");
 
     // Hide the greeting and show the login/register buttons again
     document.getElementById("user-greeting").style.display = "none";

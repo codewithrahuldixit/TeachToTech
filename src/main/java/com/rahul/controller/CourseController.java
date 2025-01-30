@@ -21,9 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rahul.model.Course;
 import com.rahul.service.CourseService;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Controller
 @RequestMapping("/api/courses")
 public class CourseController {
@@ -52,19 +50,13 @@ public class CourseController {
         if (imagePath != null) {
             course.setImage(imagePath);
         }
-
-        // Save the course in the database
         Optional<Course> course1 = this.courseService.findByCourseName(course.getCourseName());
         if (course1.isPresent()) {
             if (this.courseService.findByPrice(course1.get().getPrice()).isPresent()) {
                 return ResponseEntity.badRequest().body("This course already exists");
             }
         }
-        // log.info(""+course);
         this.courseService.saveCourse(course);
-       
-
-
         return ResponseEntity.ok("Course added successfully");
     } catch (Exception e) {
         e.printStackTrace();
@@ -106,8 +98,6 @@ public class CourseController {
     @PathVariable Long courseId,
     @RequestParam("payload") String updatedCourseJson,
     @RequestParam(value = "image", required = false) MultipartFile imageFile) {
-
-    // Use the courseId from the URL
     try {
         // Parse the JSON string to get course data
         ObjectMapper objectMapper = new ObjectMapper();
@@ -118,9 +108,6 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 }
-
-
-    //change done by ayushi 
     @GetMapping("/details/{id}")
     public ResponseEntity<Course> getCourseDetails(@PathVariable Long id) {
         Course course = courseService.getCourseById(id);

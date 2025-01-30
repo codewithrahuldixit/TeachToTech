@@ -65,8 +65,8 @@ public class UserService {
     public Optional<Users> findById(UUID id) {
         return userRepository.findById(id);
     }
-    public void deleteUser(UUID id) {
-        userRepository.deleteById(id);
+    public void deleteUser(UUID Id) {
+        this.userRepository.deleteById(Id);
     }
     public Users updateUser(String email, Users updatedUsers) {
         // Retrieve the existing user from the repository
