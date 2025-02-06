@@ -77,9 +77,13 @@ public class DemoController {
 		return "about";
 	}
 
-	@GetMapping("/events")
-	public String events() {
-		return "events";
+	@GetMapping("/articlewriting")
+	public String article() {
+		return "articlewriting";
+	}
+	@GetMapping("/preview")
+	public String articlePreview() {
+		return "preview";
 	}
 
 	@GetMapping("/contact")
