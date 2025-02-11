@@ -67,6 +67,9 @@ body {
     margin: 10px auto; /* Centers the form horizontally */
     
 }
+#category{
+  height: 50px;
+}
 
 .form-group {
     display: flex;
@@ -148,10 +151,13 @@ body {
     <!-- Events Section -->
     <section id="events" class="events section">
 
-      <form class="form-container" action="/save-content" method="POST" onsubmit="saveContent()">
+      <form class="form-container" action="/preview" method="GET">
         <div class="form-group">
           <label for="category">Category</label>
-          <input type="text" id="category" name="category" placeholder="Enter the category" required>
+          <select id="category" name="category" required>
+            <option value="">Select a category</option>
+            <option th:each="cat : ${categories}" th:value="${cat.categoryId}" th:text="${cat.name}"></option>
+        </select>
       </div>
         <div class="form-group">
             <label for="title">Title</label>
