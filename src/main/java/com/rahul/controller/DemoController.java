@@ -77,23 +77,7 @@ public class DemoController {
 		return "about";
 	}
 
-	@GetMapping("/articlewriting")
-	public String article() {
-		return "articlewriting";
-	}
-	@GetMapping("/preview")
-	public String articlePreview() {
-		return "preview";
-	}
-	@GetMapping("/articlereview")
-	public String articleReview() {
-		return "articleReview";
-	}
-	@GetMapping("/articlereview/preview")
-	public String articleAdminPreview() {
-		return "adminPreview";
-	}
-
+	
 
 	@GetMapping("/contact")
 	public String contact(Model model) {
