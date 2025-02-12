@@ -35,10 +35,12 @@ public class ArticleController {
     private CategoryRepository categoryRepo;
 
    
-    // @GetMapping("/articles")
-    // public List<Article> getAllArticles() {
-    //     return articleService.getAllArticles();
-    // }
+    @GetMapping("/articlereview")
+    public String getAllArticles(Model model) {
+         List<Article> articles= articleService.getAllArticles();
+         model.addAttribute("articles", articles);
+         return "articleReview";
+    }
     
     // @PostMapping("/save-content")
     // public String postMethodName(@RequestParam String title, @RequestParam String content, @RequestParam Long categoryId, Model model) {

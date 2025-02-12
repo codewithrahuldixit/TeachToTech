@@ -261,4 +261,44 @@ async function displayAdminContent() {
         navigating = false;
     });
     
+
+    async function getUsername() {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+          console.warn("No token found, user might not be logged in.");
+          return null;
+      }
+  
+      try {
+          const response = await fetch("/api/users/name", {
+              method: "GET",
+              headers: {
+                  "Authorization": `Bearer ${token}`
+              }
+          });
+          if (response.ok) {
+              return await response.text(); // Return the username
+          } else {
+              console.error("Failed to fetch username:", response.status);
+              return null;
+          }
+      } catch (error) {
+          console.error("Error fetching username:", error);
+          return null;
+      }
+  }
+  
+  async function populateArticleAuthor() {
+    const username = await getUsername();
+    if (username) {
+        document.getElementById("articleAuthor").textContent = `Written by: ${username}`;
+    } else {
+        document.getElementById("articleAuthor").textContent = "Written by: Guest";
+    }
+}
+
+
+document.addEventListener("DOMContentLoaded", populateArticleAuthor);
+
     

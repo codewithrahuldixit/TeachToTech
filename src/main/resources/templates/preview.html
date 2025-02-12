@@ -133,8 +133,7 @@
       <section id="events" class="events section">
         <div class="article-container">
         <h1 class="article-title" th:text="${article.title}">Article Title</h1>
-        <p class="article-meta">
-            By <strong>John Doe</strong> | Published on <span th:text="${#dates.format(#dates.createNow(), 'MMMM dd, yyyy')}"></span>
+        <p class="article-meta" id="articleAuthor">
         </p>
         <hr>
         <p class="article-content" th:text="${article.content}">

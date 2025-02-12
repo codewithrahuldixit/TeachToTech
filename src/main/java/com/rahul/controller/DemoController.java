@@ -82,10 +82,7 @@ public class DemoController {
 	}
 	
 	
-	@GetMapping("/articlereview")
-	public String articleReview() {
-		return "articleReview";
-	}
+	
 	@GetMapping("/articlereview/preview")
 	public String articleAdminPreview() {
 		return "adminPreview";
