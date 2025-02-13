@@ -150,13 +150,16 @@ body {
 
     <!-- Events Section -->
     <section id="events" class="events section">
+      <div th:if="${message}" id="successMessage" class="alert alert-success">
+        <p th:text="${message}"></p>
+    </div>
 
-      <form class="form-container" action="/preview" method="GET">
+      <form class="form-container" action="/preview" method="POST">
         <div class="form-group">
           <label for="category">Category</label>
-          <select id="category" name="category" required>
+          <select id="categoryId" name="categoryId" required>
             <option value="">Select a category</option>
-            <option th:each="cat : ${categories}" th:value="${cat.categoryId}" th:text="${cat.name}"></option>
+            <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.name}"></option>
         </select>
       </div>
         <div class="form-group">
@@ -171,7 +174,7 @@ body {
     
         <div class="form-group-2">
             
-          <button><a href="/preview" class="preview-button">Preview</a></button>
+          <button type="submit" class="preview-button">Preview</button>
         </div>
     </form>
     </section>
@@ -184,7 +187,7 @@ body {
 
   <!-- Preloader -->
   <div id="preloader"></div>
-
+  
   <!-- Vendor JS Files -->
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>

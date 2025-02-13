@@ -76,8 +76,18 @@ public class DemoController {
 		model.addAttribute("categories", categories);
 		return "about";
 	}
-
+	@GetMapping("/adminpreview")
+	public String adminReview() {
+		return "adminPreview";
+	}
 	
+	
+	
+	@GetMapping("/articlereview/preview")
+	public String articleAdminPreview() {
+		return "adminPreview";
+	}
+
 
 	@GetMapping("/contact")
 	public String contact(Model model) {
