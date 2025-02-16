@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -14,6 +15,7 @@ import com.rahul.model.Article;
 import com.rahul.model.Category;
 import com.rahul.repository.CategoryRepository;
 import com.rahul.service.ArticleService;
+import com.rahul.service.CategoryService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -24,6 +26,9 @@ public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Autowired
     private CategoryRepository categoryRepo;
@@ -73,7 +78,7 @@ public class ArticleController {
    
     
 
-    @GetMapping("/write-article")
+    @GetMapping("/articlewriting")
     public String showArticleForm(Model model) {
     List<Category> categories = categoryRepo.findAll();
     System.out.println(categories);
@@ -81,6 +86,15 @@ public class ArticleController {
     return "articlewriting"; // Ensure this matches the actual HTML file name
 }
 
+ @GetMapping("/articles/category/{id}")
+ public String getArticlesByCategory(@PathVariable Long id, Model model) {
+    List<Article> articles = articleService.getArticlesByCategory(id); // Fetch articles by category
+    Category category = categoryService.getCategoryById(id); // Fetch category details
+
+    model.addAttribute("articles", articles);
+    model.addAttribute("category", category);
+    return "article-details"; // HTML template to display articles
+}
 
     
     @PostMapping("/preview")

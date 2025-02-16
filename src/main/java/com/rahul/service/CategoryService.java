@@ -27,6 +27,10 @@ public class CategoryService {
     public Category findByName(String name) {
       return categoryRepository.findByName(name); 
     }
+    public Category getCategoryById(Long id) {
+      return categoryRepository.findById(id)
+              .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
+  }
     public List<Category> findByTrainer(Long trainerId){
       return this.categoryRepository.findByTrainerId(trainerId);
     }

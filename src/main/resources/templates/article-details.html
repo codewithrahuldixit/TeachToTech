@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Publish Articles - TeachToTech</title>
+  <title>Discover - TeachToTech</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
 
@@ -132,22 +132,6 @@ body {
 
   
   <div th:replace="header2 :: header"></div>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
-      <a class="navbar-brand" href="#">📝 Discover Articles</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#categoryNav"
-        aria-controls="categoryNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="categoryNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item" th:each="category : ${categories}">
-            <a class="nav-link" th:href="@{/articles/category/{id}(id=${category.categoryId})}" th:text="${category.name}"></a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
 
   <main class="main">
 
