@@ -32,7 +32,9 @@ public class ArticleService {
         return categoryRepo.findById(categoryId)
             .orElseThrow(() -> new RuntimeException("Cannot fetch category"));
     }
-    
+    public List<Article> getArticlesByCategory(Long categoryId) {
+        return articleRepo.findByCategoryCategoryId(categoryId); // Query articles for a category
+    }
        
 
     }
