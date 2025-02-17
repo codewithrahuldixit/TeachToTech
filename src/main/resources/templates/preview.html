@@ -1,114 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Events - TeachToTech</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Events - TeachToTech</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+    <!-- Favicons -->
+    <link href="assets/img/TT.png" rel="icon" />
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
 
-  <!-- Favicons -->
-  <link href="assets/img/TT.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link
+      href="assets/vendor/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
+    <link
+      href="assets/vendor/glightbox/css/glightbox.min.css"
+      rel="stylesheet"
+    />
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
 
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <!-- Main CSS File -->
+    <link href="assets/css/main.css" rel="stylesheet" />
 
-  <!-- Main CSS File -->
-  <link href="assets/css/main.css" rel="stylesheet">
-
-  <!-- =======================================================
+    <!-- =======================================================
   * Template Name: Mentor
   * Template URL: https://bootstrapmade.com/mentor-free-education-bootstrap-theme/
   * Updated: Aug 07 2024 with Bootstrap v5.3.3
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
-  <style>
-    .page-title {
-  height: 200px; /* Adjust height as needed */
-  display: flex;
-  align-items: flex-start; /* Align content to the top */
-  justify-content: center;
-  padding-top: 10px; /* Add some spacing if needed */
-}
+    <style>
+      .page-title {
+        height: 200px; /* Adjust height as needed */
+        display: flex;
+        align-items: flex-start; /* Align content to the top */
+        justify-content: center;
+        padding-top: 10px; /* Add some spacing if needed */
+      }
 
-.title-heading {
-  margin: 0; /* Remove default margin for better positioning */
-  font-size: 20px; /* Adjust font size as needed */
-}
+      .title-heading {
+        margin: 0; /* Remove default margin for better positioning */
+        font-size: 20px; /* Adjust font size as needed */
+      }
 
-body {
-            background-color: #f8f9fa;
-        }
-        .article-container {
-            max-width: 800px;
-            margin: 50px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .article-title {
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .article-meta {
-            font-size: 14px;
-            color: #6c757d;
-            margin-bottom: 20px;
-        }
-        .article-content {
-            font-size: 18px;
-            line-height: 1.6;
-        }
-        .edit-button{
-            background-color: #FFA500;
-			color: white;
-			border: none;
-			border-radius: 5px;
-			height: 50px;
-			width: 100px;
-        }
-        .edit-button:active,
-.edit-button:focus {
-    background-color: #FFA500;
-    color: white;
-    outline: none;
-}
+      body {
+        background-color: #f8f9fa;
+      }
+      .article-container {
+        max-width: 800px;
+        margin: 50px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .article-title {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      .article-meta {
+        font-size: 14px;
+        color: #6c757d;
+        margin-bottom: 20px;
+      }
+      .article-content {
+        font-size: 18px;
+        line-height: 1.6;
+      }
+      .edit-button {
+        background-color: #ffa500;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        height: 50px;
+        width: 100px;
+      }
+      .edit-button:active,
+      .edit-button:focus {
+        background-color: #ffa500;
+        color: white;
+        outline: none;
+      }
 
-        .submit-button{
-            background-color: #5fcf80;
-			color: white;
-			border: none;
-			border-radius: 5px;
-			height: 50px;
-			width: 100px;
-        }
-  </style>
-  
-</head>
+      .submit-button {
+        background-color: #5fcf80;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        height: 50px;
+        width: 100px;
+      }
+    </style>
+  </head>
 
-<body class="events-page">
+  <body class="events-page">
+    <div th:replace="header2 :: header"></div>
 
-  
-  <div th:replace="header2 :: header"></div>
-
-  <main class="main">
-
-    <!-- Page Title -->
-    <div class="page-title" data-aos="fade">
+    <main class="main">
+      <!-- Page Title -->
+      <div class="page-title" data-aos="fade">
         <div class="heading">
           <div class="container">
             <div class="row d-flex justify-content-center text-center">
@@ -118,46 +125,113 @@ body {
             </div>
           </div>
         </div>
-      </div><!-- End Page Title -->
+      </div>
+      <!-- End Page Title -->
 
-    <!-- Events Section -->
-    <section id="events" class="events section">
+
+      <!-- Events Section -->
+      <section id="events" class="events section">
         <div class="article-container">
-            <h1 class="article-title">The Future of Artificial Intelligence</h1>
-            <p class="article-meta">By <strong>John Doe</strong> | Published on August 16, 2024</p>
-            <hr>
-            <p class="article-content">
-                Artificial intelligence is transforming industries, from healthcare to finance. Machine learning algorithms
-                are improving efficiency and enabling new possibilities. As AI continues to evolve, ethical considerations
-                and responsible development will play a crucial role in shaping its future.
-            </p>
-            <div class="text-center mt-4">
-                <a href="/articlewriting"><button class="edit-button">Edit</button></a>
-                <button class="submit-button">Submit</button>
-            </div>
+        <h1 class="article-title" th:text="${article.title}">Article Title</h1>
+        <p class="article-meta" id="articleAuthor">
+        </p>
+        <hr>
+        <p class="article-content" th:text="${article.content}">
+            Article content will be displayed here.
+        </p>
+
+          <div class="text-center mt-4">
+            <a href="/write-article"><button class="edit-button">Edit</button></a>
+            <form action="/save-content" method="post">
+              <button type="submit" class="submit-button">Submit</button>
+            </form>
+            <button id="saveButton" class="submit-button" style="display: none;">Save</button>
+          </div>
         </div>
-    </section>
+      </section>
+    </main>
+    <div th:replace="footer :: footer"></div>
 
-  </main>
-  <div th:replace="footer :: footer"></div>
+    <!-- Scroll Top -->
+    <a
+      href="#"
+      id="scroll-top"
+      class="scroll-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
 
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <!-- Preloader -->
+    <div id="preloader"></div>
 
-  <!-- Preloader -->
-  <div id="preloader"></div>
+    <!-- Vendor JS Files -->
+    <script>
+      document.getElementById("editButton").addEventListener("click", function() {
+          document.getElementById("articleTitle").disabled = false;
+          document.getElementById("articleCategory").disabled = false;
+          document.getElementById("articleContent").disabled = false;
+          document.getElementById("editButton").style.display = "none";
+          document.getElementById("saveButton").style.display = "inline-block";
+      });
 
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+      document.getElementById("saveButton").addEventListener("click", function() {
+          const title = document.getElementById("articleTitle").value;
+          const category = document.getElementById("articleCategory").value;
+          const content = document.getElementById("articleContent").value;
 
-  <!-- Main JS File -->
-  <script src="assets/js/main.js"></script>
-  
-</body>
+          fetch("/update-article", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                  title: title,
+                  category: category,
+                  content: content
+              }),
+          })
+          .then(response => {
+              if (response.ok) {
+                  alert("Article updated successfully");
+                  document.getElementById("articleTitle").disabled = true;
+                  document.getElementById("articleCategory").disabled = true;
+                  document.getElementById("articleContent").disabled = true;
+                  document.getElementById("editButton").style.display = "inline-block";
+                  document.getElementById("saveButton").style.display = "none";
+              } else {
+                  alert("Failed to update article");
+              }
+          })
+          .catch(error => console.error("Error:", error));
+      });
 
+      document.getElementById("submitForm").addEventListener("submit", function(event) {
+          event.preventDefault(); // Prevent normal form submission
+          
+          fetch("/save-content", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          })
+          .then(response => {
+              if (response.ok) {
+                  document.getElementById("successMessage").style.display = "block";
+                  setTimeout(() => {
+                      document.getElementById("successMessage").style.display = "none";
+                  }, 3000);
+              } else {
+                  alert("Failed to submit article");
+              }
+          })
+          .catch(error => console.error("Error:", error));
+      });
+    </script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Main JS File -->
+    <script src="assets/js/main.js"></script>
+  </body>
 </html>

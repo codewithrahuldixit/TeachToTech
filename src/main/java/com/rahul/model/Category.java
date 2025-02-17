@@ -38,4 +38,5 @@ public class Category {
     public Category(Long categoryId) {
         this.categoryId = categoryId;
     }
+    
 }

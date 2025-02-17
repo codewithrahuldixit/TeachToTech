@@ -74,11 +74,11 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>JohnDoe</td>
-                      <td>Technology</td>
-                      <td>AI Revolution</td>
+                    <tr th:each="article, index:${articles}">
+                      <td th:text="${index.index +1}"></td>
+                      <td>anoushka</td>
+                      <td th:text="${article.category.name}"></td>
+                      <td th:text="${article.title}"></td>
                       <td>
                         <div class="d-flex flex-wrap align-items-center gap-2">
                           <button class="btn btn-primary btn-sm" onclick="showCommentBox(this)">Comment</button>
