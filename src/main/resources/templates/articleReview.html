@@ -83,7 +83,7 @@
                         <div class="d-flex flex-wrap align-items-center gap-2">
                           <button class="btn btn-primary btn-sm" onclick="showCommentBox(this)">Comment</button>
                           <button class="btn btn-warning btn-sm" style="background-color: #FFA500; border-color: #FFA500;">Edit</button>
-                          <button class="btn btn-danger btn-sm">Delete</button>
+                          <button class="btn btn-danger btn-sm"  th:attr="onclick='deletearticle(this, ' + ${article.id} + ')'">Delete</button>
                           <button class="btn btn-sm" style="background-color: #5fcf80;">
                             <a href="/articlereview/preview" style="color: white; text-decoration: none;">Preview</a>
                           </button>
@@ -131,6 +131,48 @@
       commentBox.style.display = "none";
     }
   }
+
+  function deletearticle(button, id){
+
+    button.disabled = true;
+    button.innerText = "Deleting...";
+
+    console.log("Deleting article with ID:", id);
+    if (!confirm("Are you sure you want to delete this article?")) {
+      button.disabled = false;
+        button.innerText = "Delete";
+        return;
+    }
+    fetch(`/delete/${id}`,{
+      method:"DELETE",
+      headers: {
+        "Content-Type":"application/json"
+      }
+    })
+    .then(response=>response.text())
+    .then(message=>{
+      alert(message);
+      if(message.includes("successfully")){
+        
+       // button.closest("tr").remove();
+        location.reload();
+      }
+      else{
+        button.disabled=false;
+        button.innerText="Delete";
+      }
+    })
+    .catch(error => {
+        console.error("Error deleting article:", error);
+        button.disabled = false;
+        button.innerText = "Delete"; 
+    });
+
+  }
+
+  
+
+
   </script>
   
 

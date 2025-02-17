@@ -35,6 +35,15 @@ public class ArticleService {
     public List<Article> getArticlesByCategory(Long categoryId) {
         return articleRepo.findByCategoryCategoryId(categoryId); // Query articles for a category
     }
+
+    public boolean deleteArticle(long id) {
+        if(articleRepo.existsById(id)){
+            articleRepo.deleteById(id);
+            return true;
+        }
+        return false;
+
+    }
        
 
     }
