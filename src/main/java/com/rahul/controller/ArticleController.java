@@ -1,6 +1,8 @@
 package com.rahul.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +52,7 @@ public class ArticleController {
 
         if(article==null){
             redirectAttributes.addFlashAttribute("error","No article to Submit");
-            return "redirect:/write-article";
+            return "redirect:/articlewriting";
         }
         articleService.saveArticle(article);
         session.removeAttribute("previewarticle");
@@ -117,7 +119,7 @@ public List<Article> getAllArticlesApi() {
 
     if (article == null) {
         System.out.println("DEBUG: No article found in session!");
-        return "redirect:/write-article";
+        return "redirect:/articlewriting";
     }
     if (message != null) {  
         model.addAttribute("message", message);
@@ -135,7 +137,6 @@ public List<Article> getAllArticlesApi() {
         }
         return ResponseEntity.ok("Article failed to delete.");
     }
-
 
 
     

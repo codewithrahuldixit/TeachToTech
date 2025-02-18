@@ -12,4 +12,3 @@ import com.rahul.model.Article;
 public interface ArticleRepository extends JpaRepository<Article, Long> {
     List<Article> findByCategoryCategoryId(Long categoryId);
 }
-
