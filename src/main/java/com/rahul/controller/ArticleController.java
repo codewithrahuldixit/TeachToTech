@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,23 +45,6 @@ public class ArticleController {
          model.addAttribute("articles", articles);
          return "articleReview";
     }
-    
-    // @PostMapping("/save-content")
-    // public String postMethodName(@RequestParam String title, @RequestParam String content, @RequestParam Long categoryId, Model model) {
-    //     Category articleCategory = categoryRepo.findById(categoryId)
-    //     .orElseThrow(() -> new RuntimeException("Category not found"));
-    //     Article article= new Article();
-    //     article.setTitle(title);
-    //     article.setContent(content);
-    //     article.setCategory(articleCategory);
-
-    //     articleService.saveArticle(article);
-
-    //     model.addAttribute("article", article);
-
-      
-    //     return "redirect:/preview";
-    // }
 
     @PostMapping("/save-content")
     public String submitarticle(HttpSession session,Model model, RedirectAttributes redirectAttributes){
@@ -78,7 +63,11 @@ public class ArticleController {
         return "redirect:/preview";
 
     }
-   
+    @GetMapping("/articles")
+public List<Article> getAllArticlesApi() {
+    return articleService.getAllArticles();
+}
+
     
 
     @GetMapping("/articlewriting")
@@ -139,6 +128,15 @@ public class ArticleController {
     model.addAttribute("article", article);
     return "preview";
 }
+
+    @DeleteMapping("/delete/{id}")
+    @ResponseBody
+    public ResponseEntity<String> deletearticle(@PathVariable long id){
+        if(articleService.deleteArticle(id)){
+            return ResponseEntity.ok("Article deleted successfully.");
+        }
+        return ResponseEntity.ok("Article failed to delete.");
+    }
 
 
     
