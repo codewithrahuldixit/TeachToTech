@@ -36,7 +36,7 @@ public class SpringSecurityConfig {
                                 "api/courses/delete/**","api/trainer/add/**","api/trainer/edit/**",
                                 "/api/trainer/delete/**","/category/**","/api/users/allusers/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET,"api/courses/add/**","api/courses/edit/**",
-                                            "api/trainer/add/**","api/trainer/edit/**","/category/**","/preview/**","/save-content","/article/**").permitAll()
+                                            "api/trainer/add/**","api/trainer/edit/**","/category/**","/preview/**","/save-content","/article/**","/discoverarticles/**","/success").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/delete/**").permitAll()
 
                 .requestMatchers("/","/index","/courses","/course-details/**","/trainers","/assets/**","/contact",
