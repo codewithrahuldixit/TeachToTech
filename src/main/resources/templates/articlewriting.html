@@ -16,7 +16,7 @@
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
@@ -124,51 +124,62 @@ body {
     color: white;
     outline: none;
 }
+
+
   </style>
   
 </head>
 
 <body class="events-page">
 
-  
   <div th:replace="header2 :: header"></div>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
-      <a class="navbar-brand" href="#">📝 Discover Articles</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#categoryNav"
+
+  <!-- Sidebar (Discover Articles) -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed vh-100 p-3" style="width: 250px;">
+    <div class="container-fluid d-flex flex-column align-items-start">
+      <a class="navbar-brand mb-3" href="#">📝 Discover Articles</a>
+      
+      <!-- Sidebar Toggle for Small Screens -->
+      <button class="navbar-toggler mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#categoryNav"
         aria-controls="categoryNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="categoryNav">
-        <ul class="navbar-nav ms-auto">
+
+      <div class="collapse navbar-collapse w-100" id="categoryNav">
+        <ul class="navbar-nav flex-column w-100">
           <li class="nav-item" th:each="category : ${categories}">
-            <a class="nav-link" th:href="@{/articles/category/{id}(id=${category.categoryId})}" th:text="${category.name}"></a>
+            <a class="nav-link d-flex align-items-center justify-content-between" 
+               th:href="@{/articles/category/{id}(id=${category.categoryId})}">
+              <span th:text="${category.name}"></span>
+              <i class="fas fa-plus"></i>
+            </a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <main class="main">
+  <!-- Main Content (Shifted Right) -->
+  <main class="main" style="margin-left: 270px; padding: 20px;">
 
     <!-- Page Title -->
     <div class="page-title" data-aos="fade">
-        <div class="heading">
-          <div class="container">
-            <div class="row d-flex justify-content-center text-center">
-              <div class="col-lg-12">
-                <h1 class="title-heading">Write an Article</h1>
-              </div>
+      <div class="heading">
+        <div class="container">
+          <div class="row d-flex justify-content-center text-center">
+            <div class="col-lg-12">
+              <h1 class="title-heading">Write an Article</h1>
             </div>
           </div>
         </div>
-      </div><!-- End Page Title -->
+      </div>
+    </div>
 
     <!-- Events Section -->
     <section id="events" class="events section">
       <div th:if="${message}" id="successMessage" class="alert alert-success">
         <p th:text="${message}"></p>
-    </div>
+      </div>
 
       <form class="form-container" action="/preview" method="POST">
         <div class="form-group">
@@ -176,26 +187,26 @@ body {
           <select id="categoryId" name="categoryId" required>
             <option value="">Select a category</option>
             <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.name}"></option>
-        </select>
-      </div>
+          </select>
+        </div>
         <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" id="title" name="title" placeholder="Enter the title" required>
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title" placeholder="Enter the title" required>
         </div>
         
         <div class="form-group">
-            <label for="content">Content</label>
-            <textarea id="content" name="content" placeholder="Enter content" required></textarea>
+          <label for="content">Content</label>
+          <textarea id="content" name="content" placeholder="Enter content" required></textarea>
         </div>
-    
+
         <div class="form-group-2">
-            
           <button type="submit" class="preview-button">Preview</button>
         </div>
-    </form>
+      </form>
     </section>
 
   </main>
+
   <div th:replace="footer :: footer"></div>
 
   <!-- Scroll Top -->
@@ -203,7 +214,7 @@ body {
 
   <!-- Preloader -->
   <div id="preloader"></div>
-  
+
   <!-- Vendor JS Files -->
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
@@ -212,9 +223,12 @@ body {
   <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
 
+  <!-- Font Awesome (for icons) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
-  
-</body>
 
+</body>
 </html>
+

@@ -1,6 +1,8 @@
 package com.rahul.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rahul.model.Article;
@@ -64,7 +67,7 @@ public class ArticleController {
 
         if(article==null){
             redirectAttributes.addFlashAttribute("error","No article to Submit");
-            return "redirect:/write-article";
+            return "redirect:/articlewriting";
         }
         articleService.saveArticle(article);
         session.removeAttribute("previewarticle");
@@ -127,7 +130,7 @@ public class ArticleController {
 
     if (article == null) {
         System.out.println("DEBUG: No article found in session!");
-        return "redirect:/write-article";
+        return "redirect:/articlewriting";
     }
     if (message != null) {  
         model.addAttribute("message", message);
@@ -136,7 +139,6 @@ public class ArticleController {
     model.addAttribute("article", article);
     return "preview";
 }
-
 
 
     
