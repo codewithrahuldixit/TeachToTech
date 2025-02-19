@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -188,5 +189,20 @@ public class ArticleController {
 
         return "discoverArticles"; // Ensure this matches your Thymeleaf template
     }
+    @GetMapping("/articletypes")
+
+    public String showArticleReviewPage(Model model) {
+        List<Category> categories = categoryService.getCategory();
+        Map<String, List<Article>> articlesByCategory = new HashMap<>();
+
+        for (Category category : categories) {
+            articlesByCategory.put(category.getName(), articleService.getArticlesByCategory(category.getCategoryId()));
+        }
+
+    model.addAttribute("categories", categories);
+    model.addAttribute("articlesByCategory", articlesByCategory);
+    return "articlereview"; 
+    }
+
 
 }
