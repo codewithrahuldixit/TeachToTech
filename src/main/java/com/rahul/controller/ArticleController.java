@@ -2,6 +2,7 @@ package com.rahul.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,6 @@ import com.rahul.service.CategoryService;
 
 import jakarta.servlet.http.HttpSession;
 
-
-
 @Controller
 public class ArticleController {
 
@@ -38,67 +37,57 @@ public class ArticleController {
     @Autowired
     private CategoryRepository categoryRepo;
 
-   
     @GetMapping("/articlereview")
     public String getAllArticles(Model model) {
-         List<Article> articles= articleService.getAllArticles();
-         model.addAttribute("articles", articles);
-         return "articleReview";
+        List<Article> articles = articleService.getAllArticles();
+        model.addAttribute("articles", articles);
+        return "articleReview";
     }
 
     @PostMapping("/save-content")
-    public String submitarticle(HttpSession session,Model model, RedirectAttributes redirectAttributes){
-        Article article= (Article) session.getAttribute("previewarticle");
+    public String submitarticle(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+        Article article = (Article) session.getAttribute("previewarticle");
 
-        if(article==null){
-            redirectAttributes.addFlashAttribute("error","No article to Submit");
+        if (article == null) {
+            redirectAttributes.addFlashAttribute("error", "No article to Submit");
             return "redirect:/articlewriting";
         }
         articleService.saveArticle(article);
         session.removeAttribute("previewarticle");
-        model.addAttribute("article", article); 
+        model.addAttribute("article", article);
         redirectAttributes.addFlashAttribute("message", "Article submitted successfully!");
         System.out.println("DEBUG: Success message added!");
 
-        return "redirect:/preview";
+        return "redirect:/success";
 
     }
-    @GetMapping("/articles")
-public List<Article> getAllArticlesApi() {
-    return articleService.getAllArticles();
-}
 
-    
+    @GetMapping("/articles")
+    public List<Article> getAllArticlesApi() {
+        return articleService.getAllArticles();
+    }
 
     @GetMapping("/articlewriting")
     public String showArticleForm(Model model) {
-    List<Category> categories = categoryRepo.findAll();
-    System.out.println(categories);
-    model.addAttribute("categories", categories);
-    return "articlewriting"; // Ensure this matches the actual HTML file name
-}
+        List<Category> categories = categoryRepo.findAll();
+        System.out.println(categories);
+        model.addAttribute("categories", categories);
+        return "articlewriting"; // Ensure this matches the actual HTML file name
+    }
 
- @GetMapping("/articles/category/{id}")
- public String getArticlesByCategory(@PathVariable Long id, Model model) {
-    List<Article> articles = articleService.getArticlesByCategory(id); // Fetch articles by category
-    Category category = categoryService.getCategoryById(id); // Fetch category details
+    @GetMapping("/success")
+    public String success() {
+        return "articleSuccess"; // Ensure this matches your Thymeleaf template
+    }
 
-    model.addAttribute("articles", articles);
-    model.addAttribute("category", category);
-    return "article-details"; // HTML template to display articles
-}
-
-    
     @PostMapping("/preview")
-    public String previewArticle(@RequestParam String title, 
-                                 @RequestParam String content, 
-                                 @RequestParam Long categoryId, HttpSession session,Model model) {
+    public String previewArticle(@RequestParam String title,
+            @RequestParam String content,
+            @RequestParam Long categoryId, HttpSession session, Model model) {
 
-      
-        System.out.println("DEBUG:/PREVIEW CALL WITH TITLE"+ title);
-        Category category = articleService.getCategoryById(categoryId); 
+        System.out.println("DEBUG:/PREVIEW CALL WITH TITLE" + title);
+        Category category = articleService.getCategoryById(categoryId);
 
-        
         Article article = new Article();
         article.setTitle(title);
         article.setContent(content);
@@ -108,36 +97,96 @@ public List<Article> getAllArticlesApi() {
         model.addAttribute("article", article);
         System.out.println("Article set in session: " + article.getTitle()); // Debugging
 
-        return "preview"; 
+        return "preview";
     }
 
     @GetMapping("/preview")
-    public String showPreview(HttpSession session, Model model,@RequestParam(value = "message", required = false) String message) {
-    System.out.println("DEBUG: Entering /preview handler...");
+    public String showPreview(HttpSession session, Model model,
+            @RequestParam(value = "message", required = false) String message) {
+        System.out.println("DEBUG: Entering /preview handler...");
 
-    Article article = (Article) session.getAttribute("previewarticle");
+        Article article = (Article) session.getAttribute("previewarticle");
 
-    if (article == null) {
-        System.out.println("DEBUG: No article found in session!");
-        return "redirect:/articlewriting";
+        if (article == null) {
+            System.out.println("DEBUG: No article found in session!");
+            return "redirect:/articlewriting";
+        }
+        if (message != null) {
+            model.addAttribute("message", message);
+        }
+        System.out.println("DEBUG: Article retrieved from session: " + article.getTitle());
+        model.addAttribute("article", article);
+        return "preview";
     }
-    if (message != null) {  
-        model.addAttribute("message", message);
-    }
-    System.out.println("DEBUG: Article retrieved from session: " + article.getTitle());
-    model.addAttribute("article", article);
-    return "preview";
-}
 
     @DeleteMapping("/delete/{id}")
     @ResponseBody
-    public ResponseEntity<String> deletearticle(@PathVariable long id){
-        if(articleService.deleteArticle(id)){
+    public ResponseEntity<String> deletearticle(@PathVariable long id) {
+        if (articleService.deleteArticle(id)) {
             return ResponseEntity.ok("Article deleted successfully.");
         }
         return ResponseEntity.ok("Article failed to delete.");
     }
 
+    // @GetMapping("/articletypes")
+    // public String showArticleReviewPage(Model model) {
+    // List<Category> categories = categoryService.getCategory();
+    // Map<String, List<Article>> articlesByCategory = new HashMap<>();
 
-    
+    // for (Category category : categories) {
+    // articlesByCategory.put(category.getName(),
+    // articleService.getArticlesByCategory(category.getCategoryId()));
+    // }
+
+    // model.addAttribute("categories", categories);
+    // model.addAttribute("articlesByCategory", articlesByCategory);
+    // return "discoverArticles"; // Ensure your HTML file is named
+    // articlereview.htm   
+    // }
+    // @GetMapping("/articles/category/{id}")
+    // public String getArticlesByCategory(@PathVariable Long id, Model model) {
+    // List<Category> categories = categoryService.getCategory();
+    // List<Article> articles = articleService.getArticlesByCategory(id);
+
+    // model.addAttribute("categories", categories);
+    // model.addAttribute("articles", articles); // Pass articles of the selected
+    // category
+
+    // return "discoverArticles";
+    // }
+
+    // @GetMapping("/articles/{id}")
+    // public String getArticleById(@PathVariable Long id, Model model) {
+    // Article article = articleService.getArticleById(id);
+    // List<Category> categories = categoryService.getCategory();
+
+    // model.addAttribute("categories", categories);
+    // model.addAttribute("article", article); // Pass selected article
+
+    // return "discoverArticles";
+    // }
+    @GetMapping("/discoverarticles")
+    public String showDiscoverArticles(@RequestParam(value = "categoryId", required = false) Long categoryId,
+            @RequestParam(value = "articleId", required = false) Long articleId,
+            Model model) {
+        // Load all categories
+        List<Category> categories = categoryService.getCategory();
+        model.addAttribute("categories", categories);
+
+        // If a category is selected, fetch its articles
+        if (categoryId != null) {
+            List<Article> articles = articleService.getArticlesByCategory(categoryId);
+            model.addAttribute("articles", articles);
+            model.addAttribute("selectedCategoryId", categoryId);
+        }
+
+        // If an article is selected, fetch its details
+        if (articleId != null) {
+            Article article = articleService.getArticleById(articleId);
+            model.addAttribute("selectedArticle", article);
+        }
+
+        return "discoverArticles"; // Ensure this matches your Thymeleaf template
+    }
+
 }
