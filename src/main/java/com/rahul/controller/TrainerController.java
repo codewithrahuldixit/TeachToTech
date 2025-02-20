@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,9 +72,19 @@ public class TrainerController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 }
-      @GetMapping("/delete/{id}")
-      public String deleteTrainer(@PathVariable Long id) {
+//       @GetMapping("/delete/{id}")
+//       public String deleteTrainer(@PathVariable Long id) {
+//         this.TrainerService.deleteById(id);
+//        return new RestTemplate().getForObject("http://localhost:8053/trainers", String.class);
+//    }
+@DeleteMapping("/delete/{id}")
+public ResponseEntity<?> deleteTrainer(@PathVariable Long id) {
+    try {
         this.TrainerService.deleteById(id);
-       return new RestTemplate().getForObject("http://localhost:8053/trainers", String.class);
-   }
+        return ResponseEntity.ok("Trainer deleted successfully");
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting trainer");
+    }
+}
+
 }
