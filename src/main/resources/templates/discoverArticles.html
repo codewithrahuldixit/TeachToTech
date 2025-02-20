@@ -125,6 +125,94 @@ body {
     outline: none;
 }
 
+.sidebar {
+    width: 280px;
+    background-color: #5fcf80;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+    }
+    
+    .nav-link {
+        color: white;
+    }
+    .sidebar .nav-link {
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+
+    
+.sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+    .article-list {
+        margin-left: 15px;
+    }
+    
+    .article-list.active {
+        display: block; /* Show when active */
+    }
+    .main-content {
+    flex: 1;
+    padding: 20px 30px;
+    background-color: #f8f9fa;
+    overflow-y: auto;
+}
+
+.page-title {
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.title-heading {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #212529;
+}
+
+.article-content {
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    min-height: 300px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .d-flex {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+    }
+    
+    .main-content {
+        padding: 15px;
+    }
+}
+
+.hover-highlight:hover {
+    color: white !important;
+    text-decoration: underline !important;
+}
+    
+    .main {
+        margin-left: 20px;
+        padding: 20px;
+        width: 100%;
+    }
+    .hover-highlight:hover {
+    color: white !important;
+    text-decoration: underline !important;
+}
 
   </style>
   
@@ -137,62 +225,62 @@ body {
   <!-- Sidebar (Discover Articles) -->
   <div class="d-flex">
     <!-- Sidebar -->
-    <!-- Sidebar -->
-    <nav class="vh-200 overflow-auto" style="width: 300px; background-color: #5fcf80; color: white;">
-      <div class="d-flex flex-column w-100 p-3">
-          <a class="navbar-brand text-white fw-bold mb-3" href="#">📝 Discover Articles</a>
-          
-          <div class="w-100">
-              <ul class="nav flex-column w-100 p-0 m-0">
-                  <!-- Loop through categories -->
-                  <li class="nav-item w-100" th:each="category : ${categories}">
-                      <a class="nav-link text-white d-flex align-items-center justify-content-between px-3 py-2 w-100"
-                         th:href="@{/discoverarticles(categoryId=${category.categoryId})}"
-                         style="background: rgba(255, 255, 255, 0.2);">
-                          <span th:text="${category.name}"></span>
-                          <i class="fas fa-plus"></i>
-                      </a>
-  
-                      <!-- Show articles when a category is clicked -->
-                      <ul th:if="${selectedCategoryId == category.categoryId}" class="list-unstyled ps-3">
-                          <li th:each="article : ${articles}">
-                              <a class="nav-link text-white px-3 py-1"
-                                 th:href="@{/discoverarticles(categoryId=${category.categoryId}, articleId=${article.articleId})}"
-                                 th:text="${article.title}"></a>
-                          </li>
-                      </ul>
-  
-                      <hr class="w-100 m-0" style="border: none; height: 1px; background-color: black;">
-                  </li>
-              </ul>
-          </div>
-      </div>
-  </nav>
-  
+    <nav class="sidebar">
+        <div class="d-flex flex-column w-100 p-3">
+            <a class="navbar-brand text-white fw-bold mb-3" href="#">📝 Discover Articles</a>
 
-    <!-- Main Content Area -->
-    <main class="main" style="margin-left: 20px; padding: 20px; width: 100%;">
-      <!-- Page Title -->
-      <div class="page-title" data-aos="fade">
-          <div class="heading">
-              <div class="container">
-                  <div class="row d-flex justify-content-center text-center">
-                      <div class="col-lg-12">
-                          <h1 class="title-heading" th:text="${selectedArticle != null ? selectedArticle.title : 'Select an Article'}"></h1>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  
-      <!-- Article Content -->
-      <section id="events" class="events section">
-          <h2 th:text="${selectedArticle != null ? selectedArticle.content : 'Click on an article to view its content'}"></h2>
-      </section>
-  </main>
-  
-  
-  </div>
+            <!-- Loop through categories -->
+            <ul class="nav flex-column w-100 p-0 m-0">
+                <li class="nav-item w-100" th:each="category : ${categories}">
+                    <a class="nav-link text-white d-flex align-items-center justify-content-between px-3 py-2 w-100"
+                       href="javascript:void(0)" 
+                       th:onclick="'fetchArticles(' + ${category.categoryId} + ')'">
+                        <span th:text="${category.name}" class="category-name" th:data-category-id="${category.categoryId}"></span>
+                        <i class="fas fa-plus"></i>
+                    </a>
+
+                    <!-- Articles list with correct ID format -->
+                    <ul th:id="'articles-list-' + ${category.categoryId}" class="articles-list list-unstyled ps-3" 
+                        th:data-category-id="${category.categoryId}" style="display:none;">
+                        <!-- Articles will be populated here via JavaScript -->
+                    </ul>
+
+                    <hr class="w-100 m-0" style="border: none; height: 1px; background-color: #333;">
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content Area (Expanded) -->
+    <main class="main-content">
+        <!-- Page Title -->
+        <div class="page-title" data-aos="fade">
+            <div class="heading">
+                <div class="container">
+                    <div class="row d-flex justify-content-center text-center">
+                        <div class="col-lg-12">
+                            <h1 class="title-heading" th:text="${selectedArticle != null ? selectedArticle.title : 'Select an Article'}"></h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Article Content -->
+        <section id="events" class="events section">
+            <div class="article-content">
+                <div th:if="${selectedArticle != null}">
+                    <div th:utext="${selectedArticle.content}"></div>
+                </div>
+                <div th:unless="${selectedArticle != null}" class="text-center text-muted">
+                    <i class="fas fa-book fa-3x mb-3"></i>
+                    <h3>Click on an article to view its content</h3>
+                    <p class="lead">Select a category from the sidebar to see available articles</p>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
   
 
 
@@ -208,6 +296,79 @@ body {
   <div id="preloader"></div>
 
   <!-- Vendor JS Files -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add click listeners to all category elements
+        document.querySelectorAll('.nav-link').forEach(categoryElement => {
+            categoryElement.addEventListener('click', function() {
+                // Toggle the visibility of articles list
+                const categoryId = this.querySelector('.category-name').getAttribute('data-category-id');
+                const articlesList = document.getElementById(`articles-list-${categoryId}`);
+                
+                // Toggle icon
+                const icon = this.querySelector('i');
+                if (articlesList.style.display === 'none') {
+                    articlesList.style.display = 'block';
+                    icon.classList.remove('fa-plus');
+                    icon.classList.add('fa-minus');
+                } else {
+                    articlesList.style.display = 'none';
+                    icon.classList.remove('fa-minus');
+                    icon.classList.add('fa-plus');
+                }
+                
+                fetchArticles(categoryId);
+            });
+        });
+    });
+    
+    function fetchArticles(categoryId) {
+        console.log(`Fetching articles for categoryId: ${categoryId}`);
+        fetch(`/articlesByCategory?categoryId=${categoryId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(articles => {
+                // Find the articles list for this category
+                const articlesList = document.getElementById(`articles-list-${categoryId}`);
+                
+                if (!articlesList) {
+                    console.error(`Could not find articles list element for category ID ${categoryId}`);
+                    return;
+                }
+                
+                // Clear previous articles
+                articlesList.innerHTML = "";
+                
+                if (articles.length === 0) {
+                    articlesList.innerHTML = "<li class='text-muted'>No articles found</li>";
+                    return;
+                }
+    
+                // Add new articles
+                articles.forEach(article => {
+                    let articleItem = document.createElement("li");
+                    articleItem.className = "article-item my-1";
+                    articleItem.innerHTML = `
+                        <a href="/discoverarticles?categoryId=${categoryId}&articleId=${article.id}" 
+                           class="text-decoration-none text-white-50 hover-highlight">
+                           ${article.title}
+                        </a>`;
+                    articlesList.appendChild(articleItem);
+                });
+                
+                // Show the articles list
+                articlesList.style.display = 'block';
+            })
+            .catch(error => {
+                console.error("Error fetching articles:", error);
+            });
+    }
+    </script>
+    
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
   <script src="assets/vendor/aos/aos.js"></script>

@@ -9,9 +9,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import java.util.List;
+import org.springframework.stereotype.Controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.rahul.model.Article;
 import com.rahul.model.Category;
+import com.rahul.service.ArticleService;
 import com.rahul.service.CategoryService;
 
 @RestController
@@ -19,6 +25,9 @@ import com.rahul.service.CategoryService;
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private ArticleService articleService;
     
     @PostMapping("/add")
     public ResponseEntity<?> add(@RequestBody Category category){
@@ -46,4 +55,9 @@ public class CategoryController {
      List<Category> category=this.categoryService.findByTrainer(trainerId);
      return ResponseEntity.ok(category);
    }
+
+   
+
+
+    
 }

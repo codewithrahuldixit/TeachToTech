@@ -81,6 +81,10 @@ public class DemoController {
 		return "adminPreview";
 	}
 	
+	// @GetMapping("/discoverarticles")
+	// public String Allarticle() {
+	// 	return "discoverArticles";
+	// }
 	
 	
 	@GetMapping("/articlereview/preview")
