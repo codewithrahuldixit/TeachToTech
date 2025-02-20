@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="utf-8">
@@ -2120,8 +2120,10 @@
 
 				<div class="row">
 					<div class="col-lg-8">
-						<img th:src=${course.image} class="img-fluid" alt="Course">
+						
+						
 						<h3 th:text="${course.courseName}">Course Name</h3>
+						<img th:src=${course.image} class="img-fluid" alt="Course"/>
 
 					</div>
 					<div class="col-lg-4">
