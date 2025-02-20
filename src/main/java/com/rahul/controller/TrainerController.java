@@ -71,8 +71,8 @@ public class TrainerController {
     }
 }
       @PostMapping("/delete/{id}")
-      public ResponseEntity<?> deleteTrainer(@PathVariable Long id) {
+      public String deleteTrainer(@PathVariable Long id) {
         this.TrainerService.deleteById(id);
-       return ResponseEntity.ok().build();
+       return "redirect:/trainers";
    }
 }
