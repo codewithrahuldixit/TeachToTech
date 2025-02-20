@@ -1,5 +1,6 @@
 package com.rahul.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -129,80 +130,48 @@ public class ArticleController {
         return ResponseEntity.ok("Article failed to delete.");
     }
 
-    // @GetMapping("/articletypes")
-    // public String showArticleReviewPage(Model model) {
-    // List<Category> categories = categoryService.getCategory();
-    // Map<String, List<Article>> articlesByCategory = new HashMap<>();
+   
+@GetMapping("/discoverarticles")
+public String showDiscoverArticles(
+        @RequestParam(name = "categoryId", required = false) Long categoryId,
+        @RequestParam(name = "articleId", required = false) Long articleId,
+        Model model) {
 
-    // for (Category category : categories) {
-    // articlesByCategory.put(category.getName(),
-    // articleService.getArticlesByCategory(category.getCategoryId()));
-    // }
-
-    // model.addAttribute("categories", categories);
-    // model.addAttribute("articlesByCategory", articlesByCategory);
-    // return "discoverArticles"; // Ensure your HTML file is named
-    // articlereview.htm   
-    // }
-    // @GetMapping("/articles/category/{id}")
-    // public String getArticlesByCategory(@PathVariable Long id, Model model) {
-    // List<Category> categories = categoryService.getCategory();
-    // List<Article> articles = articleService.getArticlesByCategory(id);
-
-    // model.addAttribute("categories", categories);
-    // model.addAttribute("articles", articles); // Pass articles of the selected
-    // category
-
-    // return "discoverArticles";
-    // }
-
-    // @GetMapping("/articles/{id}")
-    // public String getArticleById(@PathVariable Long id, Model model) {
-    // Article article = articleService.getArticleById(id);
-    // List<Category> categories = categoryService.getCategory();
-
-    // model.addAttribute("categories", categories);
-    // model.addAttribute("article", article); // Pass selected article
-
-    // return "discoverArticles";
-    // }
-    @GetMapping("/discoverarticles")
-    public String showDiscoverArticles(@RequestParam(value = "categoryId", required = false) Long categoryId,
-            @RequestParam(value = "articleId", required = false) Long articleId,
-            Model model) {
-        // Load all categories
-        List<Category> categories = categoryService.getCategory();
-        model.addAttribute("categories", categories);
-
-        // If a category is selected, fetch its articles
-        if (categoryId != null) {
-            List<Article> articles = articleService.getArticlesByCategory(categoryId);
-            model.addAttribute("articles", articles);
-            model.addAttribute("selectedCategoryId", categoryId);
-        }
-
-        // If an article is selected, fetch its details
-        if (articleId != null) {
-            Article article = articleService.getArticleById(articleId);
-            model.addAttribute("selectedArticle", article);
-        }
-
-        return "discoverArticles"; // Ensure this matches your Thymeleaf template
-    }
-    @GetMapping("/articletypes")
-
-    public String showArticleReviewPage(Model model) {
-        List<Category> categories = categoryService.getCategory();
-        Map<String, List<Article>> articlesByCategory = new HashMap<>();
-
-        for (Category category : categories) {
-            articlesByCategory.put(category.getName(), articleService.getArticlesByCategory(category.getCategoryId()));
-        }
-
+    List<Category> categories = categoryService.getCategory();
     model.addAttribute("categories", categories);
-    model.addAttribute("articlesByCategory", articlesByCategory);
-    return "articlereview"; 
+
+    List<Article> articles = new ArrayList<>();
+    Category selectedCategory = null;
+    if (categoryId != null) {
+        articles = articleService.getArticlesByCategory(categoryId);
+        model.addAttribute("articles", articles);
+
+        selectedCategory = categoryService.getCategoryById(categoryId);
+        model.addAttribute("selectedCategory", selectedCategory);
     }
+
+ 
+    Article selectedArticle = null;
+    if (articleId != null) {
+        selectedArticle = articleService.getArticleById(articleId);
+        model.addAttribute("selectedArticle", selectedArticle);
+    }
+
+    return "discoverArticles";
+}
+@GetMapping("/articlesByCategory")
+@ResponseBody
+public List<Article> getArticlesByCategory(@RequestParam Long categoryId) {
+    List<Article> articles = articleService.getArticlesByCategory(categoryId);
+    
+    if (articles == null || articles.isEmpty()) {
+        System.out.println("No articles found for categoryId: " + categoryId);
+    } else {
+        System.out.println("Articles found for categoryId: " + categoryId + " - " + articles.size());
+    }
+    
+    return articles;
+}
 
 
 }
