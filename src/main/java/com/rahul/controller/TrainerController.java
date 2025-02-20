@@ -70,9 +70,9 @@ public class TrainerController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 }
-      @PostMapping("/delete/{id}")
+      @GetMapping("/delete/{id}")
       public String deleteTrainer(@PathVariable Long id) {
         this.TrainerService.deleteById(id);
-       return "redirect:/trainers";
+       return "trainers";
    }
 }
