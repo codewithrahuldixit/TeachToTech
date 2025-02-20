@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -73,6 +74,6 @@ public class TrainerController {
       @GetMapping("/delete/{id}")
       public String deleteTrainer(@PathVariable Long id) {
         this.TrainerService.deleteById(id);
-       return "trainers";
+       return new RestTemplate().getForObject("http://localhost:8053/trainers", String.class);
    }
 }
