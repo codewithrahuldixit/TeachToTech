@@ -83,13 +83,13 @@
                         <div class="d-flex flex-wrap align-items-center gap-2">
                           <button class="btn btn-primary btn-sm" onclick="showCommentBox(this)">Comment</button>
                           <button class="btn btn-warning btn-sm" style="background-color: #FFA500; border-color: #FFA500;">Edit</button>
-                          <button class="btn btn-danger btn-sm"  th:attr="onclick='deletearticle(this, ' + ${article.id} + ')'">Delete</button>
+                          <button class="btn btn-danger btn-sm" th:onclick="'deletearticle(this, ' + ${article.id} + ')'">Delete</button>
                           <button class="btn btn-sm" style="background-color: #5fcf80;">
                             <a href="/article-details" style="color: white; text-decoration: none;">Preview</a>
                           </button>
                           <div class="comment-box mt-2" style="display:none; width: 100%;">
                             <textarea class="form-control" rows="2" placeholder="Enter your comment"></textarea>
-                            <button class="btn btn-success btn-sm mt-2">Submit</button>
+                            <button class="btn btn-success btn-sm mt-2" th:onclick="'submitComment(this, ' + ${article.id} + ')'">Submit</button>
                           </div>
                         </div>
                       </td>
@@ -132,6 +132,7 @@
     }
   }
 
+
   function deletearticle(button, id){
 
     button.disabled = true;
@@ -169,6 +170,45 @@
     });
 
   }
+
+  async function submitComment(button, articleId) {
+    const commentBox = button.previousElementSibling;
+    const content = commentBox.value.trim();
+    
+    if (!content) {
+        alert("Comment cannot be empty!");
+        return;
+    }
+    
+    try {
+        const username = await getUsername();
+        
+        const response = await fetch('/comments', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `articleId=${articleId}&username=${username}&content=${encodeURIComponent(content)}`
+        });
+        
+        // Get response details even if it failed
+        const responseText = await response.text();
+        console.log("Response status:", response.status);
+        console.log("Response text:", responseText);
+        
+        if (response.ok) {
+            alert("Comment added successfully!");
+            commentBox.value = "";
+        } else {
+            alert(`Failed to add comment. Status: ${response.status}, Message: ${responseText}`);
+        }
+    } catch (error) {
+        console.error('Error details:', error);
+        alert(`Error submitting comment: ${error.message}`);
+    }
+}
+  
+
+
+
 
   
 

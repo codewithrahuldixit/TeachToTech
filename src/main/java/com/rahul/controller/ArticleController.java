@@ -1,9 +1,11 @@
 package com.rahul.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rahul.model.Article;
 import com.rahul.model.Category;
+import com.rahul.model.Users;
 import com.rahul.repository.CategoryRepository;
+import com.rahul.repository.UserRepository;
 import com.rahul.service.ArticleService;
 import com.rahul.service.CategoryService;
 
@@ -39,6 +43,9 @@ public class ArticleController {
     @Autowired
     private CategoryRepository categoryRepo;
 
+    @Autowired
+    private UserRepository userrepo;
+
     @GetMapping("/articlereview")
     public String getAllArticles(Model model) {
         List<Article> articles = articleService.getAllArticles();
@@ -47,13 +54,25 @@ public class ArticleController {
     }
 
     @PostMapping("/save-content")
-    public String submitarticle(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+    public String submitarticle(   @RequestParam("username") String username, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
         Article article = (Article) session.getAttribute("previewarticle");
+
+        System.out.println("Received submission request for user: " + username);
 
         if (article == null) {
             redirectAttributes.addFlashAttribute("error", "No article to Submit");
             return "redirect:/articlewriting";
         }
+       
+        Optional<Users> optionalUser = userrepo.findByfirstName(username);
+        if (optionalUser.isEmpty()) {
+            System.err.println("ERROR: User not found: " + username);
+            redirectAttributes.addFlashAttribute("error", "User not found");
+            return "redirect:/login";  // If user is not found, redirect to login page
+        }
+        Users author = optionalUser.get();
+        article.setAuthor(author);
+        article.setStatus("NOT-REVIEWED");
         articleService.saveArticle(article);
         session.removeAttribute("previewarticle");
         model.addAttribute("article", article);
@@ -101,6 +120,7 @@ public class ArticleController {
 
         return "preview";
     }
+
 
     @GetMapping("/preview")
     public String showPreview(HttpSession session, Model model,

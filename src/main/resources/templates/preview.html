@@ -141,10 +141,11 @@
         </p>
 
           <div class="text-center mt-4">
-            <a href="/articlewriting"><button class="edit-button">Edit</button></a>
-            <form action="/save-content" method="post">
+            <a href="/preview"><button class="edit-button" >Edit</button></a>
+            <!-- <form action="/save-content" method="post">
               <button type="submit" class="submit-button">Submit</button>
-            </form>
+            </form> -->
+            <button id="submitForm" class="submit-button">Submit</button>
             <button id="saveButton" class="submit-button" style="display: none;">Save</button>
           </div>
         </div>
@@ -162,68 +163,161 @@
 
     <!-- Preloader -->
     <div id="preloader"></div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+  // Initialize the page
+  populateArticleAuthor();
+  
+  // Set up submit button handler
+  const submitButton = document.getElementById('submitForm');
+  
+  submitButton.addEventListener('click', async function() {
+    // Get username using your existing function
+    const username = await getUsername();
+    
+    // Create form data
+    const formData = new FormData();
+    formData.append('username', username || 'Guest');
+    
+    // Send POST request
+    fetch('/save-content', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (response.redirected) {
+        window.location.href = response.url;
+      } else {
+        return response.text();
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Failed to submit article. Please try again.');
+    });
+  });
+});
+    </script>
 
     <!-- Vendor JS Files -->
-    <script>
-      document.getElementById("editButton").addEventListener("click", function() {
-          document.getElementById("articleTitle").disabled = false;
+    <!-- <script>
+      document.getElementById("edit-button").addEventListener("click", function() {
+         document.getElementById("articleTitle").disabled = false;
           document.getElementById("articleCategory").disabled = false;
           document.getElementById("articleContent").disabled = false;
           document.getElementById("editButton").style.display = "none";
           document.getElementById("saveButton").style.display = "inline-block";
       });
 
-      document.getElementById("saveButton").addEventListener("click", function() {
-          const title = document.getElementById("articleTitle").value;
-          const category = document.getElementById("articleCategory").value;
-          const content = document.getElementById("articleContent").value;
+      // document.getElementById("saveButton").addEventListener("click", function() {
+      //     const title = document.getElementById("articleTitle").value;
+      //     const category = document.getElementById("articleCategory").value;
+      //     const content = document.getElementById("articleContent").value;
 
-          fetch("/update-article", {
-              method: "POST",
-              headers: {
-                  "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                  title: title,
-                  category: category,
-                  content: content
-              }),
-          })
-          .then(response => {
-              if (response.ok) {
-                  alert("Article updated successfully");
-                  document.getElementById("articleTitle").disabled = true;
-                  document.getElementById("articleCategory").disabled = true;
-                  document.getElementById("articleContent").disabled = true;
-                  document.getElementById("editButton").style.display = "inline-block";
-                  document.getElementById("saveButton").style.display = "none";
-              } else {
-                  alert("Failed to update article");
-              }
-          })
-          .catch(error => console.error("Error:", error));
-      });
+      //     fetch("/update-article", {
+      //         method: "POST",
+      //         headers: {
+      //             "Content-Type": "application/json",
+      //         },
+      //         body: JSON.stringify({
+      //             title: title,
+      //             category: category,
+      //             content: content
+      //         }),
+      //     })
+      //     .then(response => {
+      //         if (response.ok) {
+      //             alert("Article updated successfully");
+      //             document.getElementById("articleTitle").disabled = true;
+      //             document.getElementById("articleCategory").disabled = true;
+      //             document.getElementById("articleContent").disabled = true;
+      //             document.getElementById("editButton").style.display = "inline-block";
+      //             document.getElementById("saveButton").style.display = "none";
+      //         } else {
+      //             alert("Failed to update article");
+      //         }
+      //     })
+      //     .catch(error => console.error("Error:", error));
+      // });
 
-      document.getElementById("submitForm").addEventListener("submit", function(event) {
-          event.preventDefault(); // Prevent normal form submission
+
+  // Wait for DOM to fully load
+  document.addEventListener("DOMContentLoaded", function() {
+    console.log("DOM fully loaded");
+    
+    // Get the submit button
+    const submitButton = document.getElementById("submitForm");
+    console.log("Submit button found:", submitButton);
+    
+    if (submitButton) {
+      // Add click event listener
+      submitButton.addEventListener("click", function(event) {
+        event.preventDefault();
+        console.log("Submit button clicked!");
+        
+        // Visual feedback
+        submitButton.textContent = "Submitting...";
+        submitButton.disabled = true;
+        
+        // Get username from localStorage
+        const username = localStorage.getItem("username");
+        console.log("Username:", username);
+        
+        if (!username) {
+          alert("User not logged in. Please log in first.");
+          window.location.href = "/login";
+          return;
+        }
+        
+        // Create form data
+        const formData = new URLSearchParams();
+        formData.append("username", username);
+        
+        // Send request to server
+        fetch("/save-content", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: formData.toString(),
+          credentials: 'include' // Include session cookies
+        })
+        .then(response => {
+          console.log("Response received:", response.status);
+          if (response.ok) {
+            alert("Article submitted successfully!");
+            window.location.href = "/success";
+          } else {
+            throw new Error("Failed with status: " + response.status);
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          alert("Submission failed: " + error.message);
           
-          fetch("/save-content", {
-              method: "POST",
-              headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          })
-          .then(response => {
-              if (response.ok) {
-                  document.getElementById("successMessage").style.display = "block";
-                  setTimeout(() => {
-                      document.getElementById("successMessage").style.display = "none";
-                  }, 3000);
-              } else {
-                  alert("Failed to submit article");
-              }
-          })
-          .catch(error => console.error("Error:", error));
+          // Reset button
+          submitButton.disabled = false;
+          submitButton.textContent = "Submit";
+        });
       });
-    </script>
+      
+      console.log("Event listener attached successfully");
+    } else {
+      console.error("ERROR: Submit button not found in DOM");
+    }
+    
+    // Display author name if available
+    const authorElement = document.getElementById("articleAuthor");
+    if (authorElement) {
+      const username = localStorage.getItem("username");
+      if (username) {
+        authorElement.textContent = "Author: " + username;
+      } else {
+        authorElement.textContent = "Author: Anonymous";
+      }
+    }
+  });
+</script> -->
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/vendor/php-email-form/validate.js"></script>
     <script src="assets/vendor/aos/aos.js"></script>
