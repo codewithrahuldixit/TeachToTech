@@ -10,6 +10,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/teachtotech-app/**")
-                .addResourceLocations("file:/home/ec2-user/teachtotech-app/");
+                .addResourceLocations("file:/home/posttoteachtotech/teachtotech-app/");
     }
 }
