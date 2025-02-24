@@ -76,7 +76,7 @@
                   <tbody>
                     <tr th:each="article, index:${articles}">
                       <td th:text="${index.index +1}"></td>
-                      <td>anoushka</td>
+                      <td th:text="${article.author.firstName}"></td>
                       <td th:text="${article.category.name}"></td>
                       <td th:text="${article.title}"></td>
                       <td>
@@ -84,9 +84,12 @@
                           <button class="btn btn-primary btn-sm" onclick="showCommentBox(this)">Comment</button>
                           <button class="btn btn-warning btn-sm" style="background-color: #FFA500; border-color: #FFA500;">Edit</button>
                           <button class="btn btn-danger btn-sm" th:onclick="'deletearticle(this, ' + ${article.id} + ')'">Delete</button>
-                          <button class="btn btn-sm" style="background-color: #5fcf80;">
-                            <a href="/article-details" style="color: white; text-decoration: none;">Preview</a>
-                          </button>
+                         
+                            <button class="btn btn-sm" 
+                            style="background-color: #5fcf80; color: white;" 
+                            th:onclick="'previewArticle(' + ${article.id} + ')'">
+                        Preview
+                    </button>                          </button>
                           <div class="comment-box mt-2" style="display:none; width: 100%;">
                             <textarea class="form-control" rows="2" placeholder="Enter your comment"></textarea>
                             <button class="btn btn-success btn-sm mt-2" th:onclick="'submitComment(this, ' + ${article.id} + ')'">Submit</button>
@@ -123,14 +126,46 @@
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
   <script>
-    function showCommentBox(button) {
-    let commentBox = button.parentElement.querySelector(".comment-box");
-    if (commentBox.style.display === "none" || commentBox.style.display === "") {
-      commentBox.style.display = "block";
-    } else {
-      commentBox.style.display = "none";
-    }
-  }
+
+  //   function previewArticle(button, id){
+  //     fetch(`/adminpreview/${id}`),{
+  //       method:"GET",
+  //       headers:{
+  //         'Content-Type': 'application/x-www-form-urlencoded'
+
+  //       }
+  //     }
+  //     .then(response => {
+  //       if (!response.ok) {
+  //           throw new Error('Network response was not ok');
+  //       }
+  //       return response.text();  // Since we're getting HTML back
+  //   })
+  //   .then(html => {
+  //       // Assuming you want to display this in some container
+  //       document.getElementById('previewContainer').innerHTML = html;
+  //       // Or open in new window/tab
+  //       // const win = window.open('', '_blank');
+  //       // win.document.write(html);
+  //   })
+  //   .catch(error => {
+  //       console.error('Error:', error);
+  //       // Handle error appropriately
+  //   });
+
+  //   }
+  //   function showCommentBox(button) {
+  //   let commentBox = button.parentElement.querySelector(".comment-box");
+  //   if (commentBox.style.display === "none" || commentBox.style.display === "") {
+  //     commentBox.style.display = "block";
+  //   } else {
+  //     commentBox.style.display = "none";
+  //   }
+  // }
+  function previewArticle(id) {
+    window.location.href = `/adminpreview?articleid=${id}`;
+}
+
 
 
   function deletearticle(button, id){

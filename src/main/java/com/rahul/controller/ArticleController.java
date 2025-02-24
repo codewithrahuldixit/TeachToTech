@@ -68,7 +68,7 @@ public class ArticleController {
         if (optionalUser.isEmpty()) {
             System.err.println("ERROR: User not found: " + username);
             redirectAttributes.addFlashAttribute("error", "User not found");
-            return "redirect:/login";  // If user is not found, redirect to login page
+            return "redirect:/api/users/login";  // If user is not found, redirect to login page
         }
         Users author = optionalUser.get();
         article.setAuthor(author);
@@ -191,6 +191,24 @@ public List<Article> getArticlesByCategory(@RequestParam Long categoryId) {
     }
     
     return articles;
+}
+
+@GetMapping("/adminpreview")
+public String adminPreviewArticle(@RequestParam Long articleid, Model model) {
+    Article article=articleService.getArticleById(articleid);
+    model.addAttribute("article", article);
+    return "adminPreview";
+}
+
+@GetMapping("/approve")
+public ResponseEntity<String> Approvestatus(@RequestParam Long articleid){
+    Article article= articleService.getArticleById(articleid);
+    article.setStatus("APPROVED");
+    if(article.getStatus()!="APPROVED"){
+        return ResponseEntity.ok("Article not Approved");
+    }
+
+    return ResponseEntity.ok("Approved Article");
 }
 
 
