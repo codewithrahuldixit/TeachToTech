@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Course</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background-color: #f4f4f4;
+      font-family: Arial, sans-serif;
+    }
+    .content {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      width: 100%;
+      height: 100%;
+      padding-top: 30px;
+      box-sizing: border-box;
+    }
+    .card {
+      border: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 30px;
+      background-color: white;
+      width: 90%;
+      max-width: 2000px;
+      box-sizing: border-box;
+      margin-top: 50px;
+      min-width: 800px;
+    }
+    .card-title {
+      font-size: 25px;
+      color: #5fcf80;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      font-size: 14px;
+      color: #333;
+    }
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    .form-control:focus {
+      border-color: #5fcf80;
+      outline: none;
+    }
+    .read-more {
+      background-color: #5fcf80;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 12px 20px;
+      text-decoration: none;
+      font-size: 16px;
+      margin-top: 20px;
+      width: 100%;
+    }
+    .read-more:hover {
+      background-color: #4caf6a;
+    }
+    .back-arrow {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    .arrow {
+      width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-right: 15px solid #4CAF50;
+      margin-right: 10px;
+    }
+    .arrow:hover {
+      border-right-color: #45a049;
+    }
+    .back-text {
+      font-size: 14px;
+      color: #4CAF50;
+      font-weight: bold;
+    }
+    .back-text:hover {
+      color: #45a049;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="content">
+    <div class="back-arrow" onclick="history.back()">
+      <div class="arrow"></div>
+      <p class="back-text">Go back</p>
+    </div>
+    <div class="card">
+      <h3 class="card-title">Add Notes</h3>
+      <form id="addCourseForm">
+
+        <!-- Category Field -->
+        <div class="form-group">
+          <label for="category">Topic</label>
+          <select id="category" name="category" class="form-control" required>
+            <option value="" disabled selected>Select Topic</option>
+            <option value="newCategory">Add New Topic</option>
+          </select>
+          <span id="categoryError" class="text-danger"></span>
+        </div>
+      
+        <div class="form-group" id="newTopicField" style="display: none;">
+          <label for="newTopic">New Topic Name</label>
+          <input type="text" id="newTopic" name="newTopic" class="form-control">
+          <button type="button" id="addTopicButton" class="read-more" style="margin-top: 10px;">Add Topic</button>
+        </div>
+
+        <div class="form-group" id="questionAnswerGroup">
+          <label for="content">Content</label>
+          <div id="contentFields">
+            <textarea name="content[]" class="form-control" rows="2" required></textarea>
+          </div>
+          <button type="button" id="addContentField" class="read-more" style="margin-top: 10px;">Add more content</button>
+        </div>
+        
+        <!-- Submit Button -->
+        <button type="submit" class="read-more">Add Notes</button>
+      </form>
+    </div>
+  </div>
+
+  
+</body>
+</html>
