@@ -36,11 +36,13 @@ public class SpringSecurityConfig {
                                 "api/courses/delete/**","api/trainer/add/**","api/trainer/edit/**",
                                 "/api/trainer/delete/**","/category/**","/api/users/allusers/**","/saveNote").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET,"api/courses/add/**","api/courses/edit/**",
-                                            "api/trainer/add/**","api/trainer/edit/**","api/trainer/delete/**","/category/**","/preview/**","/save-content","/article/**","/discoverarticles/**","/success","/articletypes","/articlesByCategory").permitAll()
+                                            "api/trainer/add/**","api/trainer/edit/**","api/trainer/delete/**","/category/**","/preview/**","/save-content","/article/**","/discoverarticles/**","/success","/articletypes"
+                                            ,"/articlesByCategory","/addassignment/**","/topics","/addnotes").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/delete/**","api/trainer/delete/**").permitAll()
                 .requestMatchers("/","/index","/courses","/course-details/**","/trainers","/assets/**","/contact",
-                      "/about","api/users/**","/api/trainer/get","/teachtotech-app/**","/articlewriting/**","/preview/**","/articlereview/**","/save-content/**","/articles/category/**","/preview","/adminpreview/**","/articletypes","/comments","/savenote","/test/**","/topic/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/savenote","/test").permitAll()
+                      "/about","api/users/**","/api/trainer/get","/teachtotech-app/**","/articlewriting/**","/preview/**","/articlereview/**",
+                      "/save-content/**","/articles/category/**","/preview","/adminpreview/**","/articletypes","/comments","/savenote","/test/**","/topic/**","/allnotes").permitAll()
+                .requestMatchers(HttpMethod.POST, "/savenote","/test","/save-assignment","/api/notes/**").permitAll()
      
                 .anyRequest().authenticated()
                 .and()
