@@ -30,23 +30,14 @@ public class AssignmentController {
     private NoteRepository noteRepository;
 
     @PostMapping("/save-assignment")
-public ResponseEntity<String> saveAssignment(@RequestBody Assignment assignment) {
-    System.out.println("Received Assignment: " + assignment);
+    public ResponseEntity<String> saveAssignment(@RequestBody Assignment assignment) {
+        System.out.println("Topic ID: " + assignment.getTopic().getTopicId());
 
-    if (assignment.getTopic() == null) {
-        return new ResponseEntity<>("Topic is required!", HttpStatus.BAD_REQUEST);
-    }
-
-    Topic topic = assignment.getTopic();
-
-    if (topic.getTopicId() != null) {
-        if (!topicRepository.existsById(topic.getTopicId())) {
-            return new ResponseEntity<>("Topic not found!", HttpStatus.BAD_REQUEST);
+        if(assignment.getTopic()==null || !topicRepository.existsById(assignment.getTopic().getTopicId()) ){
+            return new ResponseEntity<>("Topic not found for the assignment!", HttpStatus.BAD_REQUEST);
         }
-    } else {
-        topic = topicRepository.save(topic);
-    }
-
+    
+    Topic topic = assignment.getTopic();
     assignment.setTopic(topic);
     assignmentRepository.save(assignment);
     return new ResponseEntity<>("Assignment saved successfully!", HttpStatus.CREATED);

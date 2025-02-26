@@ -44,5 +44,5 @@ public class Topic {
     
     @OneToOne(mappedBy = "topic",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Assignment assignment;
-    
+
 }

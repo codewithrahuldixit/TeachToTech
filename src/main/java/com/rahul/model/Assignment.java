@@ -31,7 +31,7 @@ public class Assignment {
 
     @OneToOne
     @JoinColumn(name = "topic_id", nullable = false)
-    @JsonIgnore
+    // @JsonIgnore
     private Topic topic;
 
     @ElementCollection
