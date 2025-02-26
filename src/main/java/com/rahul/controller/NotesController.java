@@ -7,13 +7,19 @@ import com.rahul.model.Topic;
 import com.rahul.repository.NoteRepository;
 import com.rahul.repository.TopicRepository;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-
+@RequestMapping("/api/notes")
+@CrossOrigin(origins = "*")
 @RestController
 public class NotesController{
 
@@ -34,7 +40,20 @@ public class NotesController{
        return new ResponseEntity<>("Note saved successfully!", HttpStatus.CREATED);
     }
 
+   @PostMapping("/addTopic")
+    public ResponseEntity<Topic> addTopic(@RequestBody Topic topic) {
+        if (topicRepository.existsByName(topic.getName())) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        Topic savedTopic = topicRepository.save(topic);
+        return new ResponseEntity<>(savedTopic, HttpStatus.CREATED);
+    }
 
+    @GetMapping("/topics")
+    public ResponseEntity<List<Topic>> getAllTopics() {
+        List<Topic> topics = topicRepository.findAll();
+        return new ResponseEntity<>(topics, HttpStatus.OK);
+    }
 
     
 

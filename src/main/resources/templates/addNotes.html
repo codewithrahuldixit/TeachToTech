@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Course</title>
+  <title>Add Notes</title>
+  <link th:href="@{/assets/img/TT.png}" rel="icon">
+	<link th:href="@{/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
   <style>
     html, body {
       height: 100%;
@@ -145,4 +147,105 @@
 
   
 </body>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const categorySelect = document.getElementById("category");
+    const newTopicField = document.getElementById("newTopicField");
+    const newTopicInput = document.getElementById("newTopic");
+    const addTopicButton = document.getElementById("addTopicButton");
+    const addCourseForm = document.getElementById("addCourseForm");
+    const addContentFieldBtn = document.getElementById("addContentField");
+    const contentFields = document.getElementById("contentFields");
+
+    // Fetch topics from backend
+    fetch("/api/notes/topics")
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(topic => {
+                let option = document.createElement("option");
+                option.value = topic.topicId;
+                option.textContent = topic.topicName;
+                categorySelect.appendChild(option);
+            });
+        });
+
+    // Handle topic selection
+    categorySelect.addEventListener("change", function () {
+        if (categorySelect.value === "newCategory") {
+            newTopicField.style.display = "block";
+        } else {
+            newTopicField.style.display = "none";
+        }
+    });
+
+    // Add new topic
+    addTopicButton.addEventListener("click", function () {
+        let newTopicName = newTopicInput.value.trim();
+        if (newTopicName === "") {
+            alert("Please enter a valid topic name.");
+            return;
+        }
+
+        fetch("/api/notes/addTopic", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ topicName: newTopicName })
+        })
+        .then(response => response.json())
+        .then(data => {
+            let newOption = document.createElement("option");
+            newOption.value = data.topicId;
+            newOption.textContent = data.topicName;
+            categorySelect.appendChild(newOption);
+            categorySelect.value = data.topicId;
+            newTopicField.style.display = "none";
+            newTopicInput.value = "";
+        })
+        .catch(error => console.error("Error adding topic:", error));
+    });
+
+    // Add more content fields
+    addContentFieldBtn.addEventListener("click", function () {
+        let textarea = document.createElement("textarea");
+        textarea.name = "content[]";
+        textarea.className = "form-control";
+        textarea.rows = 2;
+        textarea.required = true;
+        contentFields.appendChild(textarea);
+    });
+
+    // Handle form submission
+    addCourseForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        let selectedTopic = categorySelect.value;
+        let contents = Array.from(document.getElementsByName("content[]")).map(t => t.value.trim());
+
+        if (selectedTopic === "" || selectedTopic === "newCategory") {
+            alert("Please select or add a topic.");
+            return;
+        }
+        if (contents.some(content => content === "")) {
+            alert("Please fill in all content fields.");
+            return;
+        }
+
+        fetch("/api/notes/savenote", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                topic: { topicId: selectedTopic },
+                content: contents
+            })
+        })
+        .then(response => response.text())
+        .then(message => {
+            alert(message);
+            addCourseForm.reset();
+        })
+        .catch(error => console.error("Error saving note:", error));
+    });
+});
+
+</script>
 </html>
