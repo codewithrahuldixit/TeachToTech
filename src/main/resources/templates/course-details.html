@@ -2124,9 +2124,9 @@
 						
 						
 						<h3 th:text="${course.courseName}">Course Name</h3>
-						<img th:src=${course.image} class="img-fluid" alt="Course"/>
-						
-
+						<img th:src="@{'https://teachtotech.in/api/view-image?path=' + ${#strings.replace(course.image, '\', '/')}}" 
+						class="img-fluid" 
+						alt="Course Image">
 					</div>
 					<div class="col-lg-4">
 
