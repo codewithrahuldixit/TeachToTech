@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,69 +21,64 @@ import com.rahul.service.TrainerService;
 @RestController
 @RequestMapping("api/trainer")
 public class TrainerController {
-    
+
     @Autowired
     private TrainerService TrainerService;
 
     @PostMapping("/add")
     public ResponseEntity<?> add(@RequestParam("formData") String trainerDataJson,
-    @RequestParam(value = "imageFile", required = false) MultipartFile imageFile)
-    {    
-         try {
-        // Parse the JSON string to get course data
-        ObjectMapper objectMapper = new ObjectMapper();
-        Trainer trainer = objectMapper.readValue(trainerDataJson, Trainer.class);
+            @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
+        try {
+            // Parse the JSON string to get course data
+            ObjectMapper objectMapper = new ObjectMapper();
+            Trainer trainer = objectMapper.readValue(trainerDataJson, Trainer.class);
 
-        // Handle the uploaded file (image)
-        String imagePath = this.TrainerService.saveImage(imageFile);
-        if (imagePath != null) {
-            trainer.setTrainerImage(imagePath);
+            // Handle the uploaded file (image)
+            String imagePath = this.TrainerService.saveImage(imageFile);
+            if (imagePath != null) {
+                trainer.setTrainerImage(imagePath);
+            }
+            if (TrainerService.findByLinkedinProfile(trainer.getLinkedin()).isPresent()) {
+                return ResponseEntity.badRequest().body("Trainer is already added");
+            }
+            this.TrainerService.addTrainer(trainer);
+            return ResponseEntity.ok("Trainer added successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error adding course: " + e.getMessage());
         }
-        if (TrainerService.findByLinkedinProfile(trainer.getLinkedin()).isPresent()) {
-            return ResponseEntity.badRequest().body("Trainer is already added");
-        }
-        this.TrainerService.addTrainer(trainer);
-        return ResponseEntity.ok("Trainer added successfully");
-    } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.status(500).body("Error adding course: " + e.getMessage());
     }
-}
+
     @GetMapping("/get")
-    public ResponseEntity<List<Trainer>> getAllTrainer(){
-      List<Trainer> trainer=this.TrainerService.getallTrainer();
-     
-     return ResponseEntity.ok(trainer);
+    public ResponseEntity<List<Trainer>> getAllTrainer() {
+        List<Trainer> trainer = this.TrainerService.getallTrainer();
+
+        return ResponseEntity.ok(trainer);
     }
-    
+
     @PostMapping("/edit/{trainerId}")
     public ResponseEntity<?> update(@PathVariable Long trainerId,
-    @RequestParam("formData") String trainerDataJson,
-    @RequestParam(value = "imageFile", required = false) MultipartFile imageFile)
-    {    
-         try {
-        // Parse the JSON string to get trainer data
-        ObjectMapper objectMapper = new ObjectMapper();
-        Trainer updatedTrainer = objectMapper.readValue(trainerDataJson, Trainer.class);
-        Trainer updated=this.TrainerService.updateTrainerWithImage(trainerId,updatedTrainer,imageFile);
-        return ResponseEntity.ok(updated);      
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            @RequestParam("formData") String trainerDataJson,
+            @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
+        try {
+            // Parse the JSON string to get trainer data
+            ObjectMapper objectMapper = new ObjectMapper();
+            Trainer updatedTrainer = objectMapper.readValue(trainerDataJson, Trainer.class);
+            Trainer updated = this.TrainerService.updateTrainerWithImage(trainerId, updatedTrainer, imageFile);
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
-}
-//       @GetMapping("/delete/{id}")
-//       public String deleteTrainer(@PathVariable Long id) {
-//         this.TrainerService.deleteById(id);
-//        return new RestTemplate().getForObject("http://localhost:8053/trainers", String.class);
-//    }
-@DeleteMapping("/delete/{id}")
-public ResponseEntity<?> deleteTrainer(@PathVariable Long id) {
-    try {
-        this.TrainerService.deleteById(id);
-        return ResponseEntity.ok("Trainer deleted successfully");
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting trainer");
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteTrainer(@PathVariable Long id) {
+        try {
+            this.TrainerService.deleteById(id);
+            return ResponseEntity.ok("Trainer deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting trainer");
+        }
     }
-}
 
 }

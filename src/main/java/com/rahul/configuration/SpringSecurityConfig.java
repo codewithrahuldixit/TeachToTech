@@ -35,7 +35,7 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.POST,"api/courses/add/**","api/courses/edit/**",
                                 "api/courses/delete/**","api/trainer/add/**","api/trainer/edit/**",
                                 "/api/trainer/delete/**","/category/**","/api/users/allusers/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET,"api/courses/add/**","api/courses/edit/**",
+                .requestMatchers(HttpMethod.GET,"api/courses/add/**","api/courses/edit/**","/api/view-image/**",
                                             "api/trainer/add/**","api/trainer/edit/**","api/trainer/delete/**","/category/**","/preview/**","/save-content","/article/**","/discoverarticles/**","/success","/articletypes","/articlesByCategory").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/delete/**","api/trainer/delete/**").permitAll()
                 .requestMatchers("/","/index","/courses","/course-details/**","/trainers","/assets/**","/contact",
@@ -44,7 +44,7 @@ public class SpringSecurityConfig {
                 .and()
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
             );
-
+            
         return http.build();
     }
 
