@@ -3,6 +3,8 @@ package com.rahul.controller;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -24,7 +26,7 @@ import com.rahul.repository.UserRepository;
 
 @Controller
 public class CommentController {
-
+	private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ArticleRepository articlerepo;
 
@@ -46,7 +48,7 @@ public ResponseEntity<String> postMethodName(@RequestParam Long articleId, @Requ
 
     Comment comment = new Comment();
     if(article==null){
-        System.err.println("ERROR:Article not found: ");
+        logger.error("ERROR:Article not found: ");
     }
    
     comment.setArticle(article);
