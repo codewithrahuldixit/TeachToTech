@@ -131,7 +131,7 @@ public class CourseService {
             imageFile.transferTo(destinationFile);
 
            // Return the relative path to the file (match your WebConfig handler)
-            return "/assets/img/" + sanitizedFileName;
+            return uploadDir + sanitizedFileName;
 
         } catch (IOException e) {
             e.printStackTrace();
