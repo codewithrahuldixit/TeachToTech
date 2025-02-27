@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Notes</title>
+  <link th:href="@{/assets/img/TT.png}" rel="icon">
+	<link th:href="@{/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background-color: #f4f4f4;
+      font-family: Arial, sans-serif;
+    }
+    .content {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      width: 100%;
+      height: 100%;
+      padding-top: 30px;
+      box-sizing: border-box;
+    }
+    .card {
+      border: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 30px;
+      background-color: white;
+      width: 90%;
+      max-width: 2000px;
+      box-sizing: border-box;
+      margin-top: 50px;
+      min-width: 800px;
+    }
+    .card-title {
+      font-size: 25px;
+      color: #5fcf80;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      font-size: 14px;
+      color: #333;
+    }
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    .form-control:focus {
+      border-color: #5fcf80;
+      outline: none;
+    }
+    .read-more {
+      background-color: #5fcf80;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 12px 20px;
+      text-decoration: none;
+      font-size: 16px;
+      margin-top: 20px;
+      width: 100%;
+    }
+    .read-more:hover {
+      background-color: #4caf6a;
+    }
+    .back-arrow {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    .arrow {
+      width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-right: 15px solid #4CAF50;
+      margin-right: 10px;
+    }
+    .arrow:hover {
+      border-right-color: #45a049;
+    }
+    .back-text {
+      font-size: 14px;
+      color: #4CAF50;
+      font-weight: bold;
+    }
+    .back-text:hover {
+      color: #45a049;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="content">
+    <div class="back-arrow" onclick="history.back()">
+      <div class="arrow"></div>
+      <p class="back-text">Go back</p>
+    </div>
+    <div class="card">
+      <h3 class="card-title">Add Notes</h3>
+      <form id="addCourseForm">
+
+        <!-- Category Field -->
+        <div class="form-group">
+          <label for="category">Topic</label>
+          <select id="category" name="category" class="form-control" required>
+            <option value="" disabled selected>Select Topic</option>
+            <option value="newCategory">Add New Topic</option>
+          </select>
+          <span id="categoryError" class="text-danger"></span>
+        </div>
+      
+        <div class="form-group" id="newTopicField" style="display: none;">
+          <label for="newTopic">New Topic Name</label>
+          <input type="text" id="newTopic" name="newTopic" class="form-control">
+          <button type="button" id="addTopicButton" class="read-more" style="margin-top: 10px;">Add Topic</button>
+        </div>
+
+        <div class="form-group" id="questionAnswerGroup">
+          <label for="content">Content</label>
+          <div id="contentFields">
+            <textarea name="content[]" class="form-control" rows="2" required></textarea>
+          </div>
+          <button type="button" id="addContentField" class="read-more" style="margin-top: 10px;">Add more content</button>
+        </div>
+        
+        <!-- Submit Button -->
+        <button type="submit" class="read-more">Add Notes</button>
+      </form>
+    </div>
+  </div>
+
+  
+</body>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const categorySelect = document.getElementById("category");
+    const newTopicField = document.getElementById("newTopicField");
+    const newTopicInput = document.getElementById("newTopic");
+    const addTopicButton = document.getElementById("addTopicButton");
+    const addCourseForm = document.getElementById("addCourseForm");
+    const addContentFieldBtn = document.getElementById("addContentField");
+    const contentFields = document.getElementById("contentFields");
+
+    // Fetch topics from backend
+    fetch("/api/notes/topics")
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(topic => {
+                let option = document.createElement("option");
+                option.value = topic.topicId;
+                option.textContent = topic.topicName;
+                categorySelect.appendChild(option);
+            });
+        });
+
+    // Handle topic selection
+    categorySelect.addEventListener("change", function () {
+        if (categorySelect.value === "newCategory") {
+            newTopicField.style.display = "block";
+        } else {
+            newTopicField.style.display = "none";
+        }
+    });
+
+    // Add new topic
+    addTopicButton.addEventListener("click", function () {
+        let newTopicName = newTopicInput.value.trim();
+        if (newTopicName === "") {
+            alert("Please enter a valid topic name.");
+            return;
+        }
+
+        fetch("/api/notes/addTopic", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ topicName: newTopicName })
+        })
+        .then(response => response.json())
+        .then(data => {
+            let newOption = document.createElement("option");
+            newOption.value = data.topicId;
+            newOption.textContent = data.topicName;
+            categorySelect.appendChild(newOption);
+            categorySelect.value = data.topicId;
+            newTopicField.style.display = "none";
+            newTopicInput.value = "";
+        })
+        .catch(error => console.error("Error adding topic:", error));
+    });
+
+    // Add more content fields
+    addContentFieldBtn.addEventListener("click", function () {
+        let textarea = document.createElement("textarea");
+        textarea.name = "content[]";
+        textarea.className = "form-control";
+        textarea.rows = 2;
+        textarea.required = true;
+        contentFields.appendChild(textarea);
+    });
+
+    // Handle form submission
+    addCourseForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        let selectedTopic = categorySelect.value;
+        let contents = Array.from(document.getElementsByName("content[]")).map(t => t.value.trim());
+
+        if (selectedTopic === "" || selectedTopic === "newCategory") {
+            alert("Please select or add a topic.");
+            return;
+        }
+        if (contents.some(content => content === "")) {
+            alert("Please fill in all content fields.");
+            return;
+        }
+
+        fetch("/api/notes/savenote", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                topic: { topicId: selectedTopic },
+                content: contents
+            })
+        })
+        .then(response => response.text())
+        .then(message => {
+            alert(message);
+            addCourseForm.reset();
+        })
+        .catch(error => console.error("Error saving note:", error));
+    });
+});
+
+</script>
+</html>

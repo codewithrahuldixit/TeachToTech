@@ -41,7 +41,22 @@ public class DemoController {
 		model.addAttribute("categories", categories);
 		return "index";
 	}
-
+	@GetMapping("/addassignment")
+	public String showAddAssignmentPage() {
+		return "addAssignment";
+	}
+	@GetMapping("/addnotes")
+	public String showAddNotesPage() {
+		return "addNotes";
+	}
+	@GetMapping("/allnotes")
+	public String showNotesPage(){
+		return "Notes";
+	}
+	public String getMethodName(@RequestParam String param) {
+		return new String();
+	}
+	
 	public String showCourses(Model model) {
 		List<Course> approvedCourses = courseService.getApprovedCourses();
 		model.addAttribute("approvedCourses", approvedCourses);
@@ -76,10 +91,10 @@ public class DemoController {
 		model.addAttribute("categories", categories);
 		return "about";
 	}
-	@GetMapping("/adminpreview")
-	public String adminReview() {
-		return "adminPreview";
-	}
+	// @GetMapping("/adminpreview")
+	// public String adminReview() {
+	// 	return "adminPreview";
+	// }
 	
 	// @GetMapping("/discoverarticles")
 	// public String Allarticle() {
