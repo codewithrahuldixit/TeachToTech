@@ -46,6 +46,8 @@ public class SpringSecurityConfig {
                       "/about","api/users/**","/api/trainer/get","/teachtotech-app/**","/articlewriting/**","/preview/**","/articlereview/**",
                       "/save-content/**","/articles/category/**","/preview","/adminpreview/**","/articletypes","/comments","/savenote","/test/**","/topic/**","/allnotes").permitAll()
                 .requestMatchers(HttpMethod.POST, "/savenote","/test","/save-assignment","/api/notes/**").permitAll()
+                .requestMatchers("/about","api/users/**","/api/trainer/get","/teachtotech-app/**","/articlewriting/**","/preview/**","/articlereview/**","/save-content/**","/articles/category/**","/preview","/adminpreview/**","/articletypes","/comments","/savenote","/test/**","/topic/**","/save-assignment").permitAll()
+                .requestMatchers(HttpMethod.POST, "/savenote","/test","/save-assignment").permitAll()
      
                 .anyRequest().authenticated()
                 .and()

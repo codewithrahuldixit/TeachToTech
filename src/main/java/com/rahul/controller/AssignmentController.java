@@ -35,30 +35,22 @@ public class AssignmentController {
 public ResponseEntity<String> saveAssignment(@RequestBody Assignment assignment) {
     logger.info("Received Assignment: " + assignment);
 
-    if (assignment.getTopic() == null) {
-        return new ResponseEntity<>("Topic is required!", HttpStatus.BAD_REQUEST);
-    }
 
-    Topic topic = assignment.getTopic();
-
-    if (topic.getTopicId() != null) {
-        if (!topicRepository.existsById(topic.getTopicId())) {
-            return new ResponseEntity<>("Topic not found!", HttpStatus.BAD_REQUEST);
+        if(assignment.getTopic()==null || !topicRepository.existsById(assignment.getTopic().getTopicId()) ){
+            return new ResponseEntity<>("Topic not found for the assignment!", HttpStatus.BAD_REQUEST);
         }
-    } else {
-        topic = topicRepository.save(topic);
-    }
-
+    
+    Topic topic = assignment.getTopic();
     assignment.setTopic(topic);
     assignmentRepository.save(assignment);
     return new ResponseEntity<>("Assignment saved successfully!", HttpStatus.CREATED);
 }
 
-    @CrossOrigin(origins = "*")
-    @GetMapping("/topics")
-    public ResponseEntity<List<Topic>> getTopics() {
-        return ResponseEntity.ok(topicRepository.findAll());
-    }
+    // @CrossOrigin(origins = "*")
+    // @GetMapping("/topics")
+    // public ResponseEntity<List<Topic>> getTopics() {
+    //     return ResponseEntity.ok(topicRepository.findAll());
+    // }
     
 
     

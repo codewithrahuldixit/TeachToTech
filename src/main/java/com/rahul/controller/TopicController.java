@@ -39,10 +39,8 @@ public ResponseEntity<Object> CreateTopic(@RequestBody Topic topic) {
    if(topic.getCategory()==null || !categoryRepository.existsById(topic.getCategory().getCategoryId())){
     return new ResponseEntity<>("Category not found!", HttpStatus.BAD_REQUEST);
    }
-   topic.setNote(null);
-   topic.setAssignment(null);
    Topic savedTopic = topicRepository.save(topic);
-        return new ResponseEntity<>(savedTopic, HttpStatus.CREATED);
+        return  ResponseEntity.ok(savedTopic);
 }
 
  @GetMapping("/{categoryId}/topics")

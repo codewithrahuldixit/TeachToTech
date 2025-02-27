@@ -139,11 +139,11 @@
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const topicSelect = document.getElementById("topicSelect");
-    const form = document.getElementById("assignmentForm");
+    const form = document.getElementById("addAssignmentForm");
     const questionsContainer = document.getElementById("questionsContainer");
 
     // 🛠 Fetch existing topics from backend
-    fetch("http://localhost:8053/topics")
+    fetch("http://localhost:8053/topic/getTopics")
         .then(response => response.json())
         .then(topics => {
             topics.forEach(topic => {
@@ -158,6 +158,7 @@
     // ➕ Add new question fields dynamically
     document.getElementById("addQuestion").addEventListener("click", () => {
         const newQuestion = document.createElement("textarea");
+        newQuestion.className = "form-control"; // Add this line
         newQuestion.name = "qa[]";
         newQuestion.placeholder = "Enter another question";
         newQuestion.required = true;

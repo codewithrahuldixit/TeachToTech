@@ -1,5 +1,7 @@
 package com.rahul.model;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -11,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -40,9 +43,11 @@ public class Topic {
     private String name; 
 
     @OneToOne(mappedBy = "topic", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Note note;  
     
-    @OneToOne(mappedBy = "topic",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private Assignment assignment;
-    
+    @OneToMany(mappedBy = "topic",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Assignment> assignment;
+
 }
