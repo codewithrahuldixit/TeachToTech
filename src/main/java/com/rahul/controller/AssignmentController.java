@@ -43,11 +43,11 @@ public class AssignmentController {
     return new ResponseEntity<>("Assignment saved successfully!", HttpStatus.CREATED);
 }
 
-    @CrossOrigin(origins = "*")
-    @GetMapping("/topics")
-    public ResponseEntity<List<Topic>> getTopics() {
-        return ResponseEntity.ok(topicRepository.findAll());
-    }
+    // @CrossOrigin(origins = "*")
+    // @GetMapping("/topics")
+    // public ResponseEntity<List<Topic>> getTopics() {
+    //     return ResponseEntity.ok(topicRepository.findAll());
+    // }
     
 
     

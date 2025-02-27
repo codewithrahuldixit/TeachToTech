@@ -223,75 +223,376 @@ body {
 
 <body class="events-page">
 
-  <div th:replace="header2 :: header"></div>
+    <div th:replace="header2 :: header"></div>
+  
+    <!-- Sidebar (Discover Articles) -->
+    <div class="d-flex"> 
+      <!-- Sidebar --> 
+      <nav class="sidebar"> 
+          <div class="d-flex flex-column w-100 p-3"> 
+              <a class="navbar-brand text-white fw-bold mb-3" href="#">Notes</a> 
+   
+              <!-- Categories will be loaded here via JavaScript --> 
+              <ul class="nav flex-column w-100 p-0 m-0" id="categories-container">
+                  <!-- This will be populated by JavaScript -->
+                  <li class="loading-placeholder text-white">
+                      <span><i class="fas fa-spinner fa-spin me-2"></i> Loading categories...</span>
+                  </li>
+              </ul> 
+          </div> 
+      </nav> 
+   
+      <!-- Main Content Area (Expanded) --> 
+      <main class="main-content"> 
+          <!-- Page Title --> 
+          <div class="page-title" data-aos="fade"> 
+              <div class="heading"> 
+                  <div class="container"> 
+                      <div class="row d-flex justify-content-center text-center"> 
+                          <div class="col-lg-12"> 
+                              <h1 class="title-heading">Select a Topic</h1> 
+                          </div> 
+                      </div> 
+                  </div> 
+              </div> 
+          </div> 
+   
+          <!-- Article Content --> 
+          <section id="events" class="events section"> 
+              <div class="article-content">
+                  <div class="text-center text-muted default-content"> 
+                      <i class="fas fa-book fa-3x mb-3"></i> 
+                      <h3>Click on a topic to view its content</h3> 
+                      <p class="lead">Select a category from the sidebar to see available notes</p> 
+                  </div>
+                  <div class="topic-content" style="display: none;">
+                      <!-- This will be populated via JavaScript -->
+                  </div>
+              </div>
+              <div class="d-flex gap-3 mt-4 buttons" style="display: none !important;">
+                  <button class="btn btn-warning text-white adminSection">Edit</button> 
+                  <button class="btn btn-danger adminSection">Delete</button> 
+              </div> 
+          </section> 
+      </main> 
+       
+  </div>
+  <script>
+   document.addEventListener('DOMContentLoaded', function() {
+    // Fetch all categories when the page loads
+    fetchCategories();
 
-  <!-- Sidebar (Discover Articles) -->
-  <div class="d-flex">
-    <!-- Sidebar -->
-    <nav class="sidebar">
-        <div class="d-flex flex-column w-100 p-3">
-            <a class="navbar-brand text-white fw-bold mb-3" href="#"> Notes</a>
+    // Function to fetch all categories
+    function fetchCategories() {
+        fetch('/category/getallcategory')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(categories => {
+                displayCategories(categories);
+            })
+            .catch(error => {
+                console.error('Error fetching categories:', error);
+                document.getElementById('categories-container').innerHTML = `
+                    <li class="text-white">
+                        <span><i class="fas fa-exclamation-circle me-2"></i> Error loading categories</span>
+                    </li>`;
+            });
+    }
 
-            <!-- Loop through categories -->
-            <ul class="nav flex-column w-100 p-0 m-0">
-                <li class="nav-item w-100" th:each="category : ${categories}">
-                    <a class="nav-link text-white d-flex align-items-center justify-content-between px-3 py-2 w-100"
-                       href="javascript:void(0)" 
-                       th:onclick="'fetchArticles(' + ${category.categoryId} + ')'">
-                        <span th:text="${category.name}" class="category-name" th:data-category-id="${category.categoryId}"></span>
-                        <i class="fas fa-plus"></i>
-                    </a>
+    // Function to display categories in the sidebar
+    function displayCategories(categories) {
+        const categoriesContainer = document.getElementById('categories-container');
+        
+        if (categories.length === 0) {
+            categoriesContainer.innerHTML = `
+                <li class="text-white">
+                    <span><i class="fas fa-info-circle me-2"></i> No categories found</span>
+                </li>`;
+            return;
+        }
 
-                    <!-- Articles list with correct ID format -->
-                    <ul th:id="'articles-list-' + ${category.categoryId}" class="articles-list list-unstyled ps-3" 
-                        th:data-category-id="${category.categoryId}" style="display:none;">
-                        <!-- Articles will be populated here via JavaScript -->
-                    </ul>
-
-                    <hr class="w-100 m-0" style="border: none; height: 1px; background-color: #333;">
-                </li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Main Content Area (Expanded) -->
-    <main class="main-content">
-        <!-- Page Title -->
-        <div class="page-title" data-aos="fade">
-            <div class="heading">
-                <div class="container">
-                    <div class="row d-flex justify-content-center text-center">
-                        <div class="col-lg-12">
-                            <h1 class="title-heading" th:text="${selectedTopic != null ? selectedTopic.title : 'Select a Topic'}"></h1>
-                        </div>
+        let categoriesHTML = '';
+        
+        // Check the structure of your category objects and adjust accordingly
+        categories.forEach(category => {
+            // Log the category object to inspect its structure
+            console.log('Category object:', category);
+            
+            // Make sure we're using the correct property name for the ID
+            // It could be id, categoryId, _id, etc.
+            const categoryId = category.id || category.categoryId || category._id;
+            
+            if (!categoryId) {
+                console.error('Category ID is undefined for:', category);
+                return;
+            }
+            
+            categoriesHTML += `
+                <li class="nav-item category-item">
+                    <div class="d-flex align-items-center text-white category-header" data-category-id="${categoryId}">
+                        <i class="fas fa-folder me-2"></i>
+                        <span>${category.name || category.categoryName || 'Unnamed Category'}</span>
+                        <i class="fas fa-chevron-down ms-auto"></i>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Article Content -->
-        <section id="events" class="events section">
-            <div class="article-content">
-                <div th:if="${selectedArticle != null}">
-                    <div th:utext="${selectedArticle.content}"></div>
+                    <ul class="topics-container" id="topics-${categoryId}" style="display: none;">
+                        <li class="loading-placeholder text-white ps-4">
+                            <span><i class="fas fa-spinner fa-spin me-2"></i> Loading topics...</span>
+                        </li>
+                    </ul>
+                </li>`;
+        });
+        
+        categoriesContainer.innerHTML = categoriesHTML;
+        
+        // Add event listeners to category headers
+        document.querySelectorAll('.category-header').forEach(categoryHeader => {
+            categoryHeader.addEventListener('click', function() {
+                const categoryId = this.getAttribute('data-category-id');
+                
+                if (!categoryId) {
+                    console.error('Category ID attribute is missing or undefined');
+                    return;
+                }
+                
+                const topicsContainer = document.getElementById(`topics-${categoryId}`);
+                const chevronIcon = this.querySelector('.fa-chevron-down, .fa-chevron-up');
+                
+                // Toggle topics visibility
+                if (topicsContainer.style.display === 'none') {
+                    // Close all other topic containers
+                    document.querySelectorAll('.topics-container').forEach(container => {
+                        if (container.id !== `topics-${categoryId}`) {
+                            container.style.display = 'none';
+                            const otherChevron = container.previousElementSibling.querySelector('.fa-chevron-up');
+                            if (otherChevron) {
+                                otherChevron.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                            }
+                        }
+                    });
                     
-                    <!-- Action Buttons -->
-                   
-                </div>
-                <div th:unless="${selectedArticle != null}" class="text-center text-muted">
-                    <i class="fas fa-book fa-3x mb-3"></i>
-                    <h3>Click on an topic to view its content</h3>
-                    <p class="lead">Select a category from the sidebar to see available notes</p>
-                </div>
+                    // Show this topic container
+                    topicsContainer.style.display = 'block';
+                    chevronIcon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                    
+                    // Fetch topics for this category
+                    fetchTopics(categoryId);
+                } else {
+                    // Hide this topic container
+                    topicsContainer.style.display = 'none';
+                    chevronIcon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                }
+            });
+        });
+    }
+
+    // Function to fetch topics for a specific category
+    function fetchTopics(categoryId) {
+        if (!categoryId) {
+            console.error('Cannot fetch topics: Category ID is undefined');
+            return;
+        }
+        
+        const topicsContainer = document.getElementById(`topics-${categoryId}`);
+        
+        console.log(`Fetching topics for category ID: ${categoryId}`);
+        
+        fetch(`/topic/${categoryId}/topics`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(topics => {
+                console.log(`Received topics for category ${categoryId}:`, topics);
+                displayTopics(categoryId, topics);
+            })
+            .catch(error => {
+                console.error(`Error fetching topics for category ${categoryId}:`, error);
+                topicsContainer.innerHTML = `
+                    <li class="text-white ps-4">
+                        <span><i class="fas fa-exclamation-circle me-2"></i> Error loading topics</span>
+                    </li>`;
+            });
+    }
+
+    // Function to display topics for a category
+    function displayTopics(categoryId, topics) {
+        const topicsContainer = document.getElementById(`topics-${categoryId}`);
+        
+        if (!Array.isArray(topics)) {
+            console.error('Topics is not an array:', topics);
+            topicsContainer.innerHTML = `
+                <li class="text-white ps-4">
+                    <span><i class="fas fa-exclamation-circle me-2"></i> Invalid topics data</span>
+                </li>`;
+            return;
+        }
+        
+        if (topics.length === 0) {
+            topicsContainer.innerHTML = `
+                <li class="text-white ps-4">
+                    <span><i class="fas fa-info-circle me-2"></i> No topics found</span>
+                </li>`;
+            return;
+        }
+
+        let topicsHTML = '';
+        
+        topics.forEach(topic => {
+            // Check the structure of your topic objects and adjust accordingly
+            console.log('Topic object:', topic);
+            
+            // Make sure we're using the correct property name for the ID and title
+            const topicId = topic.id || topic.topicId || topic._id;
+            const topicTitle = topic.title || topic.name || 'Unnamed Topic';
+            
+            if (!topicId) {
+                console.error('Topic ID is undefined for:', topic);
+                return;
+            }
+            
+            topicsHTML += `
+                <li class="nav-item topic-item ps-4">
+                    <div class="d-flex align-items-center text-white topic-header" data-topic-id="${topicId}">
+                        <i class="fas fa-file-alt me-2"></i>
+                        <span>${topicTitle}</span>
+                    </div>
+                </li>`;
+        });
+        
+        topicsContainer.innerHTML = topicsHTML;
+        
+        // Add event listeners to topic headers
+        topicsContainer.querySelectorAll('.topic-header').forEach(topicHeader => {
+            topicHeader.addEventListener('click', function() {
+                const topicId = this.getAttribute('data-topic-id');
+                
+                if (!topicId) {
+                    console.error('Topic ID attribute is missing or undefined');
+                    return;
+                }
+                
+                // Highlight the selected topic
+                document.querySelectorAll('.topic-header').forEach(header => {
+                    header.classList.remove('active-topic');
+                });
+                this.classList.add('active-topic');
+                
+                // Fetch topic content
+                fetchTopicContent(topicId);
+            });
+        });
+    }
+
+    // Function to fetch content for a specific topic
+    function fetchTopicContent(topicId) {
+        if (!topicId) {
+            console.error('Cannot fetch topic content: Topic ID is undefined');
+            return;
+        }
+        
+        const defaultContent = document.querySelector('.default-content');
+        const topicContent = document.querySelector('.topic-content');
+        const buttons = document.querySelector('.buttons');
+        
+        // Show loading state
+        topicContent.innerHTML = `
+            <div class="text-center">
+                <i class="fas fa-spinner fa-spin fa-3x mb-3"></i>
+                <p>Loading content...</p>
+            </div>`;
+        defaultContent.style.display = 'none';
+        topicContent.style.display = 'block';
+        
+        console.log(`Fetching content for topic ID: ${topicId}`);
+        
+        fetch(`/topic/${topicId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(topic => {
+                console.log(`Received content for topic ${topicId}:`, topic);
+                displayTopicContent(topic);
+                
+                // Show admin buttons
+                if (buttons) {
+                    buttons.style.display = 'flex';
+                    // Remove !important from inline style and add a class instead
+                    buttons.classList.add('d-flex');
+                }
+            })
+            .catch(error => {
+                console.error(`Error fetching content for topic ${topicId}:`, error);
+                topicContent.innerHTML = `
+                    <div class="text-center text-danger">
+                        <i class="fas fa-exclamation-circle fa-3x mb-3"></i>
+                        <h3>Error loading content</h3>
+                        <p>Could not load the requested topic content. Please try again later.</p>
+                    </div>`;
+            });
+    }
+
+    // Function to display topic content
+    function displayTopicContent(topic) {
+        if (!topic) {
+            console.error('Topic object is undefined or null');
+            return;
+        }
+        
+        const topicContent = document.querySelector('.topic-content');
+        const titleHeading = document.querySelector('.title-heading');
+        
+        // Make sure we're using the correct property names
+        const title = topic.title || topic.name || 'Unnamed Topic';
+        const content = topic.content || topic.body || topic.text || 'No content available';
+        const createdAt = topic.createdAt || topic.created || topic.date || new Date().toISOString();
+        const updatedAt = topic.updatedAt || topic.updated || topic.lastModified;
+        
+        // Update page title
+        if (titleHeading) {
+            titleHeading.textContent = title;
+        }
+        
+        // Display topic content
+        topicContent.innerHTML = `
+            <h2>${title}</h2>
+            <div class="topic-metadata">
+                <span class="text-muted"><i class="fas fa-calendar-alt me-2"></i>${formatDate(createdAt)}</span>
+                ${updatedAt ? `<span class="text-muted ms-3"><i class="fas fa-edit me-2"></i>Updated: ${formatDate(updatedAt)}</span>` : ''}
             </div>
-            <div th:if="${selectedArticle != null}" class="d-flex gap-3 mt-4 buttons">
-                <button class="btn btn-warning text-white adminSection">Edit</button>
-                <button class="btn btn-danger adminSection">Delete</button>
-            </div>
-        </section>
-    </main>
-    
-</div>
+            <hr>
+            <div class="topic-body">
+                ${content}
+            </div>`;
+    }
+
+    // Helper function to format dates
+    function formatDate(dateString) {
+        try {
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) {
+                return 'Invalid date';
+            }
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+        } catch (error) {
+            console.error('Error formatting date:', error);
+            return 'Unknown date';
+        }
+    }
+});
+  </script>
   
 
 
@@ -307,115 +608,7 @@ body {
   <div id="preloader"></div>
 
   <!-- Vendor JS Files -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Add click listeners to all category elements
-        document.querySelectorAll('.nav-link').forEach(categoryElement => {
-            categoryElement.addEventListener('click', function() {
-                // Toggle the visibility of articles list
-                const categoryId = this.querySelector('.category-name').getAttribute('data-category-id');
-                const articlesList = document.getElementById(`articles-list-${categoryId}`);
-                
-                // Toggle icon
-                const icon = this.querySelector('i');
-                if (articlesList.style.display === 'none') {
-                    articlesList.style.display = 'block';
-                    icon.classList.remove('fa-plus');
-                    icon.classList.add('fa-minus');
-                } else {
-                    articlesList.style.display = 'none';
-                    icon.classList.remove('fa-minus');
-                    icon.classList.add('fa-plus');
-                }
-                
-                fetchArticles(categoryId);
-            });
-        });
-    });
-    
-    function fetchArticles(categoryId) {
-        console.log(`Fetching articles for categoryId: ${categoryId}`);
-        fetch(`/articlesByCategory?categoryId=${categoryId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(articles => {
-                // Find the articles list for this category
-                const articlesList = document.getElementById(`articles-list-${categoryId}`);
-                
-                if (!articlesList) {
-                    console.error(`Could not find articles list element for category ID ${categoryId}`);
-                    return;
-                }
-                
-                // Clear previous articles
-                articlesList.innerHTML = "";
-                
-                if (articles.length === 0) {
-                    articlesList.innerHTML = "<li class='text-muted'>No articles found</li>";
-                    return;
-                }
-    
-                // Add new articles
-                articles.forEach(article => {
-                    let articleItem = document.createElement("li");
-                    articleItem.className = "article-item my-1";
-                    articleItem.innerHTML = `
-                        <a href="/discoverarticles?categoryId=${categoryId}&articleId=${article.id}" 
-                           class="text-decoration-none text-white-50 hover-highlight">
-                           ${article.title}
-                        </a>`;
-                    articlesList.appendChild(articleItem);
-                });
-                
-                // Show the articles list
-                articlesList.style.display = 'block';
-            })
-            .catch(error => {
-                console.error("Error fetching articles:", error);
-            });
-    }
-    function deletearticle(button, id){
 
-button.disabled = true;
-button.innerText = "Deleting...";
-
-console.log("Deleting article with ID:", id);
-if (!confirm("Are you sure you want to delete this article?")) {
-  button.disabled = false;
-    button.innerText = "Delete";
-    return;
-}
-fetch(`/delete/${id}`,{
-  method:"DELETE",
-  headers: {
-    "Content-Type":"application/json"
-  }
-})
-.then(response=>response.text())
-.then(message=>{
-  alert(message);
-  if(message.includes("successfully")){
-    
-   // button.closest("tr").remove();
-    location.reload();
-  }
-  else{
-    button.disabled=false;
-    button.innerText="Delete";
-  }
-})
-.catch(error => {
-    console.error("Error deleting article:", error);
-    button.disabled = false;
-    button.innerText = "Delete"; 
-});
-
-}
-    </script>
     
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>

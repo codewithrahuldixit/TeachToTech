@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Notes</title>
   <link th:href="@{/assets/img/TT.png}" rel="icon">
-	<link th:href="@{/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
+  <link th:href="@{/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
   <style>
     html, body {
       height: 100%;
@@ -18,8 +18,9 @@
     }
     .content {
       display: flex;
-      justify-content: center;
-      align-items: flex-start;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
       width: 100%;
       height: 100%;
       padding-top: 30px;
@@ -34,7 +35,7 @@
       width: 90%;
       max-width: 2000px;
       box-sizing: border-box;
-      margin-top: 50px;
+      margin-top: 20px;
       min-width: 800px;
     }
     .card-title {
@@ -49,6 +50,8 @@
     .form-group label {
       font-size: 14px;
       color: #333;
+      display: block;
+      margin-bottom: 5px;
     }
     .form-control {
       width: 100%;
@@ -73,6 +76,7 @@
       font-size: 16px;
       margin-top: 20px;
       width: 100%;
+      cursor: pointer;
     }
     .read-more:hover {
       background-color: #4caf6a;
@@ -82,6 +86,8 @@
       align-items: center;
       cursor: pointer;
       margin-bottom: 20px;
+      align-self: flex-start;
+      margin-left: 5%;
     }
     .arrow {
       width: 0;
@@ -102,7 +108,15 @@
     .back-text:hover {
       color: #45a049;
     }
-
+    .text-danger {
+      color: #dc3545;
+      font-size: 12px;
+      margin-top: 5px;
+      display: block;
+    }
+    textarea {
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
@@ -114,20 +128,30 @@
     <div class="card">
       <h3 class="card-title">Add Notes</h3>
       <form id="addCourseForm">
-
-        <!-- Category Field -->
+        <!-- Topic Field -->
         <div class="form-group">
-          <label for="category">Topic</label>
-          <select id="category" name="category" class="form-control" required>
+          <label for="topic">Topic</label>
+          <select id="topic" name="topic" class="form-control" required>
             <option value="" disabled selected>Select Topic</option>
-            <option value="newCategory">Add New Topic</option>
+            <option value="newTopic">Add New Topic</option>
           </select>
-          <span id="categoryError" class="text-danger"></span>
+          <span id="topicError" class="text-danger"></span>
         </div>
-      
+        
+        <!-- New Topic Field (will show when "Add New Topic" is selected) -->
         <div class="form-group" id="newTopicField" style="display: none;">
           <label for="newTopic">New Topic Name</label>
           <input type="text" id="newTopic" name="newTopic" class="form-control">
+          
+          <!-- Only show category selection when creating a new topic -->
+          <div class="form-group" style="margin-top: 10px;">
+            <label for="category">Select Category for New Topic</label>
+            <select id="category" name="category" class="form-control" required>
+              <option value="" disabled selected>Select Category</option>
+            </select>
+            <span id="categoryError" class="text-danger"></span>
+          </div>
+          
           <button type="button" id="addTopicButton" class="read-more" style="margin-top: 10px;">Add Topic</button>
         </div>
 
@@ -144,108 +168,161 @@
       </form>
     </div>
   </div>
-
   
-</body>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const categorySelect = document.getElementById("category");
-    const newTopicField = document.getElementById("newTopicField");
-    const newTopicInput = document.getElementById("newTopic");
-    const addTopicButton = document.getElementById("addTopicButton");
-    const addCourseForm = document.getElementById("addCourseForm");
-    const addContentFieldBtn = document.getElementById("addContentField");
-    const contentFields = document.getElementById("contentFields");
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const topicSelect = document.getElementById("topic");
+      const categorySelect = document.getElementById("category");
+      const newTopicField = document.getElementById("newTopicField");
+      const newTopicInput = document.getElementById("newTopic");
+      const addTopicButton = document.getElementById("addTopicButton");
+      const addCourseForm = document.getElementById("addCourseForm");
+      const addContentFieldBtn = document.getElementById("addContentField");
+      const contentFields = document.getElementById("contentFields");
 
-    // Fetch topics from backend
-    fetch("/api/notes/topics")
-        .then(response => response.json())
-        .then(data => {
+      // Fetch all topics initially
+      fetchTopics();
+      
+      // Also fetch categories for the dropdown when adding a new topic
+      fetchCategories();
+
+      function fetchTopics() {
+        fetch("http://localhost:8053/topic/getTopics")
+          .then(response => response.json())
+          .then(data => {
+            // Clear existing options except the first two
+           
             data.forEach(topic => {
-                let option = document.createElement("option");
-                option.value = topic.topicId;
-                option.textContent = topic.topicName;
-                categorySelect.appendChild(option);
+              let option = document.createElement("option");
+              option.value = topic.topicId;
+              option.textContent = topic.name;
+              topicSelect.appendChild(option);
             });
-        });
+          })
+          .catch(error => console.error("Error fetching topics:", error));
+      }
 
-    // Handle topic selection
-    categorySelect.addEventListener("change", function () {
-        if (categorySelect.value === "newCategory") {
-            newTopicField.style.display = "block";
+      function fetchCategories() {
+        fetch("http://localhost:8053/category/getallcategory")
+          .then(response => response.json())
+          .then(data => {
+            // Clear existing options except the first one
+            while (categorySelect.options.length > 1) {
+              categorySelect.remove(1);
+            }
+            
+            data.forEach(category => {
+              let option = document.createElement("option");
+              option.value = category.categoryId;
+              option.textContent = category.name;
+              categorySelect.appendChild(option);
+            });
+          })
+          .catch(error => console.error("Error fetching categories:", error));
+      }
+
+      // Handle topic selection
+      topicSelect.addEventListener("change", function () {
+        if (topicSelect.value === "newTopic") {
+          newTopicField.style.display = "block";
         } else {
-            newTopicField.style.display = "none";
+          newTopicField.style.display = "none";
         }
-    });
+      });
 
-    // Add new topic
-    addTopicButton.addEventListener("click", function () {
-        let newTopicName = newTopicInput.value.trim();
-        if (newTopicName === "") {
-            alert("Please enter a valid topic name.");
-            return;
-        }
+      // Add new topic
+     // Inside the addTopicButton click event
+addTopicButton.addEventListener("click", function () {
+  let newTopicName = document.getElementById("newTopic");  // Corrected reference
+  console.log(newTopicName);  // Should not be null if element exists
+  if (newTopicName) {
+    let newTopicValue = newTopicName.value;
+    console.log(newTopicValue);
+  } else {
+    console.error("newTopic element not found!");
+  }
+  
+  let selectedCategory = categorySelect.value;
+  
+  if (!newTopicName.value || !selectedCategory) {
+    alert("Please enter a topic name and select a category.");
+    return;
+  }
 
-        fetch("/api/notes/addTopic", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ topicName: newTopicName })
-        })
-        .then(response => response.json())
-        .then(data => {
-            let newOption = document.createElement("option");
-            newOption.value = data.topicId;
-            newOption.textContent = data.topicName;
-            categorySelect.appendChild(newOption);
-            categorySelect.value = data.topicId;
-            newTopicField.style.display = "none";
-            newTopicInput.value = "";
-        })
-        .catch(error => console.error("Error adding topic:", error));
-    });
+  const newTopic = {
+    name: newTopicName.value,
+    category: {
+      categoryId: selectedCategory
+    }
+  };
 
-    // Add more content fields
-    addContentFieldBtn.addEventListener("click", function () {
+  fetch("http://localhost:8053/topic/createTopic", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(newTopic),
+  })
+  .then(response => response.json())
+  .then(data => {
+    let newOption = document.createElement("option");
+    newOption.value = data.topicId;
+    newOption.textContent = data.topicName;
+    topicSelect.appendChild(newOption);
+    topicSelect.value = data.topicId;
+    newTopicField.style.display = "none";
+    newTopicName.value = "";  // Clear the input field
+    
+    // Refresh topics list
+    fetchTopics();
+  })
+  .catch(error => console.error("Error adding topic:", error));
+});
+
+
+      // Add more content fields
+      addContentFieldBtn.addEventListener("click", function () {
         let textarea = document.createElement("textarea");
         textarea.name = "content[]";
         textarea.className = "form-control";
         textarea.rows = 2;
         textarea.required = true;
         contentFields.appendChild(textarea);
-    });
+      });
 
-    // Handle form submission
-    addCourseForm.addEventListener("submit", function (e) {
-        e.preventDefault();
+      // Handle form submission
+      addCourseForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+  console.log("Form submitted!");  // This should now appear in the console
+  let selectedTopic = topicSelect.value;
+  let contents = Array.from(document.getElementsByName("content[]")).map(t => t.value.trim());
 
-        let selectedTopic = categorySelect.value;
-        let contents = Array.from(document.getElementsByName("content[]")).map(t => t.value.trim());
+  if (selectedTopic === "" || selectedTopic === "newTopic") {
+    alert("Please select or add a topic.");
+    return;
+  }
+  if (contents.some(content => content === "")) {
+    alert("Please fill in all content fields.");
+    return;
+  }
 
-        if (selectedTopic === "" || selectedTopic === "newCategory") {
-            alert("Please select or add a topic.");
-            return;
-        }
-        if (contents.some(content => content === "")) {
-            alert("Please fill in all content fields.");
-            return;
-        }
-
-        fetch("/api/notes/savenote", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                topic: { topicId: selectedTopic },
-                content: contents
-            })
-        })
-        .then(response => response.text())
-        .then(message => {
-            alert(message);
-            addCourseForm.reset();
-        })
-        .catch(error => console.error("Error saving note:", error));
-    });
+  fetch("http://localhost:8053/savenote", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      topic: { topicId: selectedTopic },
+      content: contents
+    })
+  })
+  .then(response => response.text())
+  .then(message => {
+    alert(message);
+    addCourseForm.reset();
+    newTopicField.style.display = "none";
+    contentFields.innerHTML = '<textarea name="content[]" class="form-control" rows="2" required></textarea>';
+  })
+  .catch(error => console.error("Error saving note:", error));
 });
 
-</script>
+    });
+  </script>
+</body>
 </html>
