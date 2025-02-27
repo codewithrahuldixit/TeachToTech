@@ -401,7 +401,10 @@ By participating in internships, students enhance their problem-solving, teamwor
 
 						<div class="course-item">
 
-							<img th:src=${course.image} class="img-fluid" alt="Course">
+							<!-- <img th:src=${course.image} class="img-fluid" alt="Course"> -->
+							<img th:src="@{'https://teachtotech.in/api/view-image?path=' + ${#strings.replace(course.image, '\', '/')}}" 
+							class="img-fluid" 
+							alt="Course Image">
 							<div class="course-content">
 								<div class="d-flex justify-content-between align-items-center mb-3">
 									<p class="category" th:text="${course.category.name}">Web Development</p>
@@ -426,8 +429,9 @@ By participating in internships, students enhance their problem-solving, teamwor
 										th:with="firstTrainer=${course.trainers[0]}">
 										<!-- Trainer Profile -->
 										<div class="trainer-profile d-flex align-items-center">
-											<img th:src="${firstTrainer.trainerImage}" class="img-fluid trainer-img"
-												alt="Trainer Image">
+											<img th:src="@{'https://teachtotech.in/api/view-image?path=' + ${#strings.replace(firstTrainer.trainerImage, '\', '/')}}" 
+												class="img-fluid trainer-img"
+												alt="Trainer Image">	
 											<div class="trainer-info d-flex flex-row">
 												<a th:href="${firstTrainer.linkedin}" class="trainer-link"
 													th:text="${firstTrainer.trainerName}" target="_blank">

@@ -1,13 +1,11 @@
 package com.rahul.controller;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -33,6 +30,8 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ArticleController {
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private ArticleService articleService;
@@ -57,7 +56,7 @@ public class ArticleController {
     public String submitarticle(   @RequestParam("username") String username, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
         Article article = (Article) session.getAttribute("previewarticle");
 
-        System.out.println("Received submission request for user: " + username);
+        logger.info("Received submission request for user: " + username);
 
         if (article == null) {
             redirectAttributes.addFlashAttribute("error", "No article to Submit");
@@ -66,7 +65,7 @@ public class ArticleController {
        
         Optional<Users> optionalUser = userrepo.findByfirstName(username);
         if (optionalUser.isEmpty()) {
-            System.err.println("ERROR: User not found: " + username);
+            logger.error("ERROR: User not found: " + username);
             redirectAttributes.addFlashAttribute("error", "User not found");
             return "redirect:/api/users/login";  // If user is not found, redirect to login page
         }
@@ -106,7 +105,7 @@ public class ArticleController {
             @RequestParam String content,
             @RequestParam Long categoryId, HttpSession session, Model model) {
 
-        System.out.println("DEBUG:/PREVIEW CALL WITH TITLE" + title);
+        logger.info("DEBUG:/PREVIEW CALL WITH TITLE" + title);
         Category category = articleService.getCategoryById(categoryId);
 
         Article article = new Article();
@@ -125,18 +124,18 @@ public class ArticleController {
     @GetMapping("/preview")
     public String showPreview(HttpSession session, Model model,
             @RequestParam(value = "message", required = false) String message) {
-        System.out.println("DEBUG: Entering /preview handler...");
+        logger.info("DEBUG: Entering /preview handler...");
 
         Article article = (Article) session.getAttribute("previewarticle");
 
         if (article == null) {
-            System.out.println("DEBUG: No article found in session!");
+            logger.info("DEBUG: No article found in session!");
             return "redirect:/articlewriting";
         }
         if (message != null) {
             model.addAttribute("message", message);
         }
-        System.out.println("DEBUG: Article retrieved from session: " + article.getTitle());
+        logger.info("DEBUG: Article retrieved from session: " + article.getTitle());
         model.addAttribute("article", article);
         return "preview";
     }
@@ -185,9 +184,9 @@ public List<Article> getArticlesByCategory(@RequestParam Long categoryId) {
     List<Article> articles = articleService.getArticlesByCategory(categoryId);
     
     if (articles == null || articles.isEmpty()) {
-        System.out.println("No articles found for categoryId: " + categoryId);
+        logger.info("No articles found for categoryId: " + categoryId);
     } else {
-        System.out.println("Articles found for categoryId: " + categoryId + " - " + articles.size());
+    	logger.info("Articles found for categoryId: " + categoryId + " - " + articles.size());
     }
     
     return articles;

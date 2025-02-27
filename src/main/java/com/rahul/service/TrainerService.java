@@ -81,7 +81,7 @@ public class TrainerService {
             imageFile.transferTo(destinationFile);
 
             // Return the relative path to the file
-            return "/assets/img/team/"+ sanitizedFileName;
+            return uploadDir + sanitizedFileName;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -111,12 +111,12 @@ public class TrainerService {
         Trainer existingTrainer = this.trainerRepository.findById(trainerId)
             .orElseThrow(() -> new Exception("Trainer not found"));
 
-        // Check for duplicate 
-        Optional<Trainer> duplicateTrainer =this.findByLinkedinProfile(existingTrainer.getLinkedin());
+        // // Check for duplicate 
+        // Optional<Trainer> duplicateTrainer =this.findByLinkedinProfile(existingTrainer.getLinkedin());
 
-        if (duplicateTrainer.isPresent() && !duplicateTrainer.get().getTrainerId().equals(trainerId)) {
-            throw new Exception("A Trainer with the same name already exists.");
-        }
+        // if (duplicateTrainer.isPresent() && !duplicateTrainer.get().getTrainerId().equals(trainerId)) {
+        //     throw new Exception("A Trainer with the same name already exists.");
+        // }
         
             String imagePath = this.saveImage(imageFile);
             existingTrainer.setTrainerImage(imagePath);
