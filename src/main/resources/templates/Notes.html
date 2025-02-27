@@ -448,8 +448,8 @@ body {
             console.log('Topic object:', topic);
             
             // Make sure we're using the correct property name for the ID and title
-            const topicId = topic.id || topic.topicId || topic._id;
-            const topicTitle = topic.title || topic.name || 'Unnamed Topic';
+            const topicId = topic.topicId;
+            const topicTitle = topic.name;
             
             if (!topicId) {
                 console.error('Topic ID is undefined for:', topic);
@@ -489,108 +489,126 @@ body {
         });
     }
 
-    // Function to fetch content for a specific topic
-    function fetchTopicContent(topicId) {
-        if (!topicId) {
-            console.error('Cannot fetch topic content: Topic ID is undefined');
-            return;
-        }
-        
-        const defaultContent = document.querySelector('.default-content');
-        const topicContent = document.querySelector('.topic-content');
-        const buttons = document.querySelector('.buttons');
-        
-        // Show loading state
-        topicContent.innerHTML = `
-            <div class="text-center">
-                <i class="fas fa-spinner fa-spin fa-3x mb-3"></i>
-                <p>Loading content...</p>
-            </div>`;
-        defaultContent.style.display = 'none';
-        topicContent.style.display = 'block';
-        
-        console.log(`Fetching content for topic ID: ${topicId}`);
-        
-        fetch(`/topic/${topicId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(topic => {
-                console.log(`Received content for topic ${topicId}:`, topic);
-                displayTopicContent(topic);
-                
-                // Show admin buttons
-                if (buttons) {
-                    buttons.style.display = 'flex';
-                    // Remove !important from inline style and add a class instead
-                    buttons.classList.add('d-flex');
-                }
-            })
-            .catch(error => {
-                console.error(`Error fetching content for topic ${topicId}:`, error);
-                topicContent.innerHTML = `
-                    <div class="text-center text-danger">
-                        <i class="fas fa-exclamation-circle fa-3x mb-3"></i>
-                        <h3>Error loading content</h3>
-                        <p>Could not load the requested topic content. Please try again later.</p>
-                    </div>`;
-            });
+ // Function to fetch topic content
+function fetchTopicContent(topicId) {
+    if (!topicId) {
+        console.error('Cannot fetch topic content: Topic ID is undefined');
+        return;
     }
 
-    // Function to display topic content
-    function displayTopicContent(topic) {
-        if (!topic) {
-            console.error('Topic object is undefined or null');
-            return;
-        }
-        
-        const topicContent = document.querySelector('.topic-content');
-        const titleHeading = document.querySelector('.title-heading');
-        
-        // Make sure we're using the correct property names
-        const title = topic.title || topic.name || 'Unnamed Topic';
-        const content = topic.content || topic.body || topic.text || 'No content available';
-        const createdAt = topic.createdAt || topic.created || topic.date || new Date().toISOString();
-        const updatedAt = topic.updatedAt || topic.updated || topic.lastModified;
-        
-        // Update page title
-        if (titleHeading) {
-            titleHeading.textContent = title;
-        }
-        
-        // Display topic content
-        topicContent.innerHTML = `
-            <h2>${title}</h2>
-            <div class="topic-metadata">
-                <span class="text-muted"><i class="fas fa-calendar-alt me-2"></i>${formatDate(createdAt)}</span>
-                ${updatedAt ? `<span class="text-muted ms-3"><i class="fas fa-edit me-2"></i>Updated: ${formatDate(updatedAt)}</span>` : ''}
-            </div>
-            <hr>
-            <div class="topic-body">
-                ${content}
-            </div>`;
-    }
+    const defaultContent = document.querySelector('.default-content');
+    const topicContent = document.querySelector('.topic-content');
+    const buttons = document.querySelector('.buttons');
 
-    // Helper function to format dates
-    function formatDate(dateString) {
-        try {
-            const date = new Date(dateString);
-            if (isNaN(date.getTime())) {
-                return 'Invalid date';
+    // Show loading state
+    topicContent.innerHTML = `
+        <div class="text-center">
+            <i class="fas fa-spinner fa-spin fa-3x mb-3"></i>
+            <p>Loading content...</p>
+        </div>`;
+    defaultContent.style.display = 'none';
+    topicContent.style.display = 'block';
+
+    console.log(`Fetching content for topic ID: ${topicId}`);
+
+    fetch(`/topic/${topicId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-            return date.toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric' 
-            });
-        } catch (error) {
-            console.error('Error formatting date:', error);
-            return 'Unknown date';
-        }
+            return response.json();
+        })
+        .then(topic => {
+            console.log(`Received content for topic ${topicId}:`, topic);
+            displayTopicContent(topic);
+
+            // Show admin buttons
+            if (buttons) {
+                buttons.style.display = 'flex';
+                buttons.classList.add('d-flex');
+            }
+        })
+        .catch(error => {
+            console.error(`Error fetching content for topic ${topicId}:`, error);
+            topicContent.innerHTML = `
+                <div class="text-center text-danger">
+                    <i class="fas fa-exclamation-circle fa-3x mb-3"></i>
+                    <h3>Error loading content</h3>
+                    <p>Could not load the requested topic content. Please try again later.</p>
+                </div>`;
+        });
+}
+
+// Function to display topic content
+function displayTopicContent(topic) {
+    if (!topic) {
+        console.error('Topic object is undefined or null');
+        return;
     }
+
+    const topicContent = document.querySelector('.topic-content');
+    const titleHeading = document.querySelector('.title-heading');
+
+    // Extracting data with optional chaining
+    const title = topic.name || 'Unnamed Topic';
+    const categoryName = topic.category?.name || 'Uncategorized';
+    const notes = topic.note?.content || [];
+    const assignments = topic.assignment || [];
+
+    // Update page title
+    if (titleHeading) {
+        titleHeading.textContent = title;
+    }
+
+    // Format and display topic content
+    let htmlContent = `
+        <h2>${title}</h2>
+        <div class="topic-metadata">
+            <span class="text-muted"><strong>Category:</strong> ${categoryName}</span>
+        </div>
+        <hr>
+        <div class="topic-body">
+            <h3>Notes:</h3>
+            <ul>
+                ${notes.length > 0 
+                    ? notes.map(note => `<li>${note}</li>`).join('') 
+                    : '<li>No notes available.</li>'}
+            </ul>
+            <h3>Assignments:</h3>
+            <ul>
+                ${assignments.length > 0 
+                    ? assignments.map(assignment => `
+                        <li>
+                            <strong>Assignment ID:</strong> ${assignment.assignmentId}
+                            <ul>
+                                ${assignment.qa.map(qaItem => `<li>${qaItem}</li>`).join('')}
+                            </ul>
+                        </li>`).join('')
+                    : '<li>No assignments available.</li>'}
+            </ul>
+        </div>`;
+
+    topicContent.innerHTML = htmlContent;
+}
+
+// Helper function to format dates
+function formatDate(dateString) {
+    try {
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) {
+            return 'Invalid date';
+        }
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+    } catch (error) {
+        console.error('Error formatting date:', error);
+        return 'Unknown date';
+    }
+}
+
 });
   </script>
   
