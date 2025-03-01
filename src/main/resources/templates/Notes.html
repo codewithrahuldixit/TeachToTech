@@ -126,13 +126,14 @@ body {
 }
 
 .sidebar {
-    width: 280px;
+    width: 250px;
     background-color: #5fcf80;
     position: sticky;
     top: 0;
     height: 100vh;
     overflow-y: auto;
     flex-shrink: 0;
+    padding: 15px;
     }
     
     .nav-link {
@@ -160,6 +161,7 @@ body {
     padding: 20px 30px;
     background-color: #f8f9fa;
     overflow-y: auto;
+    
 }
 
 .page-title {
@@ -176,10 +178,12 @@ body {
 
 .article-content {
     background-color: white;
+    width: 90%;  /* Adjust width */
+    max-width: 900px;  /* Prevent too large a box */
     padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    min-height: 300px;
+    margin: 20px auto; /* Centering */
+    text-align: center;
+    height: 80vh;
 }
 
 /* Responsive adjustments */
@@ -562,31 +566,42 @@ function displayTopicContent(topic) {
 
     // Format and display topic content
     let htmlContent = `
-        <h2>${title}</h2>
-        <div class="topic-metadata">
-            <span class="text-muted"><strong>Category:</strong> ${categoryName}</span>
+    <h3 style="color: #5fcf80;">Notes:</h3>
+    <hr>
+    <div class="topic-body">
+        <div>
+            ${notes.length > 0 
+                ? notes.map((note, index) => `
+                    <div>
+                        <h4 style="color: ${index % 2 === 0 ? 'green' : 'black'};">${note}</h4>
+                    </div>
+                `).join('')
+                : '<div>No notes available.</div>'}
         </div>
+
+        <h3 style="color: #5fcf80; margin-top:80px;">Assignments:</h3>
         <hr>
-        <div class="topic-body">
-            <h3>Notes:</h3>
-            <ul>
-                ${notes.length > 0 
-                    ? notes.map(note => `<li>${note}</li>`).join('') 
-                    : '<li>No notes available.</li>'}
-            </ul>
-            <h3>Assignments:</h3>
-            <ul>
-                ${assignments.length > 0 
-                    ? assignments.map(assignment => `
-                        <li>
-                            <strong>Assignment ID:</strong> ${assignment.assignmentId}
-                            <ul>
-                                ${assignment.qa.map(qaItem => `<li>${qaItem}</li>`).join('')}
-                            </ul>
-                        </li>`).join('')
-                    : '<li>No assignments available.</li>'}
-            </ul>
-        </div>`;
+        <div>
+            ${assignments.length > 0 
+                ? assignments.map(assignment => `
+                    <div>
+                        <strong>Assignment ID:</strong> ${assignment.assignmentId}
+                        <div>
+                            ${assignment.qa.map((qaItem, index) => index % 2 === 0 ? `
+                                <h4 style="color: green; cursor: pointer;" onclick="toggleAnswer(${assignment.assignmentId}, ${index})">
+                                    ${qaItem} &#9662;
+                                </h4>
+                                <div id="answer-${assignment.assignmentId}-${index}" style="display: none; padding-left: 15px; color: black;">
+                                    ${assignment.qa[index + 1] ? assignment.qa[index + 1] : 'No answer available'}
+                                </div>
+                            ` : '').join('')}
+                        </div>
+                    </div>
+                `).join('')
+                : '<div>No assignments available.</div>'}
+        </div>
+    </div>`;
+
 
     topicContent.innerHTML = htmlContent;
 }
@@ -643,4 +658,3 @@ function formatDate(dateString) {
 
 </body>
 </html>
-
