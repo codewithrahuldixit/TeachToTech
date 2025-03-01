@@ -402,7 +402,7 @@ By participating in internships, students enhance their problem-solving, teamwor
 						<div class="course-item">
 
 							<!-- <img th:src=${course.image} class="img-fluid" alt="Course"> -->
-							<img th:src="@{'https://teachtotech.in/api/view-image?path=' + ${#strings.replace(course.image, '\', '/')}}" 
+							<img th:src="@{'https://localhost:8053/api/view-image?path=' + ${#strings.replace(course.image, '\', '/')}}" 
 							class="img-fluid" 
 							alt="Course Image">
 							<div class="course-content">
