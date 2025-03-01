@@ -147,7 +147,7 @@
           <div class="form-group" style="margin-top: 10px;">
             <label for="category">Select Category for New Topic</label>
             <select id="category" name="category" class="form-control" required>
-              <option value="" disabled selected>Select Category</option>
+              <option value="" selected>Select Category</option>
             </select>
             <span id="categoryError" class="text-danger"></span>
           </div>
@@ -230,11 +230,10 @@
         }
       });
 
-      // Add new topic
-     // Inside the addTopicButton click event
+     
 addTopicButton.addEventListener("click", function () {
-  let newTopicName = document.getElementById("newTopic");  // Corrected reference
-  console.log(newTopicName);  // Should not be null if element exists
+  let newTopicName = document.getElementById("newTopic");  
+  console.log(newTopicName); 
   if (newTopicName) {
     let newTopicValue = newTopicName.value;
     console.log(newTopicValue);
