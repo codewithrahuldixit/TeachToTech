@@ -221,14 +221,16 @@
           .catch(error => console.error("Error fetching categories:", error));
       }
 
-      // Handle topic selection
-      topicSelect.addEventListener("change", function () {
-        if (topicSelect.value === "newTopic") {
-          newTopicField.style.display = "block";
-        } else {
-          newTopicField.style.display = "none";
-        }
-      });
+
+topicSelect.addEventListener("change", function () {
+  if (topicSelect.value === "newTopic") {
+    newTopicField.style.display = "block";
+    document.getElementById("category").setAttribute("required", ""); 
+  } else {
+    newTopicField.style.display = "none";
+    document.getElementById("category").removeAttribute("required"); 
+  }
+});
 
      
 addTopicButton.addEventListener("click", function () {
