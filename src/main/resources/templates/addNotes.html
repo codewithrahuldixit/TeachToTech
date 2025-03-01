@@ -147,7 +147,7 @@
           <div class="form-group" style="margin-top: 10px;">
             <label for="category">Select Category for New Topic</label>
             <select id="category" name="category" class="form-control" required>
-              <option value="" disabled selected>Select Category</option>
+              <option value="" selected>Select Category</option>
             </select>
             <span id="categoryError" class="text-danger"></span>
           </div>
@@ -221,20 +221,21 @@
           .catch(error => console.error("Error fetching categories:", error));
       }
 
-      // Handle topic selection
-      topicSelect.addEventListener("change", function () {
-        if (topicSelect.value === "newTopic") {
-          newTopicField.style.display = "block";
-        } else {
-          newTopicField.style.display = "none";
-        }
-      });
 
-      // Add new topic
-     // Inside the addTopicButton click event
+topicSelect.addEventListener("change", function () {
+  if (topicSelect.value === "newTopic") {
+    newTopicField.style.display = "block";
+    document.getElementById("category").setAttribute("required", ""); 
+  } else {
+    newTopicField.style.display = "none";
+    document.getElementById("category").removeAttribute("required"); 
+  }
+});
+
+     
 addTopicButton.addEventListener("click", function () {
-  let newTopicName = document.getElementById("newTopic");  // Corrected reference
-  console.log(newTopicName);  // Should not be null if element exists
+  let newTopicName = document.getElementById("newTopic");  
+  console.log(newTopicName); 
   if (newTopicName) {
     let newTopicValue = newTopicName.value;
     console.log(newTopicValue);
