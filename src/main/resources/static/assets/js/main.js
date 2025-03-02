@@ -221,7 +221,16 @@ async function displayAdminContent() {
     document.addEventListener("DOMContentLoaded",() =>{
         fetchUsername();
         displayAdminContent();
+        document.getElementById("publishArticleLink").addEventListener("click", (event) => {
+          const token = localStorage.getItem("token");
+          if (!token) {
+              event.preventDefault(); // Stop navigation
+              window.location.href = "/api/users/login"; // Redirect to login page
+          }
+      });
+      
     });
+    
 
     document.getElementById('logoutButton')?.addEventListener('click', (e) => {
       e.preventDefault();
