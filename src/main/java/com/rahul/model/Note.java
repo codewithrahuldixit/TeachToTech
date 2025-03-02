@@ -42,7 +42,7 @@ public class Note {
 
     @ElementCollection
     @CollectionTable(name = "note_content", joinColumns = @JoinColumn(name = "note_id"))
-    @Column(name = "content")
+    @Column(name = "content",columnDefinition = "TEXT")
     private List<String> content;
 
 }
