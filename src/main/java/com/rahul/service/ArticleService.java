@@ -47,7 +47,14 @@ public class ArticleService {
     public Article getArticleById(Long id) {
         return articleRepo.findById(id).orElseThrow(() -> new RuntimeException("Article not found"));
     }
-       
 
+
+    public Article updateArticle(long id, Article updatedArticle) {
+        Article article = articleRepo.findById(id).orElseThrow(() -> new RuntimeException("Article not found"));
+        article.setTitle(updatedArticle.getTitle());
+        article.setContent(updatedArticle.getContent());
+        article.setCategory(updatedArticle.getCategory());
+        return articleRepo.save(article);
     }
+}
     
