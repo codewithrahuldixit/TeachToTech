@@ -30,4 +30,19 @@ public class NoteService {
         Note note = new Note();
         return noteRepository.save(note);
     }
+
+    public Note updateNote(Long noteId, Note newNote) {
+        Note note = noteRepository.findById(noteId).orElseThrow(() -> new IllegalArgumentException("Note not found"));
+        note.setTopic(newNote.getTopic());
+        note.setContent(newNote.getContent());
+        return noteRepository.save(note);
+    }
+
+    public void deleteNoteById(Long noteId) {
+        if (noteRepository.existsById(noteId)) {
+            noteRepository.deleteById(noteId);
+        } else {
+            throw new IllegalArgumentException("Note not found");
+        }
+    }
 }
