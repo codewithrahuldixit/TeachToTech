@@ -121,9 +121,9 @@ body {
       </div><!-- End Page Title -->
 
     <!-- Events Section -->
-    <section id="events" class="events section">
+    <!-- <section id="events" class="events section">
         <div class="article-container">
-            <h1 class="article-title">The Future of Artificial Intelligence</h1>
+            <h1 class="article-title" th:text="${article.title}">The Future of Artificial Intelligence</h1>
             <p class="article-meta">By <strong>John Doe</strong> | Published on August 16, 2024</p>
             <hr>
             <p class="article-content">
@@ -132,7 +132,35 @@ body {
                 and responsible development will play a crucial role in shaping its future.
             </p>
         </div>
-    </section>
+    </section> -->
+    <section id="events" class="events section">
+      <div class="article-container">
+          <h1 class="article-title" th:text="${article.title}">The Future of Artificial Intelligence</h1>
+          <p class="article-meta">
+              By <strong th:text="${article.author.firstName}">John Doe</strong> | 
+              Published on <span th:text="${#temporals.format(article.date, 'MMMM dd, yyyy')}">August 16, 2024</span>
+          </p>
+          <hr>
+          <p class="article-content" th:text="${article.content}">
+              Artificial intelligence is transforming industries, from healthcare to finance. Machine learning algorithms
+              are improving efficiency and enabling new possibilities. As AI continues to evolve, ethical considerations
+              and responsible development will play a crucial role in shaping its future.
+          </p>
+          
+          <!-- Optional: Display category -->
+          <p class="article-category">
+              Category: <span th:text="${article.category.name}">Technology</span>
+          </p>
+          
+          <!-- Optional: Display status -->
+          <p class="article-status">
+              Status: <span th:text="${article.status}">Published</span>
+          </p>
+          <button class="btn btn-warning btn-sm" style="background-color: #FFA500; border-color: #FFA500;">Edit</button>
+          <button class="btn btn-warning btn-sm" style="background-color: #12c563; border-color: #12c563;" th:onclick="'changeStatus(this, ' + ${article.id} + ')'">Approve</button>
+      </div>
+      
+  </section>
 
   </main>
   <div th:replace="footer :: footer"></div>
@@ -142,7 +170,13 @@ body {
 
   <!-- Preloader -->
   <div id="preloader"></div>
-
+<script>
+  function changeStatus(button, id){
+    fetch(`/approve/{id}`),{
+      
+    }
+  }
+</script>
   <!-- Vendor JS Files -->
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>

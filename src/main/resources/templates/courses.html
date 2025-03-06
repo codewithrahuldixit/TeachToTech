@@ -402,7 +402,7 @@ By participating in internships, students enhance their problem-solving, teamwor
 						<div class="course-item">
 
 							<!-- <img th:src=${course.image} class="img-fluid" alt="Course"> -->
-							<img th:src="@{'https://teachtotech.in/api/view-image?path=' + ${#strings.replace(course.image, '\', '/')}}" 
+							<img th:src="@{'http://localhost:8053/api/view-image?path=' + ${#strings.replace(course.image, '\', '/')}}" 
 							class="img-fluid" 
 							alt="Course Image">
 							<div class="course-content">
@@ -411,8 +411,7 @@ By participating in internships, students enhance their problem-solving, teamwor
 									<!-- <p class="price" th:text="${course.price}">$169</p> -->
 								</div>
 								<div class="heading-course">
-									<h3><a th:href="@{/course-details/{id}(id=${course.id})}"
-											th:text="${course.courseName}">Website Design</a></h3>
+									<h3 th:text="${course.courseName}">Website Design</h3>
 									<div class="stars">
 										<i class="fas fa-star"></i>
 										<i class="fas fa-star"></i>
@@ -429,7 +428,7 @@ By participating in internships, students enhance their problem-solving, teamwor
 										th:with="firstTrainer=${course.trainers[0]}">
 										<!-- Trainer Profile -->
 										<div class="trainer-profile d-flex align-items-center">
-											<img th:src="@{'https://teachtotech.in/api/view-image?path=' + ${#strings.replace(firstTrainer.trainerImage, '\', '/')}}" 
+											<img th:src="@{'http://localhost:8053/api/view-image?path=' + ${#strings.replace(firstTrainer.trainerImage, '\', '/')}}" 
 												class="img-fluid trainer-img"
 												alt="Trainer Image">	
 											<div class="trainer-info d-flex flex-row">

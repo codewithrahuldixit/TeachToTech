@@ -124,7 +124,7 @@
 					<div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="200"
 						th:each="trainer : ${trainers}">
 						<div class="member-img">
-							<img th:src="@{'https://teachtotech.in/api/view-image?path=' + ${#strings.replace(trainer.trainerImage, '\', '/')}}" 
+							<img th:src="@{'http://localhost:8053/api/view-image?path=' + ${#strings.replace(trainer.trainerImage, '\', '/')}}" 
 							class="img-fluid" 
 							alt="Trainer Image">
 							<div class="social">
