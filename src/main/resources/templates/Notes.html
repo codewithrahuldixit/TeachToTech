@@ -55,84 +55,19 @@ body {
         background-color: #f4f4f4;
     }
 
-    .form-container {
-    width: 80%;
-    max-width: 800px;
-    background: white;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 20px;
-    margin: 10px auto; /* Centers the form horizontally */
-    
-}
 #category{
   height: 50px;
 }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.form-group label {
-    font-weight: bold;
-}
-
-.form-group input[type="text"],
-.form-group textarea { /* Increases size of both input and textarea */
-    width: 100%;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 18px; /* Increases text size */
-}
-
-.form-group textarea {
-    height: 200px; /* Increases the height of the content box */
-    resize: vertical; /* Allows users to resize the textarea */
-}
-.form-group-2 {
-    display: flex;
-    justify-content: center; /* Centers the button */
-    gap: 20px;
-}
-
-.form-group-2 button {
-    align-self: center;
-    padding: 12px 24px;
-    background-color: #5fcf80;
-    color: white;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border-radius: 4px;
-}
-
-.form-group button:hover {
-    background-color: #4caf6f;
-}
-.preview-button{
-  color:white;
-}
-.preview-button:active,
-.preview-button:focus {
-    background-color: #5fcf80;
-    color: white;
-    outline: none;
-}
-
 .sidebar {
-    width: 280px;
+    width: 250px;
     background-color: #5fcf80;
     position: sticky;
     top: 0;
     height: 100vh;
     overflow-y: auto;
     flex-shrink: 0;
+    padding: 15px;
     }
     
     .nav-link {
@@ -160,28 +95,32 @@ body {
     padding: 20px 30px;
     background-color: #f8f9fa;
     overflow-y: auto;
+    width: 100%;
 }
 
 .page-title {
-    margin-bottom: 30px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
 }
 
 .title-heading {
     font-size: 2rem;
-    font-weight: 700;
+    font-weight: 800;
     color: #212529;
 }
 
 .article-content {
     background-color: white;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    min-height: 300px;
+    width: 100%;  /* Adjust width */
+    max-width: 1000px;  /* Prevent too large a box */
+    padding: 10px;
+    margin: 10px auto; /* Centering */
+    text-align: center;
+    height: 80vh;
 }
-
+.topic-content{
+    text-align: left;
+}
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .d-flex {
@@ -216,7 +155,6 @@ body {
 .buttons{
     margin-left: 400px;
 }
-
   </style>
   
 </head>
@@ -538,7 +476,20 @@ function fetchTopicContent(topicId) {
                 </div>`;
         });
 }
+function toggleAnswer(event) {
+    let target = event.currentTarget;  // The clicked element (H4)
+    let answerId = target.getAttribute("data-answer-id");
+    let answerElement = document.getElementById(answerId);
 
+    if (answerElement) {
+        // Toggle between 'none' and 'block'
+        if (answerElement.style.display === 'none' || answerElement.style.display === '') {
+            answerElement.style.display = 'block';
+        } else {
+            answerElement.style.display = 'none';
+        }
+    }
+}
 // Function to display topic content
 function displayTopicContent(topic) {
     if (!topic) {
@@ -562,33 +513,46 @@ function displayTopicContent(topic) {
 
     // Format and display topic content
     let htmlContent = `
-        <h2>${title}</h2>
-        <div class="topic-metadata">
-            <span class="text-muted"><strong>Category:</strong> ${categoryName}</span>
+    <h3 style="color: #5fcf80; text-align:center">Notes:</h3>
+    <hr>
+    <div class="topic-body">
+        <div>
+            ${notes.length > 0 
+                ? notes.map((note, index) => `
+                    <div>
+                        <h4 style="color: ${index % 2 === 0 ? 'green' : 'black'};">${note}</h4>
+                    </div>
+                `).join('')
+                : '<div>No notes available.</div>'}
         </div>
+
+        <h3 style="color: #5fcf80; margin-top:80px; text-align:center">Assignment:</h3>
         <hr>
-        <div class="topic-body">
-            <h3>Notes:</h3>
-            <ul>
-                ${notes.length > 0 
-                    ? notes.map(note => `<li>${note}</li>`).join('') 
-                    : '<li>No notes available.</li>'}
-            </ul>
-            <h3>Assignments:</h3>
-            <ul>
-                ${assignments.length > 0 
-                    ? assignments.map(assignment => `
-                        <li>
-                            <strong>Assignment ID:</strong> ${assignment.assignmentId}
-                            <ul>
-                                ${assignment.qa.map(qaItem => `<li>${qaItem}</li>`).join('')}
-                            </ul>
-                        </li>`).join('')
-                    : '<li>No assignments available.</li>'}
-            </ul>
-        </div>`;
+        <div>
+            ${assignments.length > 0 
+                ? assignments.map(assignment => `
+                    <div>
+                        <div>
+                            ${assignment.qa.map((qaItem, index) => index % 2 === 0 ? `
+                                <h4 style="color: green; cursor: pointer;" class="toggle-answer" data-answer-id="answer-${assignment.assignmentId}-${index}">
+                                    <strong>Q${(index / 2) + 1}.</strong> ${qaItem} &#9662;
+                                </h4>
+                                <div id="answer-${assignment.assignmentId}-${index}" class="answer-text" style="display: none; padding-left: 10px; color: black; text-align:left">
+                                    <strong>Answer:</strong> ${assignment.qa[index + 1] ? assignment.qa[index + 1] : 'No answer available'}
+                                </div>
+                            ` : '').join('')}
+                        </div>
+                    </div>
+                `).join('')
+                : '<div>No assignments available.</div>'}
+        </div>
+    </div>`;
+
 
     topicContent.innerHTML = htmlContent;
+    document.querySelectorAll('.toggle-answer').forEach(item => {
+        item.addEventListener('click', toggleAnswer);
+    });
 }
 
 // Helper function to format dates
@@ -643,4 +607,3 @@ function formatDate(dateString) {
 
 </body>
 </html>
-
