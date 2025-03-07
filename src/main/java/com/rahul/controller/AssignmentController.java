@@ -52,7 +52,7 @@ public class AssignmentController {
     }
     // Delete assignment
     @DeleteMapping("/delete-assignment/{assignmentId}")
-    public ResponseEntity<String> deleteAssignment(Long assignmentId) {
+    public ResponseEntity<String> deleteAssignment(@PathVariable Long assignmentId) {
         if (assignmentRepository.existsById(assignmentId)) {
             assignmentRepository.deleteById(assignmentId);
             return new ResponseEntity<>("Assignment deleted successfully!", HttpStatus.OK);
