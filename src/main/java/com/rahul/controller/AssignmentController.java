@@ -1,5 +1,7 @@
 package com.rahul.controller;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,14 @@ public class AssignmentController {
         assignmentRepository.save(assignment);
         return new ResponseEntity<>("Assignment saved successfully!", HttpStatus.CREATED);
     }
+    @GetMapping("/get-assignment/{assignmentId}")
+public ResponseEntity<?> getAssignment(@PathVariable Long assignmentId) {
+    Optional<Assignment> assignment = assignmentRepository.findById(assignmentId);
+    if (assignment.isPresent()) {
+        return ResponseEntity.ok(assignment.get());
+    }
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Assignment not found");
+}
 
     // Update assignment
     @PutMapping("/update-assignment/{assignmentId}")
