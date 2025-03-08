@@ -3,13 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Favicons -->
-<link href="/assets/img/TT.png" rel="icon">
-<link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
+  <link href="/assets/img/TT.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
   <title>Registration Form</title>
   <style>
-    
     html, body {
       height: 100%;
       margin: 0;
@@ -19,7 +16,6 @@
       background-color: #f4f4f4;
     }
 
-    /* Content container for the card */
     .content {
       display: flex;
       justify-content: center;
@@ -36,7 +32,7 @@
       background-color: white;
       width: 100%;
       max-width: 1200px;
-      box-sizing: border-box; 
+      box-sizing: border-box;
     }
 
     .card-title {
@@ -49,19 +45,14 @@
       margin-bottom: 15px;
     }
 
-    .form-group label {
-      font-size: 14px;
-      color: #333;
-    }
-
     .form-control {
       width: 100%;
-      padding: 12px; 
+      padding: 12px;
       margin-top: 5px;
       border: 1px solid #ccc;
       border-radius: 4px;
       font-size: 14px;
-      box-sizing: border-box; 
+      box-sizing: border-box;
     }
 
     .form-control:focus {
@@ -86,154 +77,144 @@
     .read-more:hover {
       background-color: #4caf6a;
     }
-    .back-arrow {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-    }
-
-    .arrow {
-      width: 0;
-      height: 0;
-      border-top: 10px solid transparent;
-      border-bottom: 10px solid transparent;
-      border-right: 15px solid #4CAF50; /* Arrow pointing left */
-      margin-right: 10px; /* Space between the arrow and the text */
-    }
-
-    .arrow:hover {
-      border-right-color: #45a049;
-    }
-
-    .back-text {
-      font-size: 14px;
-      color: #4CAF50;
-      font-weight: bold;
-    }
-
-    .back-text:hover {
-      color: #45a049;
-    }
   </style>
-
 </head>
 <body>
-	
-	    
   <div class="content">
-  
-    
     <div class="card">
-      <div class="back-arrow" onclick="history.back()">
-        <div class="arrow"></div>
-        <p class="back-text">Go back</p>
-      </div>
       <h3 class="card-title">Registration Form</h3>
-      <form id="registrationForm" onsubmit="return submitForm(event)">
+      
+      <div id="otp-section">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" class="form-control" required>
+        <button type="button" class="read-more" onclick="sendOtp()">Send OTP</button>
+        
+        <label for="otp">Enter OTP</label>
+        <input type="text" id="otp" name="otp" class="form-control" required>
+        <button type="button" class="read-more" onclick="validateOtp()">Verify OTP</button>
+      </div>
+
+            <!-- Hidden input to store verified email -->
+            <input type="hidden" id="hiddenEmail">
+      
+      <form id="registrationForm" style="display: none;" onsubmit="return submitForm(event)">
         <div class="form-group">
           <label for="firstName">First Name</label>
           <input type="text" id="firstName" name="firstName" class="form-control" required>
         </div>
-        
         <div class="form-group">
           <label for="lastName">Last Name</label>
           <input type="text" id="lastName" name="lastName" class="form-control" required>
         </div>
-        
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" class="form-control" required>
-        </div>
-      
         <div class="form-group">
           <label for="contact">Contact Number</label>
           <input type="text" id="contact" name="contact" class="form-control" required>
         </div>
-      
         <div class="form-group">
           <label for="qualification">Qualification</label>
           <input type="text" id="qualification" name="qualification" class="form-control" required>
         </div>
-      
         <div class="form-group">
           <label for="dob">Date of Birth</label>
           <input type="date" id="dob" name="dob" class="form-control" required>
         </div>
-        
-      
         <div class="form-group">
           <label for="password">Password</label>
           <input type="password" id="password" name="password" class="form-control" required>
         </div>
-      
         <div class="form-group">
-            <label for="confirmPassword">Confirm Password</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
-          </div>
-          
-        
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
+        </div>
         <button type="submit" class="read-more">Register</button>
       </form>
     </div>
   </div>
-
   <script>
-  async function submitForm(event) {
-    event.preventDefault();
+    let emailVerified = false;
 
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-
-    if (password !== confirmPassword) {
-      alert('Passwords do not match. Please try again.');
-      return;
+    function sendOtp() {
+      const email = document.getElementById('email').value;
+      fetch('/api/otp/send/before?email=' + encodeURIComponent(email), { method: 'POST' })
+        .then(response => response.text())
+        .then(message => alert("OTP sent successfully!"))
+        .catch(error => console.error('Enter a valid email:', error));
     }
 
-    const user = {
-      firstName: document.getElementById('firstName').value,
-      lastName: document.getElementById('lastName').value,
-      email: document.getElementById('email').value,
-      contact: document.getElementById('contact').value,
-      qualification: document.getElementById('qualification').value,
-      dob: document.getElementById('dob').value,
-      password: password,
-    };
-
-    try {
-      // Decide the API endpoint based on the current page URL
-      let apiEndpoint;
-      if (window.location.pathname === '/api/users/register') {
-        apiEndpoint = '/api/users/register';
-      } 
-      else if (window.location.pathname === '/api/admin/register') {
-        apiEndpoint = '/api/admin/register';
-      } else {
-        apiEndpoint = '/api/users/register'; // Default API endpoint
-      }
-
-      const response = await fetch(apiEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(user),
+    async function validateOtp() {
+      const email = document.getElementById('email').value;
+      const otp = document.getElementById('otp').value;
+      
+      const response = await fetch(`/api/otp/validate/before?email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}`, {
+          method: 'POST'
       });
-
+      
       if (response.ok) {
-        alert('User registered successfully');
-        form.reset();
-        window.location.href = '/api/users/login';
+          alert('OTP verified successfully!');
+          emailVerified = true;
+          document.getElementById('otp-section').style.display = 'none';
+          document.getElementById('registrationForm').style.display = 'block';
+          document.getElementById('hiddenEmail').value = email;  // Store verified email
       } else {
-        const errorMessage = await response.text();
-        alert(`Error: ${errorMessage}`);
+          alert('Invalid or expired OTP. Please try again.');
+          emailVerified = false;
       }
-    } catch (error) {
-      console.error('Error occurred:', error);
     }
-  }
-</script>
+
+    async function submitForm(event) {
+      event.preventDefault();
+
+      if (!emailVerified) {
+        alert('Please verify your email before registering.');
+        return;
+      }
+
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (password !== confirmPassword) {
+        alert('Passwords do not match. Please try again.');
+        return;
+      }
+
+      const user = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        email: document.getElementById('hiddenEmail').value,  // Only validated email
+        contact: document.getElementById('contact').value,
+        qualification: document.getElementById('qualification').value,
+        dob: document.getElementById('dob').value,
+        password: password,
+      };
+
+      try {
+        // Determine the correct API endpoint
+        let apiEndpoint;
+        if (window.location.pathname === '/api/admin/register') {
+            apiEndpoint = '/api/admin/register';
+        } else {
+            apiEndpoint = '/api/users/register';
+        }
+
+        const response = await fetch(apiEndpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(user),
+        });
+
+        if (response.ok) {
+            alert('User registered successfully');
+            document.getElementById('registrationForm').reset(); // Reset form
+            window.location.href = '/api/users/login';
+        } else {
+            const errorMessage = await response.text();
+            alert(`Error: ${errorMessage}`);
+        }
+      } catch (error) {
+        console.error('Error occurred:', error);
+        alert('Something went wrong. Please try again.');
+      }
+    }
+  </script>
 </body>
 </html>

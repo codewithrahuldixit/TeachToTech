@@ -17,11 +17,28 @@ public class OtpController {
     @Autowired
     private OtpService otpService;
 
+    @PostMapping("/send/before")
+    public ResponseEntity<?> sendOtpBefore(@RequestParam String email) {
+        otpService.sendOtpEmailBefore(email);
+        return ResponseEntity.ok().build();
+    }
+    @PostMapping("/validate/before")
+    public ResponseEntity<String> validateOtpBefore(@RequestParam String email, @RequestParam String otp) {
+        boolean isValid = otpService.validateBeforeOtp(email, otp);
+        
+        if (isValid) {
+            return ResponseEntity.ok("OTP is valid!");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired OTP.");
+        }
+    }
+
     @PostMapping("/send")
     public ResponseEntity<?> sendOtp(@RequestParam String email) {
         otpService.sendOtpEmail(email);
         return ResponseEntity.ok().build();
     }
+  
 
     @PostMapping("/validate")
     public ResponseEntity<String> validateOtp(@RequestParam String email, @RequestParam String otp) {
@@ -33,5 +50,6 @@ public class OtpController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired OTP.");
         }
     }
+
 }
 
