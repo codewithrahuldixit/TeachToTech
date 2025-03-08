@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Notes</title>
+  <link th:href="@{/assets/img/TT.png}" rel="icon">
+  <link th:href="@{/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background-color: #f4f4f4;
+      font-family: Arial, sans-serif;
+    }
+    .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      padding-top: 30px;
+      box-sizing: border-box;
+    }
+    .card {
+      border: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 30px;
+      background-color: white;
+      width: 90%;
+      max-width: 2000px;
+      box-sizing: border-box;
+      margin-top: 20px;
+      min-width: 800px;
+    }
+    .card-title {
+      font-size: 25px;
+      color: #5fcf80;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      font-size: 14px;
+      color: #333;
+      display: block;
+      margin-bottom: 5px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    .form-control:focus {
+      border-color: #5fcf80;
+      outline: none;
+    }
+    .read-more {
+      background-color: #5fcf80;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 12px 20px;
+      text-decoration: none;
+      font-size: 16px;
+      margin-top: 20px;
+      width: 100%;
+      cursor: pointer;
+    }
+    .read-more:hover {
+      background-color: #4caf6a;
+    }
+    .back-arrow {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      margin-bottom: 20px;
+      align-self: flex-start;
+      margin-left: 5%;
+    }
+    .arrow {
+      width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-right: 15px solid #4CAF50;
+      margin-right: 10px;
+    }
+    .arrow:hover {
+      border-right-color: #45a049;
+    }
+    .back-text {
+      font-size: 14px;
+      color: #4CAF50;
+      font-weight: bold;
+    }
+    .back-text:hover {
+      color: #45a049;
+    }
+    .text-danger {
+      color: #dc3545;
+      font-size: 12px;
+      margin-top: 5px;
+      display: block;
+    }
+    textarea {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <div class="back-arrow" onclick="history.back()">
+      <div class="arrow"></div>
+      <p class="back-text">Go back</p>
+    </div>
+    <div class="card">
+      <h3 class="card-title">Add Notes</h3>
+      <form id="addCourseForm">
+        <!-- Topic Field -->
+        <div class="form-group">
+          <label for="topic">Topic</label>
+          <select id="topic" name="topic" class="form-control" required>
+            <option value="" disabled selected>Select Topic</option>
+            <option value="newTopic">Add New Topic</option>
+          </select>
+          <span id="topicError" class="text-danger"></span>
+        </div>
+        
+        <!-- New Topic Field (will show when "Add New Topic" is selected) -->
+        <div class="form-group" id="newTopicField" style="display: none;">
+          <label for="newTopic">New Topic Name</label>
+          <input type="text" id="newTopic" name="newTopic" class="form-control">
+          
+          <!-- Only show category selection when creating a new topic -->
+          <div class="form-group" style="margin-top: 10px;">
+            <label for="category">Select Category for New Topic</label>
+            <select id="category" name="category" class="form-control" required>
+              <option value="" selected>Select Category</option>
+            </select>
+            <span id="categoryError" class="text-danger"></span>
+          </div>
+          
+          <button type="button" id="addTopicButton" class="read-more" style="margin-top: 10px;">Add Topic</button>
+        </div>
+
+        <div class="form-group" id="questionAnswerGroup">
+          <label for="content">Content</label>
+          <div>Firstly add heading then content of the heading.Even indices indicate heading and odd indices indicates content</div>
+          <div id="contentFields">
+            <textarea name="content[]" class="form-control" rows="2" required></textarea>
+          </div>
+          <button type="button" id="addContentField" class="read-more" style="margin-top: 10px;">Add more content</button>
+        </div>
+        
+        <!-- Submit Button -->
+        <button type="submit" class="read-more">Add Notes</button>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+   
+  </script>
+</body>
+</html>
