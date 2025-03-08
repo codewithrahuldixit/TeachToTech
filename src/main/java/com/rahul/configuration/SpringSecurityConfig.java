@@ -37,7 +37,7 @@ public class SpringSecurityConfig {
 	            "/api/trainer/add/**", "/api/trainer/edit/**", "/api/trainer/delete/**",
 	            "/category/**", "/preview/**", "/save-content", "/article/**", 
 	            "/discoverarticles/**", "/success", "/articletypes", 
-	            "/articlesByCategory", "/addassignment/**", "/topics", "/addnotes","/delete-assignment/**","/get-assignment/**"
+	            "/articlesByCategory", "/addassignment/**", "/topics", "/addnotes","/delete-assignment/**","/get-assignment/**","/editAssignment/**"
 	        ).permitAll()
 	        .requestMatchers(HttpMethod.POST, 
 	            "/savenote", "/test", "/save-assignment", "/api/notes/**"
@@ -62,7 +62,7 @@ public class SpringSecurityConfig {
 	            "/api/courses/add/**", "/api/courses/edit/**", 
 	            "/api/courses/delete/**", "/api/trainer/add/**", 
 	            "/api/trainer/edit/**", "/api/trainer/delete/**", 
-	            "/category/**", "/api/users/allusers/**","/delete-assignment/**","/delete-note/**","/update-assignment/**"
+	            "/category/**", "/api/users/allusers/**","/delete-assignment/**","/delete-note/**","/update-assignment/**","/editAssignment/**"
 	        ).hasRole("ADMIN")
 
 	        // All other requests require authentication

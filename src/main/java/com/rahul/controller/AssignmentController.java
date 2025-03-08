@@ -1,5 +1,7 @@
 package com.rahul.controller;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -45,21 +47,82 @@ public class AssignmentController {
 public ResponseEntity<?> getAssignment(@PathVariable Long assignmentId) {
     Optional<Assignment> assignment = assignmentRepository.findById(assignmentId);
     if (assignment.isPresent()) {
-        return ResponseEntity.ok(assignment.get());
+        Assignment existingAssignment = assignment.get();
+
+        // Include topic details in the response
+        Map<String, Object> response = new HashMap<>();
+        response.put("assignmentId", existingAssignment.getAssignmentId());
+        response.put("topicId", existingAssignment.getTopic().getTopicId());
+        response.put("topicName", existingAssignment.getTopic().getName());  // Add topicName here
+        response.put("qa", existingAssignment.getQa());
+
+        return ResponseEntity.ok(response);
     }
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Assignment not found");
 }
 
     // Update assignment
-    @PutMapping("/update-assignment/{assignmentId}")
-    public ResponseEntity<String> updateAssignment(Long assignmentId, @RequestBody Assignment assignment) {
-        if (assignmentRepository.existsById(assignmentId)) {
-            assignment.setAssignmentId(assignmentId);
-            assignmentRepository.save(assignment);
-            return new ResponseEntity<>("Assignment updated successfully!", HttpStatus.OK);
-        }
-        return new ResponseEntity<>("Assignment not found!", HttpStatus.NOT_FOUND);
+//     @PutMapping("/update-assignment/{assignmentId}")
+// public ResponseEntity<String> updateAssignment(
+//         @PathVariable("assignmentId") Long assignmentId,
+//         @RequestBody Map<String, Object> requestData) { // Change to Map for flexibility
+
+//     if (assignmentId == null) {
+//         return new ResponseEntity<>("Assignment ID is required!", HttpStatus.BAD_REQUEST);
+//     }
+
+//     Long topicId = Long.valueOf(requestData.get("topicId").toString()); // Extract topicId
+//     if (topicId == null) {
+//         return new ResponseEntity<>("Topic ID is required!", HttpStatus.BAD_REQUEST);
+//     }
+
+//     Optional<Assignment> assignmentOptional = assignmentRepository.findById(assignmentId);
+//     if (assignmentOptional.isPresent()) {
+//         Assignment assignment = assignmentOptional.get();
+
+//         // Set the topicId in the assignment object
+//         Topic topic = new Topic();
+//         topic.setTopicId(topicId);
+//         assignment.setTopic(topic);
+
+//         assignmentRepository.save(assignment);
+
+//         return new ResponseEntity<>("Assignment updated successfully!", HttpStatus.OK);
+//     }
+
+//     return new ResponseEntity<>("Assignment not found!", HttpStatus.NOT_FOUND);
+// }
+@PutMapping("/update-assignment/{assignmentId}")
+public ResponseEntity<String> updateAssignment(
+        @PathVariable("assignmentId") Long assignmentId,
+        @RequestBody Map<String, Object> requestData) { 
+
+    if (assignmentId == null) {
+        return new ResponseEntity<>("Assignment ID is required!", HttpStatus.BAD_REQUEST);
     }
+
+    Long topicId = Long.valueOf(requestData.get("topicId").toString());
+    if (topicId == null) {
+        return new ResponseEntity<>("Topic ID is required!", HttpStatus.BAD_REQUEST);
+    }
+
+    Optional<Assignment> assignmentOptional = assignmentRepository.findById(assignmentId);
+    Optional<Topic> topicOptional = topicRepository.findById(topicId);  // Fetch the existing topic
+
+    if (assignmentOptional.isPresent() && topicOptional.isPresent()) {
+        Assignment assignment = assignmentOptional.get();
+
+        // Link the existing topic (avoids detached entity issues)
+        assignment.setTopic(topicOptional.get());
+       
+        assignmentRepository.save(assignment);
+
+        return new ResponseEntity<>("Assignment updated successfully!", HttpStatus.OK);
+    }
+
+    return new ResponseEntity<>("Assignment or Topic not found!", HttpStatus.NOT_FOUND);
+}
+
     // Delete assignment
     @DeleteMapping("/delete-assignment/{assignmentId}")
     public ResponseEntity<String> deleteAssignment(@PathVariable Long assignmentId) {
@@ -69,4 +132,6 @@ public ResponseEntity<?> getAssignment(@PathVariable Long assignmentId) {
         }
         return new ResponseEntity<>("Assignment not found!", HttpStatus.NOT_FOUND);
     }
+
+
 }

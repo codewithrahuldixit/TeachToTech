@@ -530,12 +530,13 @@ function displayTopicContent(topic) {
         }
 
         // Redirect to the Edit Assignment form
-        window.location.href = `/update-assignment/${assignmentId}`;
+        window.location.href = `/editAssignment/${assignmentId}`;
     });
 
     // Update page title
     if (titleHeading) {
         titleHeading.textContent = title;
+
     }
 
     // Format and display topic content

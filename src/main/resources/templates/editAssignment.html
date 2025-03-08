@@ -116,11 +116,10 @@
       <h3 class="card-title">Add New Assignment</h3>
       <form id="addAssignmentForm">
         <div class="form-group">
-            <label for="topicSelect">Select Topic:</label>
-            <select id="topicSelect" name="topicId" class="form-control" required>
-                <option value="">-- Choose a topic --</option>
-            </select>
-        </div>
+          <label for="topicDisplay">Topic:</label>
+          <div id="topicDisplay" class="form-control" readonly></div>
+          <input type="hidden" id="topicId" name="topicId">
+      </div>
 
         <div class="form-group">
             <label>Questions:</label>
@@ -140,7 +139,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const pathParts = window.location.pathname.split('/');
-        if (pathParts[1] === 'update-assignment') {
+        if (pathParts[1] === 'editAssignment') {
             const assignmentId = pathParts[2];
 
             // Fetch assignment details
@@ -153,8 +152,20 @@
                     }
 
                     // Populate the topic select
-                    const topicSelect = document.getElementById('topicSelect');
-                    topicSelect.value = data.topicId;
+                    // Display topic as non-editable text
+                    const topicDisplay = document.getElementById('topicDisplay');
+                    const topicIdInput = document.getElementById('topicId');
+                    if (data.topicName && data.topicId) {
+            // Old structure (topicName and topicId directly available)
+            topicDisplay.textContent = data.topicName;
+            topicIdInput.value = data.topicId;
+        } else if (data.topic) {
+            // New structure (topic nested under 'topic' object)
+            topicDisplay.textContent = data.topic.topicName;
+            topicIdInput.value = data.topic.topicId;
+        } else {
+            console.error("Error: Topic data missing from response.");
+        }
 
                     // Populate questions and answers
                     const questionsContainer = document.getElementById('questionsContainer');
@@ -172,13 +183,35 @@
                     });
                 })
                 .catch(error => console.error('Error fetching assignment:', error));
+            // Add Question functionality
+            document.getElementById('addQuestion').addEventListener('click', function () {
+                const questionsContainer = document.getElementById('questionsContainer');
+                
+                const questionTextarea = document.createElement('textarea');
+                questionTextarea.name = "qa[]";
+                questionTextarea.className = 'form-control';
+                questionTextarea.placeholder = "Enter question";
+                questionTextarea.required = true;
 
+                const answerTextarea = document.createElement('textarea');
+                answerTextarea.name = "qa[]";
+                answerTextarea.className = 'form-control';
+                answerTextarea.placeholder = "Enter answer";
+                answerTextarea.required = true;
+
+                questionsContainer.appendChild(questionTextarea);
+                questionsContainer.appendChild(answerTextarea);
+            });
             // Handle form submission
             const form = document.getElementById('addAssignmentForm');
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
 
                 const formData = new FormData(form);
+                const topicId = document.getElementById('topicId').value;
+    console.log("Topic ID before sending:", topicId); // Check if topicId exists
+
+    formData.append('topicId', topicId);;
                 fetch(`/update-assignment/${assignmentId}`, {
                     method: 'PUT',
                     headers: {
