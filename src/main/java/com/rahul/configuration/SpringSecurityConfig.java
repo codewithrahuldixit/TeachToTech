@@ -37,13 +37,13 @@ public class SpringSecurityConfig {
 	            "/api/trainer/add/**", "/api/trainer/edit/**", "/api/trainer/delete/**",
 	            "/category/**", "/preview/**", "/save-content", "/article/**", 
 	            "/discoverarticles/**", "/success", "/articletypes", 
-	            "/articlesByCategory", "/addassignment/**", "/topics", "/addnotes"
+	            "/articlesByCategory", "/addassignment/**", "/topics", "/addnotes","/delete-assignment/**","/get-assignment/**","/editAssignment/**"
 	        ).permitAll()
 	        .requestMatchers(HttpMethod.POST, 
 	            "/savenote", "/test", "/save-assignment", "/api/notes/**"
 	        ).permitAll()
 	        .requestMatchers(HttpMethod.DELETE, 
-	            "/delete/**", "/api/trainer/delete/**"
+	            "/delete/**", "/api/trainer/delete/**","/delete-assignment/**","/delete-note/**"
 	        ).permitAll()
 	        .requestMatchers(
 	            "/", "/index", "/courses", "/course-details/**", "/trainers", 
@@ -51,8 +51,10 @@ public class SpringSecurityConfig {
 	            "/api/trainer/get", "/teachtotech-app/**", "/articlewriting/**", 
 	            "/articlereview/**", "/save-content/**", "/articles/category/**", 
 	            "/preview", "/adminpreview/**", "/articletypes", "/comments", 
-	            "/savenote", "/test/**", "/topic/**", "/allnotes"
+	            "/savenote", "/test/**", "/topic/**", "/allnotes","/delete-assignment/**","/delete-note/**"
 	        ).permitAll()
+			.requestMatchers(HttpMethod.PUT, "/update-assignment/**").permitAll()
+
 
 	        // Admin endpoints
 	        .requestMatchers(
@@ -60,7 +62,7 @@ public class SpringSecurityConfig {
 	            "/api/courses/add/**", "/api/courses/edit/**", 
 	            "/api/courses/delete/**", "/api/trainer/add/**", 
 	            "/api/trainer/edit/**", "/api/trainer/delete/**", 
-	            "/category/**", "/api/users/allusers/**"
+	            "/category/**", "/api/users/allusers/**","/delete-assignment/**","/delete-note/**","/update-assignment/**","/editAssignment/**"
 	        ).hasRole("ADMIN")
 
 	        // All other requests require authentication

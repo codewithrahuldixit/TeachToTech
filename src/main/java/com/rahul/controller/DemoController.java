@@ -214,4 +214,10 @@ public class DemoController {
 			return "error";
 		}
 	}
+
+	@GetMapping("/editAssignment/{assignmentId}")
+	public String editAssignment(@PathVariable Long assignmentId) {
+		return "editAssignment";
+	}
+	
 }

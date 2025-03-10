@@ -67,15 +67,28 @@ public class NotesController {
         return new ResponseEntity<>("Note updated successfully!", HttpStatus.OK);
     }
 
+    // @DeleteMapping("/delete-note/{noteId}")
+    // public ResponseEntity<String> deleteNote(@PathVariable("noteId") long noteId) {
+    //     if(noteRepository.existsById(noteId)){
+    //         noteRepository.deleteById(noteId);
+    //         return new ResponseEntity<>("Note deleted successfully!", HttpStatus.OK);
+
+    //     }
+    //     return new ResponseEntity<>("Note not found!", HttpStatus.NOT_FOUND);
+    // }
     @DeleteMapping("/delete-note/{noteId}")
-    public ResponseEntity<String> deleteNote(@PathVariable("noteId") long noteId) {
-        try {
-            noteService.deleteNoteById(noteId);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+public ResponseEntity<String> deleteNote(@PathVariable("noteId") long noteId) {
+    System.out.println("Received request to delete note with ID: " + noteId);
+    
+    if (noteRepository.existsById(noteId)) {
+        System.out.println("Note exists. Deleting now...");
+        noteRepository.deleteById(noteId);
+        System.out.println("Note successfully deleted.");
         return new ResponseEntity<>("Note deleted successfully!", HttpStatus.OK);
     }
+
+    System.out.println("Note not found in database!");
+    return new ResponseEntity<>("Note not found!", HttpStatus.NOT_FOUND);
+}
+
 }
