@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit | Notes - TeachToTech</title>
+    <link th:href="@{/assets/img/TT.png}" rel="icon">
+    <link th:href="@{/assets/css/editNotes.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container d-flex flex-column align-items-center">
+    <div class="d-none toast text-bg-success" role="alert" id="topicSavedToast">
+        <div class="toast-body">
+            <div class="d-flex gap-4">
+                <span><i class="fa-solid fa-circle-check fa-lg"></i></span>
+                <div class="d-flex flex-grow-1 align-items-center justify-content-center">
+                    <span class="fw-semibold">Topic saved successfully!!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-none toast text-bg-success" role="alert" id="noteUpdatedToast">
+        <div class="toast-body">
+            <div class="d-flex gap-4">
+                <span><i class="fa-solid fa-circle-check fa-lg"></i></span>
+                <div class="d-flex flex-grow-1 align-items-center justify-content-center">
+                    <span class="fw-semibold">Note updated successfully!!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mw-800px text-primary-green">
+        <button type="button" class="btn shadow border-top mt-3 me-auto text-primary-green" onclick="history.back()">
+            <strong><i class="bi bi-caret-left-fill"></i> Go Back</strong>
+        </button>
+    </div>
+    <div class="card mw-800px p-4 my-3 shadow rounded-4">
+        <h3 class="card-title text-primary-green mb-3">Edit Notes</h3>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            const topic = /*[[${topic}]]*/ {};
+            const categoryList = /*[[${categoryList}]]*/ [];
+            const topicList = /*[[${topicList}]]*/ [];
+            /*]]>*/
+        </script>
+
+        <!-- Form Start -->
+        <form id="editNotesForm">
+            <!-- New Topic Field (Initially Hidden) -->
+            <div class="mb-3 p-3 d-none card shadow-lg" id="newTopicField">
+                <fieldset>
+                    <legend class="primary-color">Add New Topic</legend>
+                    <label for="newTopic" class="form-label">New Topic Name</label>
+                    <input type="text" id="newTopic" name="newTopic" class="form-control">
+                    <div class="mt-2">
+                        <label for="category" class="form-label">Select Category</label>
+                        <select id="category" name="category" class="form-select" required>
+                            <option value="selectCategory" selected disabled>Select Category</option>
+                            <option th:each="categoryListItem : ${categoryList}"
+                                    th:id="'category-' + ${categoryListItem.categoryId}"
+                                    th:value="${categoryListItem.categoryId}"
+                                    th:text="${categoryListItem.name}"
+                                    th:selected="${categoryListItem.categoryId == topic.category.categoryId}">
+                            </option>
+                        </select>
+                        <span id="categoryError" class="text-danger"></span>
+                    </div>
+                    <button type="button" id="addTopicBtn" class="d-inline-block shadow btn btn-success mt-3"
+                            style="background-color: #5fcf80; color: white; border-color: #5fcf8088;"
+                            onmouseover="this.style.backgroundColor='#4caf6a'"
+                            onmouseout="this.style.backgroundColor='#5fcf80'">Add Topic
+                    </button>
+                </fieldset>
+            </div>
+
+            <fieldset>
+                <!-- Topic Field -->
+                <div class="mb-3">
+                    <label for="topic" class="form-label">Topic</label>
+                    <select id="topic" name="topic" class="form-select" required>
+                        <option value="select topic" disabled>Select Topic</option>
+                        <option value="newTopic">Add New Topic</option>
+                        <option th:id="'topic-' + ${topic.topicId}"
+                                th:each="topicListItem: ${topicList}"
+                                th:value="${topicListItem.topicId}"
+                                th:text="${topicListItem.name}"
+                                th:selected="${topicListItem.topicId == topic.topicId}">
+                        </option>
+                    </select>
+                    <span id="topicError" class="text-danger"></span>
+                </div>
+
+                <!-- Content Fields -->
+                <div class="mb-3">
+                    <label for="content[]" class="form-label m-0">Content</label>
+                    <div id="contentFields" noteId="${topic.note.noteId}">
+                    <textarea id="content[]" name="content[]"
+                              th:each="note_content : ${topic.note.content}"
+                              th:text="${note_content}"
+                              class="form-control my-1" rows="2" required>
+                    </textarea>
+                    </div>
+                    <button type="button" id="addContentField" class="btn btn-outline-success mt-2">Add more content
+                    </button>
+                </div>
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-success"
+                        style="background-color: #5fcf80; color: white; border-color: #5fcf8088;"
+                        onmouseover="this.style.backgroundColor='#4caf6a'"
+                        onmouseout="this.style.backgroundColor='#5fcf80'">
+                    <i class="bi bi-cloud-upload"></i>
+                    Save Notes
+                </button>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<script th:src="@{/assets/js/editNotes.js}"></script>
+<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
