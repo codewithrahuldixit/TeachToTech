@@ -33,7 +33,7 @@ public class SpringSecurityConfig {
 	        // Public endpoints
 	        .requestMatchers("/api/admin/**", "/api/otp/**").permitAll()
 	        .requestMatchers(HttpMethod.GET, 
-	            "/api/courses/add/**", "/api/courses/edit/**", "/api/view-image/**",
+	            "/api/courses/add/**", "/api/courses/edit/**", "/api/view-image/**", "/editNotes.html", "api/topic/edit/**",
 	            "/api/trainer/add/**", "/api/trainer/edit/**", "/api/trainer/delete/**",
 	            "/category/**", "/preview/**", "/save-content", "/article/**", 
 	            "/discoverarticles/**", "/success", "/articletypes", 

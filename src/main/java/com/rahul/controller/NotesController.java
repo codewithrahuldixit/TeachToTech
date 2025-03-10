@@ -9,6 +9,7 @@ import com.rahul.repository.NoteRepository;
 import com.rahul.repository.TopicRepository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,9 +52,12 @@ public class NotesController {
     }
 
 
-    @PutMapping("/update-note/{noteId}")
-    public ResponseEntity<String> updateNote(@PathVariable("noteId") long noteId, @RequestBody Note note) {
+    @PutMapping("/api/topic/edit/{noteId}")
+    public ResponseEntity<String> updateNote(
+            @PathVariable("noteId") long noteId,
+            @RequestBody Note note) {
         try {
+
             noteService.updateNote(noteId, note);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

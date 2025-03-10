@@ -1,0 +1,24 @@
+html, body {
+    height: 100%;
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+}
+
+.text-primary-green {
+    color: #5fcf80 !important;
+}
+
+.primary-color:hover {
+    color: #4caf6a !important;
+}
+
+.mw-800px {
+    max-width: 800px;
+    width: 100%;
+}
+
+.toast-container {
+    position: fixed;
+    top: 20px;
+    z-index: 1050; /* Ensure it's above other elements */
+}

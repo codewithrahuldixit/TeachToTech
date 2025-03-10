@@ -3,6 +3,8 @@ package com.rahul.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.rahul.model.*;
+import com.rahul.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,10 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.rahul.model.Category;
-import com.rahul.model.Course;
-import com.rahul.model.Trainer;
-import com.rahul.model.Users;
 import com.rahul.service.CategoryService;
 import com.rahul.service.CourseService;
 import com.rahul.service.TrainerService;
@@ -34,6 +32,8 @@ public class DemoController {
 
 	@Autowired
 	private CategoryService categoryService;
+    @Autowired
+    private TopicRepository topicRepository;
 
 	@GetMapping({ "/", "/index" })
 	public String Home(Model model) {
@@ -168,6 +168,17 @@ public class DemoController {
 		Course courseObject = this.courseService.convertObjectToJsonAndBack(course);
 		model.addAttribute("course", courseObject);
 		return "editCourse";
+	}
+
+	@GetMapping("api/topic/edit/{id}")
+	public String getTopicEditPage(@PathVariable Long id, Model model) throws JsonProcessingException {
+		Topic topic = topicRepository.findById(id).get();
+		List<Topic> topicList = topicRepository.findAll();
+		List<Category> categoryList = categoryService.getCategory();
+		model.addAttribute("topicList", topicList);
+		model.addAttribute("topic", topic);
+		model.addAttribute("categoryList", categoryList);
+		return "editNotes";
 	}
 
 	@GetMapping("api/trainer/edit/{id}")
