@@ -31,20 +31,19 @@ import lombok.Setter;
 @Data
 public class Assignment {
 
-     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long assignmentId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long assignmentId;
 
-    @ManyToOne
-    @JoinColumn(name = "topic_id", nullable = false)
-    @JsonBackReference
-    private Topic topic;
+	@ManyToOne
+	@JoinColumn(name = "topic_id", nullable = false)
+	@JsonBackReference
+	private Topic topic;
 
-    @ElementCollection
-    @CollectionTable(name = "assignment_qa", joinColumns = @JoinColumn(name = "assignment_id"))
-    @Column(name = "qa")
-    private List<String> qa;
+	@ElementCollection
+	@CollectionTable(name = "assignment_qa", joinColumns = @JoinColumn(name = "assignment_id"))
 
+	@Column(name = "qa", columnDefinition = "TEXT")
+	private List<String> qa;
 
-    
 }
