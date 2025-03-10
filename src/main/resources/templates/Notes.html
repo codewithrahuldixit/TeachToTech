@@ -209,7 +209,7 @@ body {
                   </div>
               </div>
               <div class="d-flex gap-3 mt-2 buttons" style="display: none !important;">
-                  <button class="btn btn-warning text-white adminSection">Edit Assignment</button>
+                  <button class="btn btn-warning text-white adminSection edit-assignment-btn">Edit Assignment</button>
                   <button class="btn btn-warning text-white adminSection">Edit Notes</button> 
                   <button class="btn btn-danger adminSection">Delete Assignment</button> 
                   <button class="btn btn-danger adminSection">Delete Notes</button> 
@@ -497,6 +497,7 @@ let currentTopic = null;
 // Function to display topic content
 function displayTopicContent(topic) {
     const buttonsContainer = document.querySelector(".buttons");
+    const editAssignmentBtn = buttonsContainer.querySelector(".edit-assignment-btn");
     const deleteAssignmentBtn = buttonsContainer.querySelectorAll(".btn-danger")[0];
     const deleteNotesBtn = buttonsContainer.querySelectorAll(".btn-danger")[1];
 
@@ -515,10 +516,27 @@ function displayTopicContent(topic) {
     const categoryName = topic.category?.name || 'Uncategorized';
     const notes = topic.note?.content || [];
     const assignments = topic.assignment || [];
+    if (assignments.length > 0) {
+        const firstAssignmentId = assignments[0].assignmentId;  // Assuming one assignment for now
+        editAssignmentBtn.setAttribute('data-assignment-id', firstAssignmentId);
+    } else {
+        console.warn("No assignments found for this topic.");
+    }
+    editAssignmentBtn.addEventListener('click', function () {
+        const assignmentId = editAssignmentBtn.getAttribute('data-assignment-id');
+        if (!assignmentId) {
+            alert("Assignment ID not found!");
+            return;
+        }
+
+        // Redirect to the Edit Assignment form
+        window.location.href = `/editAssignment/${assignmentId}`;
+    });
 
     // Update page title
     if (titleHeading) {
         titleHeading.textContent = title;
+
     }
 
     // Format and display topic content
