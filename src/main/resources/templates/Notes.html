@@ -182,6 +182,11 @@ body {
     min-height: 300px;
 }
 
+.topic-item {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .d-flex {
@@ -270,7 +275,7 @@ body {
                   </div>
               </div>
               <div class="d-flex gap-3 mt-4 buttons" style="display: none !important;">
-                  <button class="btn btn-warning text-white adminSection">Edit</button> 
+                  <button class="btn btn-warning text-white adminSection" onclick="onEditButtonClick()">Edit</button>
                   <button class="btn btn-danger adminSection">Delete</button> 
               </div> 
           </section> 
@@ -335,7 +340,7 @@ body {
                 <li class="nav-item category-item">
                     <div class="d-flex align-items-center text-white category-header" data-category-id="${categoryId}">
                         <i class="fas fa-folder me-2"></i>
-                        <span>${category.name || category.categoryName || 'Unnamed Category'}</span>
+                        <span class="user-select-none">${category.name || category.categoryName || 'Unnamed Category'}</span>
                         <i class="fas fa-chevron-down ms-auto"></i>
                     </div>
                     <ul class="topics-container" id="topics-${categoryId}" style="display: none;">
@@ -415,7 +420,7 @@ body {
                 console.error(`Error fetching topics for category ${categoryId}:`, error);
                 topicsContainer.innerHTML = `
                     <li class="text-white ps-4">
-                        <span><i class="fas fa-exclamation-circle me-2"></i> Error loading topics</span>
+                        <span class="user-select-none"><i class="fas fa-exclamation-circle me-2"></i> Error loading topics</span>
                     </li>`;
             });
     }
@@ -428,7 +433,7 @@ body {
             console.error('Topics is not an array:', topics);
             topicsContainer.innerHTML = `
                 <li class="text-white ps-4">
-                    <span><i class="fas fa-exclamation-circle me-2"></i> Invalid topics data</span>
+                    <span class="user-select-none"><i class="fas fa-exclamation-circle me-2"></i> Invalid topics data</span>
                 </li>`;
             return;
         }
@@ -436,7 +441,7 @@ body {
         if (topics.length === 0) {
             topicsContainer.innerHTML = `
                 <li class="text-white ps-4">
-                    <span><i class="fas fa-info-circle me-2"></i> No topics found</span>
+                    <span class="user-select-none"><i class="fas fa-info-circle me-2"></i> No topics found</span>
                 </li>`;
             return;
         }
@@ -457,10 +462,10 @@ body {
             }
             
             topicsHTML += `
-                <li class="nav-item topic-item ps-4">
+                <li class="nav-item topic-item ps-4 my-1 hover-highlight">
                     <div class="d-flex align-items-center text-white topic-header" data-topic-id="${topicId}">
                         <i class="fas fa-file-alt me-2"></i>
-                        <span>${topicTitle}</span>
+                        <span class="user-select-none">${topicTitle}</span>
                     </div>
                 </li>`;
         });
@@ -610,6 +615,23 @@ function formatDate(dateString) {
 }
 
 });
+
+   function onEditButtonClick() {
+       // Get the active topic ID
+       const activeTopic = document.querySelector('.active-topic');
+       if (!activeTopic) {
+           console.error('No active topic selected');
+           return;
+       }
+       const topicId = activeTopic.getAttribute('data-topic-id');
+       if (!topicId) {
+           console.error('Active topic ID is missing or undefined');
+           return;
+       }
+       console.log('Edit button clicked for topic ID:', topicId);
+       // Redirect to the edit page with the topic ID
+       window.location.href = `api/topic/edit/${topicId}`;
+   }
   </script>
   
 
