@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Assignment</title>
   <link th:href="@{/assets/img/TT.png}" rel="icon">
-	<link th:href="@{/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
+  <link th:href="@{/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
   <style>
-    html, body {
+    html,
+    body {
       height: 100%;
       margin: 0;
       display: flex;
@@ -16,6 +18,7 @@
       background-color: #f4f4f4;
       font-family: Arial, sans-serif;
     }
+
     .content {
       display: flex;
       justify-content: center;
@@ -25,6 +28,7 @@
       padding-top: 30px;
       box-sizing: border-box;
     }
+
     .card {
       border: none;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -37,19 +41,23 @@
       margin-top: 50px;
       min-width: 800px;
     }
+
     .card-title {
       font-size: 25px;
       color: #5fcf80;
       font-weight: bold;
       margin-bottom: 20px;
     }
+
     .form-group {
       margin-bottom: 20px;
     }
+
     .form-group label {
       font-size: 14px;
       color: #333;
     }
+
     .form-control {
       width: 100%;
       padding: 12px;
@@ -59,10 +67,12 @@
       font-size: 14px;
       box-sizing: border-box;
     }
+
     .form-control:focus {
       border-color: #5fcf80;
       outline: none;
     }
+
     .read-more {
       background-color: #5fcf80;
       color: white;
@@ -74,15 +84,18 @@
       margin-top: 20px;
       width: 100%;
     }
+
     .read-more:hover {
       background-color: #4caf6a;
     }
+
     .back-arrow {
       display: flex;
       align-items: center;
       cursor: pointer;
       margin-bottom: 20px;
     }
+
     .arrow {
       width: 0;
       height: 0;
@@ -91,21 +104,23 @@
       border-right: 15px solid #4CAF50;
       margin-right: 10px;
     }
+
     .arrow:hover {
       border-right-color: #45a049;
     }
+
     .back-text {
       font-size: 14px;
       color: #4CAF50;
       font-weight: bold;
     }
+
     .back-text:hover {
       color: #45a049;
     }
-
-
   </style>
 </head>
+
 <body>
   <div class="content">
     <div class="back-arrow" onclick="history.back()">
@@ -119,118 +134,122 @@
           <label for="topicDisplay">Topic:</label>
           <div id="topicDisplay" class="form-control" readonly></div>
           <input type="hidden" id="topicId" name="topicId">
-      </div>
+        </div>
 
         <div class="form-group">
-            <label>Questions:</label>
-            <div>Even indices indicate questions. Odd indices indicate answers to question.</div>
-            <div id="questionsContainer">
-                <textarea name="qa[]" class="form-control" placeholder="Enter question" required></textarea>
-            </div>
+          <label>Questions:</label>
+          <div>Even indices indicate questions. Odd indices indicate answers to question.</div>
+          <div id="questionsContainer">
+            <textarea name="qa[]" class="form-control" placeholder="Enter question" required></textarea>
+          </div>
         </div>
 
         <button type="button" id="addQuestion" class="read-more">+ Add Question</button>
         <button type="submit" class="read-more">Submit Assignment</button>
-    </form>
+      </form>
     </div>
   </div>
 </body>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const pathParts = window.location.pathname.split('/');
-        if (pathParts[1] === 'editAssignment') {
-            const assignmentId = pathParts[2];
+  document.addEventListener('DOMContentLoaded', function () {
+    const pathParts = window.location.pathname.split('/');
+    if (pathParts[1] === 'editAssignment') {
+      const assignmentId = pathParts[2];
 
-            // Fetch assignment details
-            fetch(`/get-assignment/${assignmentId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (!data) {
-                        alert("Assignment not found!");
-                        return;
-                    }
+      // Fetch assignment details
+      fetch(`/get-assignment/${assignmentId}`)
+        .then(response => response.json())
+        .then(data => {
+          if (!data) {
+            alert("Assignment not found!");
+            return;
+          }
 
-                    // Populate the topic select
-                    // Display topic as non-editable text
-                    const topicDisplay = document.getElementById('topicDisplay');
-                    const topicIdInput = document.getElementById('topicId');
-                    if (data.topicName && data.topicId) {
+          // Populate the topic select
+          // Display topic as non-editable text
+          const topicDisplay = document.getElementById('topicDisplay');
+          const topicIdInput = document.getElementById('topicId');
+          if (data.topicName && data.topicId) {
             // Old structure (topicName and topicId directly available)
             topicDisplay.textContent = data.topicName;
             topicIdInput.value = data.topicId;
-        } else if (data.topic) {
+          } else if (data.topic) {
             // New structure (topic nested under 'topic' object)
             topicDisplay.textContent = data.topic.topicName;
             topicIdInput.value = data.topic.topicId;
-        } else {
+          } else {
             console.error("Error: Topic data missing from response.");
-        }
+          }
 
-                    // Populate questions and answers
-                    const questionsContainer = document.getElementById('questionsContainer');
-                    questionsContainer.innerHTML = ''; // Clear old content
-                    data.qa.forEach((item, index) => {
-                        const textarea = document.createElement('textarea');
-                        textarea.name = "qa[]";
-                        textarea.className = 'form-control';
-                        textarea.placeholder = index % 2 === 0 
-                            ? "Enter question"
-                            : "Enter answer";
-                        textarea.value = item;
-                        textarea.required = true;
-                        questionsContainer.appendChild(textarea);
-                    });
-                })
-                .catch(error => console.error('Error fetching assignment:', error));
-            // Add Question functionality
-            document.getElementById('addQuestion').addEventListener('click', function () {
-                const questionsContainer = document.getElementById('questionsContainer');
-                
-                const questionTextarea = document.createElement('textarea');
-                questionTextarea.name = "qa[]";
-                questionTextarea.className = 'form-control';
-                questionTextarea.placeholder = "Enter question";
-                questionTextarea.required = true;
+          // Populate questions and answers
+          const questionsContainer = document.getElementById('questionsContainer');
+          questionsContainer.innerHTML = ''; // Clear old content
+          data.qa.forEach((item, index) => {
+            const textarea = document.createElement('textarea');
+            textarea.name = "qa[]";
+            textarea.className = 'form-control';
+            textarea.placeholder = index % 2 === 0
+              ? "Enter question"
+              : "Enter answer";
+            textarea.value = item;
+            textarea.required = true;
+            questionsContainer.appendChild(textarea);
+          });
+        })
+        .catch(error => console.error('Error fetching assignment:', error));
+      // Add Question functionality
+      document.getElementById('addQuestion').addEventListener('click', function () {
+        const questionsContainer = document.getElementById('questionsContainer');
 
-                const answerTextarea = document.createElement('textarea');
-                answerTextarea.name = "qa[]";
-                answerTextarea.className = 'form-control';
-                answerTextarea.placeholder = "Enter answer";
-                answerTextarea.required = true;
+        const questionTextarea = document.createElement('textarea');
+        questionTextarea.name = "qa[]";
+        questionTextarea.className = 'form-control';
+        questionTextarea.placeholder = "Enter question";
+        questionTextarea.required = true;
 
-                questionsContainer.appendChild(questionTextarea);
-                questionsContainer.appendChild(answerTextarea);
-            });
-            // Handle form submission
-            const form = document.getElementById('addAssignmentForm');
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
+        const answerTextarea = document.createElement('textarea');
+        answerTextarea.name = "qa[]";
+        answerTextarea.className = 'form-control';
+        answerTextarea.placeholder = "Enter answer";
+        answerTextarea.required = true;
 
-                const formData = new FormData(form);
-                const topicId = document.getElementById('topicId').value;
-    console.log("Topic ID before sending:", topicId); // Check if topicId exists
-
-    formData.append('topicId', topicId);;
-                fetch(`/update-assignment/${assignmentId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(Object.fromEntries(formData.entries()))
-                })
-                .then(response => {
-                    if (response.ok) {
-                        alert("Assignment updated successfully!");
-                        window.location.href = '/allnotes'; // Redirect back to assignments list
-                    } else {
-                        alert("Failed to update assignment!");
-                    }
-                })
-                .catch(error => console.error('Error updating assignment:', error));
-            });
-        }
-    });
+        questionsContainer.appendChild(questionTextarea);
+        questionsContainer.appendChild(answerTextarea);
+      });
+      // Handle form submission
+      const form = document.getElementById('addAssignmentForm');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const topicId = document.getElementById('topicId').value;
+        const jsonData = {
+        topicId: topicId,
+        qa: Array.from(formData.getAll('qa[]'))
+      };
+        console.log("Topic ID before sending:", topicId); // Check if topicId exists
+        console.log("🚀 Data being sent:", jsonData); 
+        fetch(`/update-assignment/${assignmentId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(jsonData)
+        })
+          .then(response => {
+            if (response.ok) {
+              alert("Assignment updated successfully!");
+              window.location.href = '/allnotes'; // Redirect back to assignments list
+            } else {
+              alert("Failed to update assignment!");
+            }
+          })
+          .catch(error => console.error('Error updating assignment:', error));
+      });
+    }
+  });
+  
 </script>
 
 </html>

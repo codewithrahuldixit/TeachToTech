@@ -1,6 +1,9 @@
 package com.rahul.controller;
 
 import com.rahul.service.NoteService;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.web.bind.annotation.*;
 
 import com.rahul.model.Note;
@@ -8,7 +11,10 @@ import com.rahul.model.Topic;
 import com.rahul.repository.NoteRepository;
 import com.rahul.repository.TopicRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,28 +69,22 @@ public class NotesController {
         return new ResponseEntity<>("Note updated successfully!", HttpStatus.OK);
     }
 
-    // @DeleteMapping("/delete-note/{noteId}")
-    // public ResponseEntity<String> deleteNote(@PathVariable("noteId") long noteId) {
-    //     if(noteRepository.existsById(noteId)){
-    //         noteRepository.deleteById(noteId);
-    //         return new ResponseEntity<>("Note deleted successfully!", HttpStatus.OK);
-
-    //     }
-    //     return new ResponseEntity<>("Note not found!", HttpStatus.NOT_FOUND);
-    // }
     @DeleteMapping("/delete-note/{noteId}")
-public ResponseEntity<String> deleteNote(@PathVariable("noteId") long noteId) {
-    System.out.println("Received request to delete note with ID: " + noteId);
-    
-    if (noteRepository.existsById(noteId)) {
-        System.out.println("Note exists. Deleting now...");
-        noteRepository.deleteById(noteId);
-        System.out.println("Note successfully deleted.");
-        return new ResponseEntity<>("Note deleted successfully!", HttpStatus.OK);
+    @Transactional
+    public ResponseEntity<?> deleteNote(@PathVariable("noteId") long noteId) {
+        System.out.println("Received request to delete note with ID: " + noteId);
+        Note note = noteRepository.findById(noteId)
+                              .orElseThrow(() -> new RuntimeException("Note not found"));
+
+    Topic topic = note.getTopic();
+    if (topic != null) {
+        topic.setNote(null); // Remove the reference from Topic
+        topicRepository.save(topic);
     }
 
-    System.out.println("Note not found in database!");
-    return new ResponseEntity<>("Note not found!", HttpStatus.NOT_FOUND);
-}
-
-}
+    noteRepository.delete(note);
+        
+            return new ResponseEntity<>("nOTE DELETED SUCCESFULLY " , 
+                                       HttpStatus.OK);
+        }
+    }
