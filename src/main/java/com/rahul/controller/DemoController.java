@@ -208,5 +208,8 @@ public class DemoController {
 	public String editAssignment(@PathVariable Long assignmentId) {
 		return "editAssignment";
 	}
-	
+	@GetMapping("/editNotes/{noteId}")
+	public String editNotes(@PathVariable Long noteId) {
+		return "editNotes";
+	}
 }

@@ -45,4 +45,7 @@ public class NoteService {
             throw new IllegalArgumentException("Note not found");
         }
     }
+    public Optional<Note> findNoteById(Long noteId) {
+        return noteRepository.findById(noteId);
+    }
 }

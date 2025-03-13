@@ -37,7 +37,8 @@ public class SpringSecurityConfig {
 	            "/api/trainer/add/**", "/api/trainer/edit/**", "/api/trainer/delete/**",
 	            "/category/**", "/preview/**", "/save-content", "/article/**", 
 	            "/discoverarticles/**", "/success", "/articletypes", 
-	            "/articlesByCategory", "/addassignment/**", "/topics", "/addnotes","/delete-assignment/**","/get-assignment/**","/editAssignment/**"
+	            "/articlesByCategory", "/addassignment/**", "/topics", "/addnotes","/delete-assignment/**","/get-assignment/**",
+				"/editAssignment/**","/editNotes/**","/get-note/**"
 	        ).permitAll()
 	        .requestMatchers(HttpMethod.POST, 
 	            "/savenote", "/test", "/save-assignment", "/api/notes/**"
@@ -53,7 +54,7 @@ public class SpringSecurityConfig {
 	            "/preview", "/adminpreview/**", "/articletypes", "/comments", 
 	            "/savenote", "/test/**", "/topic/**", "/allnotes","/delete-assignment/**","/delete-note/**"
 	        ).permitAll()
-			.requestMatchers(HttpMethod.PUT, "/update-assignment/**").permitAll()
+			.requestMatchers(HttpMethod.PUT, "/update-assignment/**","/update-note/**").permitAll()
 
 
 	        // Admin endpoints
@@ -62,7 +63,8 @@ public class SpringSecurityConfig {
 	            "/api/courses/add/**", "/api/courses/edit/**", 
 	            "/api/courses/delete/**", "/api/trainer/add/**", 
 	            "/api/trainer/edit/**", "/api/trainer/delete/**", 
-	            "/category/**", "/api/users/allusers/**","/delete-assignment/**","/delete-note/**","/update-assignment/**","/editAssignment/**"
+	            "/category/**", "/api/users/allusers/**","/delete-assignment/**","/delete-note/**","/update-assignment/**",
+				"/editAssignment/**","/update-note/**","/editNotes/**","/get-note/**"
 	        ).hasRole("ADMIN")
 
 	        // All other requests require authentication
