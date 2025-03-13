@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Notes</title>
+  <title>Edit Notes</title>
   <link th:href="@{/assets/img/TT.png}" rel="icon">
   <link th:href="@{/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
   <style>
@@ -126,36 +126,18 @@
       <p class="back-text">Go back</p>
     </div>
     <div class="card">
-      <h3 class="card-title">Add Notes</h3>
-      <form id="addCourseForm">
+      <h3 class="card-title">Edit Notes</h3>
+      <form id="editNotesForm">
         <!-- Topic Field -->
         <div class="form-group">
-          <label for="topic">Topic</label>
-          <select id="topic" name="topic" class="form-control" required>
-            <option value="" disabled selected>Select Topic</option>
-            <option value="newTopic">Add New Topic</option>
-          </select>
-          <span id="topicError" class="text-danger"></span>
-        </div>
-        
-        <!-- New Topic Field (will show when "Add New Topic" is selected) -->
-        <div class="form-group" id="newTopicField" style="display: none;">
-          <label for="newTopic">New Topic Name</label>
-          <input type="text" id="newTopic" name="newTopic" class="form-control">
           
-          <!-- Only show category selection when creating a new topic -->
-          <div class="form-group" style="margin-top: 10px;">
-            <label for="category">Select Category for New Topic</label>
-            <select id="category" name="category" class="form-control" required>
-              <option value="" selected>Select Category</option>
-            </select>
-            <span id="categoryError" class="text-danger"></span>
-          </div>
+            <label for="topicDisplay">Topic:</label>
+            <div id="topicDisplay" class="form-control" readonly></div>
+            <input type="hidden" id="topicId" name="topicId">
           
-          <button type="button" id="addTopicButton" class="read-more" style="margin-top: 10px;">Add Topic</button>
         </div>
-
-        <div class="form-group" id="questionAnswerGroup">
+  
+        <div class="form-group" id="contentGroup">
           <label for="content">Content</label>
           <div>Firstly add heading then content of the heading.Even indices indicate heading and odd indices indicates content</div>
           <div id="contentFields">
@@ -165,13 +147,114 @@
         </div>
         
         <!-- Submit Button -->
-        <button type="submit" class="read-more">Add Notes</button>
+        <button type="submit" class="read-more">Edit Notes</button>
       </form>
     </div>
   </div>
   
   <script>
-   
+    document.addEventListener('DOMContentLoaded', function () {
+    const pathParts = window.location.pathname.split('/');
+    if (pathParts[1] === 'editNotes') {
+        const noteId = pathParts[2];
+
+        // Fetch note details
+        fetch(`/get-note/${noteId}`)
+            .then(response => response.json())
+            .then(data => {
+              console.log("🚀 Received data from API:", data); // Debug log
+                if (!data) {
+                    alert("Note not found!");
+                    return;
+                }
+
+                // Populate the topic display
+                const topicDisplay = document.getElementById('topicDisplay');
+                const topicIdInput = document.getElementById('topicId');
+                if (data.topic) {
+                  console.log("✅ Topic found:", data.topic); // Debug log
+            console.log("📌 Topic ID:", data.topic.topicId)
+                    topicDisplay.textContent = data.topic.name; // Assuming 'name' holds topic name
+                    topicIdInput.value = data.topic.topicId;
+                } else {
+                    console.error("Error: Topic data missing from response.");
+                }
+
+                // Populate content fields
+                const contentContainer = document.getElementById('contentFields');
+                contentContainer.innerHTML = ''; // Clear old content
+                data.content.forEach((item, index) => {
+                    const textarea = document.createElement('textarea');
+                    textarea.name = "content[]";
+                    textarea.className = 'form-control';
+                    textarea.rows = 2;
+                    textarea.placeholder = index % 2 === 0
+                        ? "Enter heading"
+                        : "Enter content";
+                    textarea.value = item;
+                    textarea.required = true;
+                    contentContainer.appendChild(textarea);
+                });
+            })
+            .catch(error => console.error('Error fetching note:', error));
+
+        // Add More Content Functionality
+        document.getElementById('addContentField').addEventListener('click', function () {
+            const contentContainer = document.getElementById('contentFields');
+
+            const headingTextarea = document.createElement('textarea');
+            headingTextarea.name = "content[]";
+            headingTextarea.className = 'form-control';
+            headingTextarea.rows = 2;
+            headingTextarea.placeholder = "Enter heading";
+            headingTextarea.required = true;
+
+            const contentTextarea = document.createElement('textarea');
+            contentTextarea.name = "content[]";
+            contentTextarea.className = 'form-control';
+            contentTextarea.rows = 2;
+            contentTextarea.placeholder = "Enter content";
+            contentTextarea.required = true;
+
+            contentContainer.appendChild(headingTextarea);
+            contentContainer.appendChild(contentTextarea);
+        });
+
+        // Handle form submission
+        const form = document.getElementById('editNotesForm');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const topicId = Number(document.getElementById('topicId').value); // Ensure it's a number
+
+const jsonData = {
+    topic: { topicId: topicId }, // Nested topic object
+    content: Array.from(formData.getAll('content[]'))
+};
+
+            console.log("🚀 Data being sent:", jsonData);
+
+            fetch(`/update-note/${noteId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonData)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Note updated successfully!");
+                        window.location.href = '/allnotes'; // Redirect back to notes list
+                    } else {
+                        alert("Failed to update note!");
+                    }
+                })
+                .catch(error => console.error('Error updating note:', error));
+        });
+    }
+});
+
   </script>
 </body>
 </html>

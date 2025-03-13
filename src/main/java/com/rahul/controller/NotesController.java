@@ -11,6 +11,8 @@ import com.rahul.model.Topic;
 import com.rahul.repository.NoteRepository;
 import com.rahul.repository.TopicRepository;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,13 +62,18 @@ public class NotesController {
     @PutMapping("/update-note/{noteId}")
     public ResponseEntity<String> updateNote(@PathVariable("noteId") long noteId, @RequestBody Note note) {
         try {
+            
+            if (note.getTopic() == null || note.getTopic().getTopicId() == null) {
+                return new ResponseEntity<>("❌ Error: Topic ID is missing!", HttpStatus.BAD_REQUEST);
+            }
+    
             noteService.updateNote(noteId, note);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("✅ Note updated successfully!", HttpStatus.OK);
+    
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            return new ResponseEntity<>("❌ Internal Server Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>("Note updated successfully!", HttpStatus.OK);
     }
 
     @DeleteMapping("/delete-note/{noteId}")
@@ -84,7 +91,35 @@ public class NotesController {
 
     noteRepository.delete(note);
         
-            return new ResponseEntity<>("nOTE DELETED SUCCESFULLY " , 
+            return new ResponseEntity<>("NOTE deleted successfully " , 
                                        HttpStatus.OK);
         }
-    }
+
+        @GetMapping("/get-note/{noteId}")
+        public ResponseEntity<Map<String, Object>> getNoteById(@PathVariable Long noteId) {
+            Optional<Note> optionalNote = noteService.findNoteById(noteId);
+            
+            if (!optionalNote.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error", "Note not found"));
+            }
+            
+            Note note = optionalNote.get();
+            Map<String, Object> response = new HashMap<>();
+            
+            // Add topic details (handle null topic case)
+            if (note.getTopic() != null) {
+                Map<String, Object> topicDetails = new HashMap<>();
+                topicDetails.put("topicId", note.getTopic().getTopicId());
+                topicDetails.put("name", note.getTopic().getName());
+                response.put("topic", topicDetails);
+            } else {
+                response.put("topic", null); // Avoid frontend errors
+            }
+        
+            // Split content into an array (assuming content is stored as a string)
+            response.put("content", note.getContent());
+        
+            return ResponseEntity.ok(response);
+        }
+          
+ }
