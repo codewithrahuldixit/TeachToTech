@@ -210,7 +210,7 @@ body {
               </div>
               <div class="d-flex gap-3 mt-2 buttons" style="display: none !important;">
                   <button class="btn btn-warning text-white adminSection edit-assignment-btn">Edit Assignment</button>
-                  <button class="btn btn-warning text-white adminSection">Edit Notes</button> 
+                  <button class="btn btn-warning text-white adminSection edit-notes-btn">Edit Notes</button> 
                   <button class="btn btn-danger adminSection">Delete Assignment</button> 
                   <button class="btn btn-danger adminSection">Delete Notes</button> 
               </div> 
@@ -498,6 +498,7 @@ let currentTopic = null;
 function displayTopicContent(topic) {
     const buttonsContainer = document.querySelector(".buttons");
     const editAssignmentBtn = buttonsContainer.querySelector(".edit-assignment-btn");
+    const editNotesBtn = buttonsContainer.querySelector(".edit-notes-btn");
     const deleteAssignmentBtn = buttonsContainer.querySelectorAll(".btn-danger")[0];
     const deleteNotesBtn = buttonsContainer.querySelectorAll(".btn-danger")[1];
 
@@ -516,11 +517,19 @@ function displayTopicContent(topic) {
     const categoryName = topic.category?.name || 'Uncategorized';
     const notes = topic.note?.content || [];
     const assignments = topic.assignment || [];
+   
     if (assignments.length > 0) {
         const firstAssignmentId = assignments[0].assignmentId;  // Assuming one assignment for now
         editAssignmentBtn.setAttribute('data-assignment-id', firstAssignmentId);
     } else {
         console.warn("No assignments found for this topic.");
+    }
+    const noteId = topic.note?.noteId; // Extracting noteId directly
+
+    if (noteId) {
+        editNotesBtn.setAttribute('data-note-id', noteId);
+    } else {
+       console.warn("No valid note ID found for this topic");
     }
     editAssignmentBtn.addEventListener('click', function () {
         const assignmentId = editAssignmentBtn.getAttribute('data-assignment-id');
@@ -531,6 +540,16 @@ function displayTopicContent(topic) {
 
         // Redirect to the Edit Assignment form
         window.location.href = `/editAssignment/${assignmentId}`;
+    });
+    editNotesBtn.addEventListener('click', function () {
+        const noteId = editNotesBtn.getAttribute('data-note-id');
+        if (!noteId) {
+            alert("Note ID not found!");
+            return;
+        }
+
+        // Redirect to the Edit Assignment form
+        window.location.href = `/editNotes/${noteId}`;
     });
 
     // Update page title
